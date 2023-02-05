@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9e1b5f0b-0c61-47ad-b327-77c0a077d7f2"
+      }
+    },
+    "owner": "ase-mac-pheonix"
   }
 }

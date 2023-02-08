@@ -10,6 +10,7 @@ import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Login from './screens/Login';
 import { AuthContext, AuthProvider } from './context/AuthContext';
+import Game from './screens/Game';
 
 
 
@@ -32,10 +33,16 @@ const Navigation = () => {
                     ></Stack.Screen> : userInfo ?
                         (<Stack.Group>
                             <Stack.Screen
+                                name="Game"
+                                component={Game}
+
+                            />
+                            <Stack.Screen
                                 name="Home"
                                 component={Home}
 
                             />
+
 
                         </Stack.Group>
                         ) : (

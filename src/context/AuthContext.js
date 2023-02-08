@@ -68,9 +68,9 @@ export const AuthProvider = ({ children }) => {
 
         setIsLoading(true);
         // setSplashLoading(true);
-        setTimeout(() => {
-            setSplashLoading(false);
-        }, 4000);
+        // setTimeout(() => {
+        setSplashLoading(false);
+        // }, 4000);
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -78,32 +78,35 @@ export const AuthProvider = ({ children }) => {
                 Alert.alert("Internet Required", "Please connect to the internet, and restart the app")
                 setIsLoading(false)
             } else {
-                try {
-                    let userInfo = await AsyncStorage.getItem('userInfo');
-                    let userInfo1 = JSON.parse(userInfo);
-                    //check for token expired or not
+                // try {
+                let userInfo = await AsyncStorage.getItem('userInfo');
+                setUserInfo(userInfo)
 
-                    await axios.get(`${BASE_URL}/api/mobile/v1/user-info`, {
-                        headers: {
-                            Authorization: `Bearer ${userInfo1.access_token}`
-                        }
-                    }).then(res => {
-                        if (userInfo1) {
-                            setUserInfo(userInfo1)
-                        }
-                        setIsLoading(false);
-                    }).catch(e => {
+                //     let userInfo = await AsyncStorage.getItem('userInfo');
+                //     let userInfo1 = JSON.parse(userInfo);
+                //     //check for token expired or not
 
-                        setIsLoading(false);
-                    })
+                //     await axios.get(`${BASE_URL}/api/mobile/v1/user-info`, {
+                //         headers: {
+                //             Authorization: `Bearer ${userInfo1.access_token}`
+                //         }
+                //     }).then(res => {
+                //         if (userInfo1) {
+                //             setUserInfo(userInfo1)
+                //         }
+                //         setIsLoading(false);
+                //     }).catch(e => {
+
+                //         setIsLoading(false);
+                //     })
 
 
 
 
-                } catch (e) {
-                    // console.log("Yes" + e);
-                    setIsLoading(false);
-                }
+                // } catch (e) {
+                //     // console.log("Yes" + e);
+                //     setIsLoading(false);
+                // }
             }
         });
 

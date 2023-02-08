@@ -2,7 +2,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
-import Toast from 'react-native-simple-toast';
 import { BASE_URL } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
@@ -16,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [splashLoading, setSplashLoading] = useState(true)
     const login = (username, password) => {
         if (username == '' || password == '') {
-            Toast.show("Password or Username is empty");
+            // Toast.show("Password or Username is empty"); //ToDo use some other toaster
             return;
         }
         setIsLoading(true);

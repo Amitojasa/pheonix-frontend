@@ -1,13 +1,18 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Button, StyleSheet, View } from 'react-native'
+import { StartPosition } from '../Config';
 import DiceComponent from './DiceComponent';
 import GamePlayerComponent from './GamePlayerComponent';
 
-const BottomComponent = ({ diceMove, setDiceMove, player1, playMove }) => {
+const BottomComponent = ({ gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice }) => {
+
+
+
     return (
         <View style={styles.container}>
             <GamePlayerComponent playerId={1} />
-            <DiceComponent diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} />
+            {gameEnded ? <Button title="Replay" onPress={resetForReplay}></Button> :
+                <DiceComponent changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}
             <GamePlayerComponent playerId={2} />
 
         </View>

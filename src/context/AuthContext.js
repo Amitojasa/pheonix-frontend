@@ -1,7 +1,7 @@
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, {createContext, useEffect, useRef, useState} from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import { BASE_URL } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
@@ -11,7 +11,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [userInfo, setUserInfo] = useState('')
+    const [userInfo, setUserInfo] = useState('a')
     const [splashLoading, setSplashLoading] = useState(true)
     const login = (username, password) => {
         if (username == '' || password == '') {
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true);
         setSplashLoading(true);
         setTimeout(() => {
-        setSplashLoading(false);
+            setSplashLoading(false);
         }, 4000);
 
         NetInfo.fetch().then(async (state) => {
@@ -78,26 +78,26 @@ export const AuthProvider = ({ children }) => {
                 setIsLoading(false)
             } else {
                 try {
-                let userInfo = await AsyncStorage.getItem('userInfo');
-                setUserInfo(userInfo)
+                    // let userInfo = await AsyncStorage.getItem('userInfo');
+                    setUserInfo('a')
 
-                //     let userInfo = await AsyncStorage.getItem('userInfo');
-                //     let userInfo1 = JSON.parse(userInfo);
-                //     //check for token expired or not
+                    //     let userInfo = await AsyncStorage.getItem('userInfo');
+                    //     let userInfo1 = JSON.parse(userInfo);
+                    //     //check for token expired or not
 
-                //     await axios.get(`${BASE_URL}/api/mobile/v1/user-info`, {
-                //         headers: {
-                //             Authorization: `Bearer ${userInfo1.access_token}`
-                //         }
-                //     }).then(res => {
-                //         if (userInfo1) {
-                //             setUserInfo(userInfo1)
-                //         }
-                //         setIsLoading(false);
-                //     }).catch(e => {
+                    //     await axios.get(`${BASE_URL}/api/mobile/v1/user-info`, {
+                    //         headers: {
+                    //             Authorization: `Bearer ${userInfo1.access_token}`
+                    //         }
+                    //     }).then(res => {
+                    //         if (userInfo1) {
+                    //             setUserInfo(userInfo1)
+                    //         }
+                    //         setIsLoading(false);
+                    //     }).catch(e => {
 
-                //         setIsLoading(false);
-                //     })
+                    //         setIsLoading(false);
+                    //     })
 
 
 

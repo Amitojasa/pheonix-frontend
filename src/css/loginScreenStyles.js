@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 
 export const loginScreenStyles = StyleSheet.create({
@@ -22,18 +22,16 @@ export const loginScreenStyles = StyleSheet.create({
         fontSize: 25,
         letterSpacing: 2,
         color: "#DB4A39",
-        fontWeight: 700,
+        fontWeight: "700",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: {width: -1, height: 1},
+        textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 1
     },
     logoSection: {
         height: "60%", top: "15%"
     },
     authSection: {
-        // borderTopLeftRadius: "30pt",
-        // borderTopRightRadius: "30pt",
-        borderRadius:30,
+        borderRadius: 30,
         height: "40%", width: "100%"
     },
 

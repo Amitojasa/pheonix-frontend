@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 
 export const splashScreenStyle = StyleSheet.create({
@@ -7,11 +7,11 @@ export const splashScreenStyle = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    fullWidth:{
-        width:"100%"
+    fullWidth: {
+        width: "100%"
     },
-    borderRd:{
-        borderTopLeftRadius:"40pt",
-        borderTopRightRadius:"40pt"
+    borderRd: {
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40
     }
 })

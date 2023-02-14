@@ -18,7 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
     const { userInfo, splashLoading } = useContext(AuthContext);
-    console.log("userInfo :: => ::",userInfo);
+    console.log("userInfo :: => ::", userInfo);
     return (
         <NavigationContainer>
 
@@ -31,7 +31,7 @@ const Navigation = () => {
                     <Stack.Screen
                         name="Splash"
                         component={Splash}
-                    ></Stack.Screen> : userInfo ?
+                    ></Stack.Screen> : !userInfo ?
                         (<Stack.Group>
                             {/*<Stack.Screen*/}
                             {/*    name="Game"*/}

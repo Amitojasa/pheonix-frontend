@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 
 export const commonStyles = StyleSheet.create({
@@ -7,10 +7,10 @@ export const commonStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    fullWidth:{
-        width:"100%"
+    fullWidth: {
+        width: "100%"
     },
-    borderRadius:{
-        borderRadius:"30pt"
+    borderRadius: {
+        borderRadius: 30
     }
 })

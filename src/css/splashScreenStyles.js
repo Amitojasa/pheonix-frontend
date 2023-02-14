@@ -1,7 +1,7 @@
 import {Platform, StyleSheet} from "react-native";
 
 
-export const commonStyles = StyleSheet.create({
+export const splashScreenStyle = StyleSheet.create({
     centerContainer: {
         flex: 1,
         alignItems: "center",
@@ -10,7 +10,8 @@ export const commonStyles = StyleSheet.create({
     fullWidth:{
         width:"100%"
     },
-    borderRadius:{
-        borderRadius:"30pt"
+    borderRd:{
+        borderTopLeftRadius:"40pt",
+        borderTopRightRadius:"40pt"
     }
 })

@@ -1,7 +1,7 @@
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
+import React, {createContext, useEffect, useRef, useState} from 'react'
 import { BASE_URL } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
@@ -11,7 +11,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [userInfo, setUserInfo] = useState(null)
+    const [userInfo, setUserInfo] = useState('')
     const [splashLoading, setSplashLoading] = useState(true)
     const login = (username, password) => {
         if (username == '' || password == '') {
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         // }).catch(e => {
         //     console.log(`logout error ${e.response}`);
         AsyncStorage.removeItem('userInfo');
-        setUserInfo(null);
+        setUserInfo('');
         setIsLoading(false);
         // })
 
@@ -66,10 +66,10 @@ export const AuthProvider = ({ children }) => {
 
 
         setIsLoading(true);
-        // setSplashLoading(true);
-        // setTimeout(() => {
+        setSplashLoading(true);
+        setTimeout(() => {
         setSplashLoading(false);
-        // }, 4000);
+        }, 4000);
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
                 Alert.alert("Internet Required", "Please connect to the internet, and restart the app")
                 setIsLoading(false)
             } else {
-                // try {
+                try {
                 let userInfo = await AsyncStorage.getItem('userInfo');
                 setUserInfo(userInfo)
 
@@ -102,10 +102,10 @@ export const AuthProvider = ({ children }) => {
 
 
 
-                // } catch (e) {
-                //     // console.log("Yes" + e);
-                //     setIsLoading(false);
-                // }
+                } catch (e) {
+                    // console.log("Yes" + e);
+                    setIsLoading(false);
+                }
             }
         });
 

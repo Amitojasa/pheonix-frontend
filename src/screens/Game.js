@@ -5,6 +5,8 @@ import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
 import { Cols, EndPosition, Rows, StartPosition, taskList } from '../Config';
+import { LinearGradient } from 'expo-linear-gradient';
+import LandscapeLogo from '../components/LandscapeLogo';
 
 const Game = () => {
     const [player1, setPlayer1] = useState(StartPosition)
@@ -147,11 +149,13 @@ const Game = () => {
 
     return (
         <View style={styles.container}>
-            <BoardGame setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
-            <BottomComponent disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
-            {showTask && <ScreenOverlayComponent />}
-            {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}
-
+            <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}>
+                <LandscapeLogo />
+                <BoardGame setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
+                <BottomComponent disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
+                {showTask && <ScreenOverlayComponent />}
+                {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}
+            </LinearGradient>
         </View>
 
     )
@@ -162,8 +166,20 @@ const Game = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#083D77"
-    }
+
+        // backgroundColor: "#083D77"
+    },
+    linearGradient: {
+        flex: 1,
+
+    },
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: 300,
+    },
 
 });
 

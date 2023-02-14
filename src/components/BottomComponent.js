@@ -10,10 +10,13 @@ const BottomComponent = ({ gameEnded, setGameEnded, changePlayerId, diceMove, se
 
     return (
         <View style={styles.container}>
-            <GamePlayerComponent playerId={1} />
-            {gameEnded ? <Button title="Replay" onPress={resetForReplay}></Button> :
-                <DiceComponent changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}
-            <GamePlayerComponent playerId={2} />
+            <View>{gameEnded ? <Button title="Replay" onPress={resetForReplay}></Button> :
+                <DiceComponent changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
+            <View style={styles.gameplayersDiv}>
+                <GamePlayerComponent playerId={1} />
+
+                <GamePlayerComponent playerId={2} />
+            </View>
 
         </View>
     )
@@ -27,9 +30,15 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "#FFF"
+    },
+    gameplayersDiv: {
+        flex: 1,
+        flexDirection: 'row',
     }
+
+
 });
 export default BottomComponent

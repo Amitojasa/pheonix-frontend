@@ -4,7 +4,7 @@ import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Icons from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { EndPosition, flags, mines, taskList } from '../Config';
+import { EndPosition, flags, mines, StartPosition, taskList } from '../Config';
 import { useFirstRender } from '../customhooks/useFirstRender';
 function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, activePlayerId, changePlayerId, playBackMove }) {
 
@@ -132,7 +132,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     return (
         <View style={{
-            marginTop: '30%', marginLeft: 'auto',
+            marginTop: '10%', marginLeft: 'auto',
             marginRight: 'auto',
             backgroundColor: 'green', width: windowWidth * 0.95, height: windowWidth * 0.95
         }}>
@@ -140,7 +140,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                 matrix.map((i, index1) => (
                     <View style={{ flexDirection: 'row', flex: 1 }}>
                         {i.map((j, index2) => (
-                            <View style={[((index1 + index2) % 2 == 0) ? styles.box1 : styles.box2, styles.box]}>
+                            <View style={[((index1 + index2) % 2 == 0) ? styles.box1 : styles.box2, styles.box, ((index1 == StartPosition[0] && index2 == StartPosition[1]) || (index1 == EndPosition[0] && index2 == EndPosition[1])) && { backgroundColor: '#69BF4A' }]}>
 
                                 {j == 1 ? <Ionicons name="flag" size={32} color="green" /> : (j == -1 ? <MaterialCommunityIcons name="mine" size={32} color="#242B2E" /> : j == 3 ? <Icons name="trophy" size={32} color="#B80C09" /> : j == 2 ? <Ionicons name="star" size={32} color="#D74E09" /> : <Text></Text>)}
 

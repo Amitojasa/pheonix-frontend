@@ -34,5 +34,50 @@ export const loginScreenStyles = StyleSheet.create({
         borderRadius: 30,
         height: "40%", width: "100%"
     },
+    googleLogin:{
+        display:"inline",
+        flexDirection:"row",
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:"#DB4A39",
+        paddingLeft:"3%",
+        borderRadius:15,
+        shadowColor:"rgba(0, 0, 0, 25)",
+        shadowOffset:{ width: 1, height: 1 },
+        shadowOpacity:  0.4,
+        shadowRadius: 3,
+        elevation: 5,
+        marginBottom:40,
+        width:"65%"
+    },
+    facebookLogin:{
+        display:"inline",
+        flexDirection:"row",
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:"#3B5998",
+        paddingLeft:"4%",
+        paddingRight:"2%",
+        paddingBottom:"1%",
+        borderRadius:15,
+        shadowColor:"rgba(0, 0, 0, 25)",
+        shadowOffset:{ width: 1, height: 1 },
+        shadowOpacity:  0.4,
+        shadowRadius: 3,
+        elevation: 5,
+        marginBottom:40
+    },
+    googleText:{
+        fontSize: 20,
+        lineHeight:27,
+        color: "#fff",
+        fontWeight: "700",
+    },
+    facebookText:{
+        fontSize: 20,
+        lineHeight:27,
+        color: "#fff",
+        fontWeight: "700",
+    }
 
 })

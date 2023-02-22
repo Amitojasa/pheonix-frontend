@@ -17,8 +17,7 @@ import Game from './screens/Game';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    const { userInfo, splashLoading } = useContext(AuthContext);
-    console.log("userInfo :: => ::", userInfo);
+    const { isUserLoggedIn, splashLoading } = useContext(AuthContext);
     return (
         <NavigationContainer>
 
@@ -31,7 +30,7 @@ const Navigation = () => {
                     <Stack.Screen
                         name="Splash"
                         component={Splash}
-                    ></Stack.Screen> : !userInfo ?
+                    ></Stack.Screen> : isUserLoggedIn ?
                         (<Stack.Group>
                             {/*<Stack.Screen*/}
                             {/*    name="Game"*/}

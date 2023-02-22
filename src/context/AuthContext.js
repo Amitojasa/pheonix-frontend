@@ -13,6 +13,16 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [userInfo, setUserInfo] = useState('a')
     const [splashLoading, setSplashLoading] = useState(true)
+    const [activePlayerId, setActivePlayerId] = useState(1);
+    const [myPlayerId, setMyPlayerId] = useState(1);
+
+
+    const [playBackSteps, setPlayBackSteps] = useState(2)
+    const [taskIndex, setTaskIndex] = useState(-1)
+
+
+
+
     const login = (username, password) => {
         if (username == '' || password == '') {
             // Toast.show("Password or Username is empty"); //ToDo use some other toaster
@@ -119,7 +129,10 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ login, setIsLoading, isLoading, userInfo, splashLoading, logout }} >{children}
+        <AuthContext.Provider value={{
+            taskIndex
+            , setTaskIndex, playBackSteps, setPlayBackSteps, myPlayerId, setMyPlayerId, activePlayerId, setActivePlayerId, login, setIsLoading, isLoading, userInfo, splashLoading, logout
+        }} >{children}
         </AuthContext.Provider >
     )
 }

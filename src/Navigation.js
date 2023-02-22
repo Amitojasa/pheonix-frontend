@@ -11,6 +11,8 @@ import Splash from './screens/Splash';
 import Login from './screens/Login';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import Game from './screens/Game';
+import CreateRoom from './screens/CreateRoom';
+import JoinRoom from './screens/JoinRoom';
 
 
 
@@ -18,7 +20,7 @@ const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
     const { userInfo, splashLoading } = useContext(AuthContext);
-    console.log("userInfo :: => ::", userInfo);
+    // console.log("userInfo :: => ::", userInfo);
     return (
         <NavigationContainer>
 
@@ -31,16 +33,27 @@ const Navigation = () => {
                     <Stack.Screen
                         name="Splash"
                         component={Splash}
-                    ></Stack.Screen> : !userInfo ?
+                    ></Stack.Screen> : userInfo ?
                         (<Stack.Group>
-                            {/*<Stack.Screen*/}
-                            {/*    name="Game"*/}
-                            {/*    component={Game}*/}
-
-                            {/*/>*/}
                             <Stack.Screen
                                 name="Home"
                                 component={Home}
+
+                            />
+                            <Stack.Screen
+                                name="CreateRoom"
+                                component={CreateRoom}
+
+                            />
+                            <Stack.Screen
+                                name="JoinRoom"
+                                component={JoinRoom}
+
+                            />
+
+                            <Stack.Screen
+                                name="Game"
+                                component={Game}
 
                             />
 

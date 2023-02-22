@@ -14,7 +14,7 @@ export const StartPosition = [4, 0];
 export const EndPosition = [0, 4];
 export const flags = [[0, 1], [1, 3], [2, 0], [3, 4], [4, 2]];
 export const mines = [[0, 3], [1, 1], [2, 4], [3, 2], [4, 3]];
-
+export const noOfTasks = 9
 
 export const taskList = [
 

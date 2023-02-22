@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
 import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { Cols, EndPosition, Rows, StartPosition, taskList } from '../Config';
+import { Cols, EndPosition, flags, mines, noOfTasks, Rows, StartPosition, taskList } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
+import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { database } from '../configs/firebase';
+import { AuthContext } from '../context/AuthContext';
+import bgImg from '../../assets/gameBackgroundImage.png'
+// import firestore from '@react-native-firebase/firestore'
+const Game = ({ navigation, route }) => {
 
-const Game = () => {
+    const { roomName, } = route.params;
     const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
     const [diceMove, setDiceMove] = useState(1)
-    const [activePlayerId, setActivePlayerId] = useState(1);
+    const [diceVal, setDiceVal] = useState(1)
+
+
     const [gameEnded, setGameEnded] = useState(false);
     const [disableDice, setDisableDice] = useState(false)
 
@@ -20,13 +28,19 @@ const Game = () => {
     const [showTaskId, setShowTaskId] = useState(0)
     // const [leftToRight1, setLeftToRight1] = useState(true)
 
-    const playMove = (moveVal, playerID) => {
+    var firstTime = false;
+
+    const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex } = useContext(AuthContext);
+
+    const playMove = async (moveVal, playerID) => {
         let tempArr = [];
         if (playerID == 1) tempArr = player1;
         else tempArr = player2;
 
         let c = moveVal;
         let initValj = -1;
+
+        let resArr = [];
 
         for (let i = tempArr[0]; i >= 0 && c > 0; i--) {
 
@@ -40,14 +54,17 @@ const Game = () => {
                 }
                 if (c == 0) {
                     if (j < Cols)
-                        playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                        resArr = [i, j];
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
                     else {
 
                         if (i <= 0 && j >= Cols - 1)
-                            playerID == 1 ? setPlayer1(EndPosition) : setPlayer2(EndPosition);
+                            resArr = EndPosition
+                        // playerID == 1 ? setPlayer1(EndPosition) : setPlayer2(EndPosition);
 
                         else
-                            playerID == 1 ? setPlayer1([i - 1, j - 1]) : setPlayer2([i - 1, j - 1]);
+                            resArr = [i - 1, j - 1]
+                        // playerID == 1 ? setPlayer1([i - 1, j - 1]) : setPlayer2([i - 1, j - 1]);
 
                     }
 
@@ -61,9 +78,11 @@ const Game = () => {
 
                 if (c == 0) {
                     if (j >= 0)
-                        playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                        resArr = [i, j]
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
                     else {
-                        playerID == 1 ? setPlayer1([i - 1, j + 1]) : setPlayer2([i - 1, j + 1]);
+                        resArr = [i - 1, j + 1]
+                        // playerID == 1 ? setPlayer1([i - 1, j + 1]) : setPlayer2([i - 1, j + 1]);
                     }
 
                 }
@@ -73,19 +92,47 @@ const Game = () => {
 
         }
 
+        await updateDoc(doc(database, 'rooms', roomName), {
+
+            name: roomName,
+            latestMessage: {
+                text: `${diceVal + 1} 123456 created. Welcome!`,
+                // createdAt: new Date().getTime(),
+
+            },
+            GameInfo: {
+                player1Id: 1,
+                player2Id: 2,
+                player1Points: playerID == 1 ? resArr : player1,
+                player2Points: playerID == 2 ? resArr : player2,
+
+            },
+            activePlayerId: (activePlayerId)
+
+        }).then((data) => {
+            playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
+            // setActivePlayerId((activePlayerId) % 2 + 1);
+            // changePlayerId();
+            console.log("Play move", playerID, resArr);
+        })
 
 
+
+
+
+        firstTime = true;
     }
 
-    const playBackMove = (moveVal, playerID) => {
+    const playBackMove = async (moveVal, playerID) => {
+        console.log("back call");
         let tempArr = [];
         if (playerID == 1) tempArr = player1;
         else tempArr = player2;
 
         let c = moveVal;
         let initValj = -1;
-
-        console.log(player1, player2)
+        let resArr = [];
+        // console.log(player1, player2)
         for (let i = tempArr[0]; i < Rows && c > 0; i++) {
 
             if (initValj == -1) initValj = tempArr[1];
@@ -98,10 +145,11 @@ const Game = () => {
                 }
                 if (c == 0) {
                     if (j < Cols)
-                        playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                        resArr = [i, j]
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
                     else {
-
-                        playerID == 1 ? setPlayer1([i + 1, j - 1]) : setPlayer2([i + 1, j - 1]);
+                        resArr = [i + 1, j - 1];
+                        // playerID == 1 ? setPlayer1([i + 1, j - 1]) : setPlayer2([i + 1, j - 1]);
 
                     }
 
@@ -115,12 +163,15 @@ const Game = () => {
 
                 if (c == 0) {
                     if (j >= 0)
-                        playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                        resArr = [i, j];
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
                     else {
                         if (i >= Rows - 1 && j <= 0)
-                            playerID == 1 ? setPlayer1(StartPosition) : setPlayer2(StartPosition);
+                            resArr = StartPosition;
+                        // playerID == 1 ? setPlayer1(StartPosition) : setPlayer2(StartPosition);
                         else
-                            playerID == 1 ? setPlayer1([i + 1, j + 1]) : setPlayer2([i + 1, j + 1]);
+                            resArr = [i + 1, j + 1]
+                        // playerID == 1 ? setPlayer1([i + 1, j + 1]) : setPlayer2([i + 1, j + 1]);
                     }
 
                 }
@@ -132,11 +183,79 @@ const Game = () => {
 
 
 
+        // if (firstTime == true) {
+
+        // setTimeout(() => {
+        await updateDoc(doc(database, 'rooms', roomName), {
+
+            name: roomName,
+            latestMessage: {
+                text: `${diceVal + 1} 123456 created. Welcome!`,
+                // createdAt: new Date().getTime(),
+
+            },
+            GameInfo: {
+                player1Id: 1,
+                player2Id: 2,
+                player1Points: playerID == 1 ? resArr : player1,
+                player2Points: playerID == 2 ? resArr : player2,
+
+
+            },
+            activePlayerId: (activePlayerId)
+
+        }).then((data) => {
+            playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
+            // setActivePlayerId((activePlayerId) % 2 + 1);
+            // changePlayerId();
+            console.log("Playback", playerID, resArr);
+        })
+
+
+
+
+
+        // }, 1000);
+        // firstTime = false;
+        // }
+        // firstTime = true;
     }
 
-    const changePlayerId = () => {
-        setActivePlayerId((activePlayerId) % 2 + 1);
+    const changePlayerId = async (update = false, backUpdate = false) => {
+
         setDisableDice(false)
+        let r = (activePlayerId) % 2 + 1;
+
+        d = {
+
+        }
+
+        if (update == true) {
+
+            d.taskIndex = (taskIndex + 1) % noOfTasks
+        }
+
+        console.log("cccc", myPlayerId, activePlayerId);
+        if (myPlayerId != activePlayerId) {
+
+            d.activePlayerId = r
+        }
+
+
+        await updateDoc(doc(database, 'rooms', roomName), d).then((data) => {
+            if (myPlayerId != activePlayerId) {
+                setActivePlayerId((activePlayerId) % 2 + 1);
+            }
+            if (update == true) {
+                setTaskIndex((taskIndex + 1) % noOfTasks)
+            }
+
+        })
+
+
+
+
+
     }
 
     const resetForReplay = () => {
@@ -147,16 +266,47 @@ const Game = () => {
     }
 
 
+    useEffect(() => {
+        const ref = doc(database, 'rooms', roomName)
+        const unsubscribe = onSnapshot(ref, (snapshot) => {
+
+            if (snapshot && !snapshot.metadata.hasPendingWrites) {
+
+                // console.log(snapshot.metadata.hasPendingWrites);
+                if (snapshot.data().GameInfo.player1Points != player1)
+                    setPlayer1(snapshot.data().GameInfo.player1Points)
+
+                if (snapshot.data().GameInfo.player2Points != player2)
+                    setPlayer2(snapshot.data().GameInfo.player2Points)
+
+
+                setActivePlayerId(snapshot.data().activePlayerId)
+
+                setDiceMove(snapshot.data().diceMove)
+
+                setTaskIndex(snapshot.data().taskIndex)
+            }
+
+            // console.log(snapshot.data().latestMessage.text)
+        })
+
+        return () => unsubscribe();
+    }, []);
+
+    // console.log(route.params.data);
+
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}>
+        <SafeAreaView style={styles.container}>
+            {/* <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}> */}
+            <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
                 <LandscapeLogo />
-                <BoardGame setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
-                <BottomComponent disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
+                <BoardGame diceVal={diceVal} setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
+                <BottomComponent roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
                 {showTask && <ScreenOverlayComponent />}
                 {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}
-            </LinearGradient>
-        </View>
+            </ImageBackground>
+            {/* </LinearGradient> */}
+        </SafeAreaView>
 
     )
 }
@@ -169,6 +319,12 @@ const styles = StyleSheet.create({
 
         // backgroundColor: "#083D77"
     },
+
+    image: {
+        flex: 1,
+        // justifyContent: 'center',
+    },
+
     linearGradient: {
         flex: 1,
 

@@ -7,7 +7,7 @@ import {loginScreenStyles} from "../css/loginScreenStyles";
 import {splashScreenStyle} from "../css/splashScreenStyles";
 
 const Login = ({navigation, route}) => {
-    const {login,} = useContext(AuthContext);
+    const {login,promptAsync} = useContext(AuthContext);
 
     return (
         <View style={commonStyles.centerContainer}>
@@ -30,7 +30,7 @@ const Login = ({navigation, route}) => {
                                     start={{x: 1, y: 0}}
                                     end={{x: 0, y: 1}}
                                     style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
-                            <TouchableOpacity style={[loginScreenStyles.googleLogin]}>
+                            <TouchableOpacity style={[loginScreenStyles.googleLogin]} onPress={()=>{promptAsync({useProxy:true,showInRecents:true})}}>
                                 <View>
                                     <Text style={loginScreenStyles.googleText}>Login with Google</Text>
                                 </View>

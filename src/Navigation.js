@@ -34,6 +34,7 @@ const Navigation = () => {
                         component={Splash}
                     ></Stack.Screen> : isUserLoggedIn ?
                         (<Stack.Group>
+
                             <Stack.Screen
                                 name="Home"
                                 component={Home}

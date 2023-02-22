@@ -7,7 +7,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import { ApiClient } from "../utils/apiClient";
+// import { ApiClient } from "../utils/apiClient";
 
 export const AuthContext = createContext();
 
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
         setSplashLoading(true);
         setTimeout(() => {
             setSplashLoading(false);
-        }, 4000);
+        }, 2000);
 
         await AsyncStorage.removeItem('googleAccessToken');
         await AsyncStorage.removeItem('userInfo')

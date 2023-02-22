@@ -97,8 +97,6 @@ export const AuthProvider = ({children}) => {
             setSplashLoading(false);
         }, 4000);
 
-        await AsyncStorage.removeItem('googleAccessToken');
-        await AsyncStorage.removeItem('userInfo')
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
                 console.log("connection")

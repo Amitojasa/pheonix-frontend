@@ -1,20 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, {createContext, useEffect, useRef, useState} from 'react'
-import {BASE_URL} from '../Config';
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { BASE_URL } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import {ApiClient} from "../utils/apiClient";
+// import { ApiClient } from "../utils/apiClient";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
+    const [activePlayerId, setActivePlayerId] = useState(1);
+    const [myPlayerId, setMyPlayerId] = useState(1);
+
+
+    const [playBackSteps, setPlayBackSteps] = useState(2)
+    const [taskIndex, setTaskIndex] = useState(-1)
+
+
+
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
 
@@ -34,7 +43,7 @@ export const AuthProvider = ({children}) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
+            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
         })
 
         userInfoResponse.json().then(async data => {
@@ -95,7 +104,7 @@ export const AuthProvider = ({children}) => {
         setSplashLoading(true);
         setTimeout(() => {
             setSplashLoading(false);
-        }, 4000);
+        }, 2000);
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -129,17 +138,13 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider
-            value={{
-                login,
-                setIsLoading,
-                isLoading,
-                splashLoading,
-                logout,
-                promptAsync,
-                isUserLoggedIn
-            }}>{children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={{
+            taskIndex
+            , setTaskIndex, playBackSteps, setPlayBackSteps, myPlayerId, setMyPlayerId, activePlayerId, setActivePlayerId, login, setIsLoading, isLoading, splashLoading, logout,
+            promptAsync,
+            isUserLoggedIn
+        }} >{children}
+        </AuthContext.Provider >
     )
 }
 

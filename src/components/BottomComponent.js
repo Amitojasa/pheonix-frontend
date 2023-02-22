@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, StyleSheet, View } from 'react-native'
 import { StartPosition } from '../Config';
+import { AuthContext } from '../context/AuthContext';
 import DiceComponent from './DiceComponent';
 import GamePlayerComponent from './GamePlayerComponent';
 
-const BottomComponent = ({ gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice }) => {
+const BottomComponent = ({ roomName, gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice }) => {
 
 
-
+    const { myPlayerId, setMyPlayerId } = useContext(AuthContext);
     return (
         <View style={styles.container}>
             <View>{gameEnded ? <Button title="Replay" onPress={resetForReplay}></Button> :
-                <DiceComponent changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
+                <DiceComponent roomName={roomName} changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
             <View style={styles.gameplayersDiv}>
                 <GamePlayerComponent playerId={1} />
 
@@ -32,11 +33,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: "#FFF"
+        // backgroundColor: "#FFF"
     },
     gameplayersDiv: {
+        marginTop: 10,
         flex: 1,
         flexDirection: 'row',
+        // backgroundColor: "#000",
+        justifyContent: "space-between"
     }
 
 

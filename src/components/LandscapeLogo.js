@@ -10,7 +10,7 @@ function LandscapeLogo() {
 
             style={{
                 height: 100,
-                marginTop: '20%',
+                marginTop: '15%',
                 flexDirection: 'row',
                 alignSelf: 'center',
                 width: '90%',

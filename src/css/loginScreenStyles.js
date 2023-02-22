@@ -22,10 +22,10 @@ export const loginScreenStyles = StyleSheet.create({
         fontSize: 25,
         letterSpacing: 2,
         color: "#DB4A39",
-        fontWeight: "700",
-        textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 1
+        fontWeight: "bold",
+        // textShadowColor: "rgba(0, 0, 0, 0.25)",
+        // textShadowOffset: { width: -1, height: 1 },
+        // textShadowRadius: 1
     },
     logoSection: {
         height: "60%", top: "15%"
@@ -34,50 +34,50 @@ export const loginScreenStyles = StyleSheet.create({
         borderRadius: 30,
         height: "40%", width: "100%"
     },
-    googleLogin:{
-        display:"inline",
-        flexDirection:"row",
-        justifyContent:"center",
-        alignItems:"center",
-        backgroundColor:"#DB4A39",
-        paddingLeft:"3%",
-        borderRadius:15,
-        shadowColor:"rgba(0, 0, 0, 25)",
-        shadowOffset:{ width: 1, height: 1 },
-        shadowOpacity:  0.4,
-        shadowRadius: 3,
+    googleLogin: {
+        // display: "inline",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#DB4A39",
+        paddingLeft: "3%",
+        borderRadius: 15,
+        // shadowColor: "rgba(0, 0, 0, 0.25)",
+        // shadowOffset: { width: 1, height: 1 },
+        // shadowOpacity: 0.4,
+        // shadowRadius: 3,
         elevation: 5,
-        marginBottom:40,
-        width:"65%"
+        marginBottom: 40,
+        width: "65%"
     },
-    facebookLogin:{
-        display:"inline",
-        flexDirection:"row",
-        justifyContent:"center",
-        alignItems:"center",
-        backgroundColor:"#3B5998",
-        paddingLeft:"4%",
-        paddingRight:"2%",
-        paddingBottom:"1%",
-        borderRadius:15,
-        shadowColor:"rgba(0, 0, 0, 25)",
-        shadowOffset:{ width: 1, height: 1 },
-        shadowOpacity:  0.4,
-        shadowRadius: 3,
+    facebookLogin: {
+
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#3B5998",
+        paddingLeft: "4%",
+        paddingRight: "2%",
+        paddingBottom: "1%",
+        borderRadius: 15,
+        // shadowColor: "rgba(0, 0, 0, 0.25)",
+        // shadowOffset: { width: 1, height: 1 },
+        // shadowOpacity: 0.4,
+        // shadowRadius: 3,
         elevation: 5,
-        marginBottom:40
+        marginBottom: 40
     },
-    googleText:{
+    googleText: {
         fontSize: 20,
-        lineHeight:27,
+        lineHeight: 27,
         color: "#fff",
-        fontWeight: "700",
+        fontWeight: "bold",
     },
-    facebookText:{
+    facebookText: {
         fontSize: 20,
-        lineHeight:27,
+        lineHeight: 27,
         color: "#fff",
-        fontWeight: "700",
+        fontWeight: "bold",
     }
 
 })

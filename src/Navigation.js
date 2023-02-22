@@ -11,6 +11,8 @@ import Splash from './screens/Splash';
 import Login from './screens/Login';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import Game from './screens/Game';
+import CreateRoom from './screens/CreateRoom';
+import JoinRoom from './screens/JoinRoom';
 
 
 
@@ -32,14 +34,26 @@ const Navigation = () => {
                         component={Splash}
                     ></Stack.Screen> : isUserLoggedIn ?
                         (<Stack.Group>
-                            {/*<Stack.Screen*/}
-                            {/*    name="Game"*/}
-                            {/*    component={Game}*/}
 
-                            {/*/>*/}
                             <Stack.Screen
                                 name="Home"
                                 component={Home}
+
+                            />
+                            <Stack.Screen
+                                name="CreateRoom"
+                                component={CreateRoom}
+
+                            />
+                            <Stack.Screen
+                                name="JoinRoom"
+                                component={JoinRoom}
+
+                            />
+
+                            <Stack.Screen
+                                name="Game"
+                                component={Game}
 
                             />
 

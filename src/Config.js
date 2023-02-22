@@ -1,5 +1,5 @@
 
-const PROD = 'https://test.com/';
+const PROD = 'http://phoenix-rest-api.herokuapp.com';
 
 
 

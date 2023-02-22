@@ -19,8 +19,7 @@ import JoinRoom from './screens/JoinRoom';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    const { userInfo, splashLoading } = useContext(AuthContext);
-    // console.log("userInfo :: => ::", userInfo);
+    const { isUserLoggedIn, splashLoading } = useContext(AuthContext);
     return (
         <NavigationContainer>
 
@@ -33,7 +32,7 @@ const Navigation = () => {
                     <Stack.Screen
                         name="Splash"
                         component={Splash}
-                    ></Stack.Screen> : userInfo ?
+                    ></Stack.Screen> : isUserLoggedIn ?
                         (<Stack.Group>
                             <Stack.Screen
                                 name="Home"

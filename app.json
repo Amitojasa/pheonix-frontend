@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "host.exp.exponent",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -18,13 +19,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "host.exp.exponent"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "host.exp.exponent"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,7 +35,10 @@
     "extra": {
       "eas": {
         "projectId": "9e1b5f0b-0c61-47ad-b327-77c0a077d7f2"
-      }
+      },
+      "IOS_KEY": "447656872194-7ebi8ial3egp0qqjs7gcsgq87oen5qj5.apps.googleusercontent.com",
+      "ANDROID_KEY": "447656872194-apt2dnt9kdv71c3urpbrskc8lrbpl1dr.apps.googleusercontent.com",
+      "EXPO_CLIENT_ID": "447656872194-0569bmh2uescccve3s6qo0s4vh2jg368.apps.googleusercontent.com"
     },
     "owner": "ase-mac-pheonix"
   }

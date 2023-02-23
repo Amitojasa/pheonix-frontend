@@ -1,27 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useRef, useState } from 'react'
-import { BASE_URL } from '../Config';
+import React, {createContext, useEffect, useRef, useState} from 'react'
+import {BASE_URL} from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-// import { ApiClient } from "../utils/apiClient";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
     const [activePlayerId, setActivePlayerId] = useState(1);
     const [myPlayerId, setMyPlayerId] = useState(1);
-
+    const [userInfo, setUserInfo] = useState(null);
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
-
 
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -33,9 +31,13 @@ export const AuthProvider = ({ children }) => {
         expoClientId: Constants.manifest.extra.EXPO_CLIENT_ID
     })
 
+    const [isAvatar, setIsAvatar] = useState(false);
+    const [avatar, setAvatar] = useState('male');
+
     useEffect(() => {
         if (response?.type === 'success') {
             AsyncStorage.setItem('googleAccessToken', JSON.stringify(response.authentication.accessToken)).then();
+            setUserExist(false);
             // setIsUserLoggedIn(true); // TODO check line 54.
             setGoogleUserLoginData(response).then();
         }
@@ -43,15 +45,22 @@ export const AuthProvider = ({ children }) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
         })
 
         userInfoResponse.json().then(async data => {
-            await AsyncStorage.setItem('userInfo', JSON.stringify(data));
-            axios.post(`${BASE_URL}/api/loginByOAuth`, data).then((apiRes) => {
-                console.log('res :: = > :: ', apiRes);
-            });
-            setIsUserLoggedIn(true); //TODO do this instead of line 31.
+            if (await AsyncStorage.getItem('userInfo')) {
+                setUserExist(true);
+            } else {
+                await AsyncStorage.setItem('userInfo', JSON.stringify(data));
+                setUserInfo(data);
+                axios.post(`${BASE_URL}/api/loginByOAuth`, data).then((apiRes) => {
+                    console.log('res :: = > :: ', apiRes);
+                });
+                setIsUserLoggedIn(true); //TODO do this instead of line 31.
+                setUserExist(false);
+            }
+
         })
     }
 
@@ -104,10 +113,19 @@ export const AuthProvider = ({ children }) => {
         setSplashLoading(true);
         setTimeout(() => {
             setSplashLoading(false);
-        }, 2000);
+        }, 8000);
 
-        await AsyncStorage.removeItem('googleAccessToken');
-        await AsyncStorage.removeItem('userInfo')
+        await AsyncStorage.getItem('isAvatar').then((res) => {
+            setIsAvatar(res)
+        })
+
+        await AsyncStorage.getItem('avatar').then(res => {
+            setAvatar(res);
+        })
+
+        // AsyncStorage.removeItem('googleAccessToken');
+        // AsyncStorage.removeItem('userInfo');
+
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
                 console.log("connection")
@@ -117,11 +135,14 @@ export const AuthProvider = ({ children }) => {
                 try {
                     await AsyncStorage.getItem('userInfo').then(async (res) => {
                         if (res) {
+                            console.log("RES :: => ::", res);
+                            setUserInfo(res);
                             axios.post(`${BASE_URL}/api/loginByOAuth`, res).then((apiRes) => {
                                 if (apiRes.message === 'User Exists. Please log in.') {
                                     setUserExist(true);  //ToDo uncomment this when backend api is fixed.
                                 }
                             });
+                            setUserExist(true);  //ToDo uncomment this when backend api is fixed.
                             setIsUserLoggedIn(true);
                         } else {
                             setIsUserLoggedIn(false);
@@ -141,12 +162,28 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            taskIndex
-            , setTaskIndex, playBackSteps, setPlayBackSteps, myPlayerId, setMyPlayerId, activePlayerId, setActivePlayerId, login, setIsLoading, isLoading, splashLoading, logout,
+            taskIndex,
+            setTaskIndex,
+            playBackSteps,
+            setPlayBackSteps,
+            myPlayerId,
+            setMyPlayerId,
+            activePlayerId,
+            setActivePlayerId,
+            login,
+            setIsLoading,
+            isLoading,
+            splashLoading,
+            logout,
             promptAsync,
-            isUserLoggedIn
-        }} >{children}
-        </AuthContext.Provider >
+            isUserLoggedIn,
+            userExist,
+            userInfo,
+            isAvatar,
+            avatar
+        }}>{children}
+        </AuthContext.Provider>
+
     )
 }
 

@@ -23,9 +23,9 @@ export const loginScreenStyles = StyleSheet.create({
         letterSpacing: 2,
         color: "#DB4A39",
         fontWeight: "bold",
-        // textShadowColor: "rgba(0, 0, 0, 0.25)",
-        // textShadowOffset: { width: -1, height: 1 },
-        // textShadowRadius: 1
+        textShadowColor: "rgba(0, 0, 0, 0.25)",
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 1,
     },
     logoSection: {
         height: "60%", top: "15%"
@@ -79,5 +79,4 @@ export const loginScreenStyles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
     }
-
 })

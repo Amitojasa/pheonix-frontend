@@ -13,9 +13,9 @@ export const Avatar = ({navigation}) => {
     const handleAvatarChange = async () => {
         await AsyncStorage.setItem("isAvatar", "true");
         if (selectedAvatar === 'male') {
-            await AsyncStorage.setItem("avatar", "male");
+            await AsyncStorage.setItem("avatar", "../../assets/maleAvatar.png");
         } else {
-            await AsyncStorage.setItem("avatar", "female");
+            await AsyncStorage.setItem("avatar", "../../assets/femaleAvatar.png");
         }
         navigation.goBack(null)
     }

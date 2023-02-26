@@ -4,13 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import boy from '../../assets/boy.png'
 import girl from '../../assets/girl.png'
 import { AuthContext } from '../context/AuthContext';
-function GamePlayerComponent({ playerId }) {
+function GamePlayerComponent({ playerId, playerPawn }) {
     const { myPlayerId, setMyPlayerId, activePlayerId } = useContext(AuthContext);
     console.log(activePlayerId);
     return (
         playerId == 1 ?
-            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={boy} style={styles.avatar} /><Text style={styles.usernameText}>Player 1</Text></View> :
-            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={girl} style={styles.avatar} /><Text style={styles.usernameText}>Player 2</Text></View>
+            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={boy} style={styles.avatar} /><Text style={styles.usernameText}>Player 1</Text></View> :
+            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={girl} style={styles.avatar} /><Text style={styles.usernameText}>Player 2</Text></View>
     )
 }
 
@@ -19,6 +19,16 @@ const styles = StyleSheet.create({
     avatar: {
         flex: 1,
         resizeMode: "center"
+    },
+    pawn: {
+        // flex: 1,
+        resizeMode: "center",
+        height: 25,
+        width: 25,
+        position: "absolute",
+        right: 0,
+        top: 0,
+        // backgroundColor: "#000"
     },
     usernameText: {
         fontWeight: "bold"

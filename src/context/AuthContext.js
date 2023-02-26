@@ -1,16 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, {createContext, useEffect, useRef, useState} from 'react'
-import {BASE_URL} from '../Config';
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { BASE_URL, taskList1 } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -21,6 +21,7 @@ export const AuthProvider = ({children}) => {
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
 
+    const [taskList, setTaskList] = useState(taskList1)
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
@@ -45,7 +46,7 @@ export const AuthProvider = ({children}) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
+            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
         })
 
         userInfoResponse.json().then(async data => {
@@ -54,6 +55,7 @@ export const AuthProvider = ({children}) => {
             } else {
                 await AsyncStorage.setItem('userInfo', JSON.stringify(data));
                 setUserInfo(data);
+
                 axios.post(`${BASE_URL}/api/loginByOAuth`, data).then((apiRes) => {
                     console.log('res :: = > :: ', apiRes);
                 });
@@ -137,11 +139,11 @@ export const AuthProvider = ({children}) => {
                         if (res) {
                             console.log("RES :: => ::", res);
                             setUserInfo(res);
-                            axios.post(`${BASE_URL}/api/loginByOAuth`, res).then((apiRes) => {
-                                if (apiRes.message === 'User Exists. Please log in.') {
-                                    setUserExist(true);  //ToDo uncomment this when backend api is fixed.
-                                }
-                            });
+                            // axios.post(`${BASE_URL}/api/loginByOAuth`, res).then((apiRes) => {
+                            //     if (apiRes.message === 'User Exists. Please log in.') {
+                            //         setUserExist(true);  //ToDo uncomment this when backend api is fixed.
+                            //     }
+                            // });
                             setUserExist(true);  //ToDo uncomment this when backend api is fixed.
                             setIsUserLoggedIn(true);
                         } else {
@@ -162,6 +164,8 @@ export const AuthProvider = ({children}) => {
 
     return (
         <AuthContext.Provider value={{
+            setTaskList,
+            taskList,
             taskIndex,
             setTaskIndex,
             playBackSteps,

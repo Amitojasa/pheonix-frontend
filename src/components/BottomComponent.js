@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import DiceComponent from './DiceComponent';
 import GamePlayerComponent from './GamePlayerComponent';
 
-const BottomComponent = ({ roomName, gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice }) => {
+const BottomComponent = ({ roomName, gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice, player1Pawn, player2Pawn }) => {
 
 
     const { myPlayerId, setMyPlayerId } = useContext(AuthContext);
@@ -14,9 +14,9 @@ const BottomComponent = ({ roomName, gameEnded, setGameEnded, changePlayerId, di
             <View>{gameEnded ? <Button title="Replay" onPress={resetForReplay}></Button> :
                 <DiceComponent roomName={roomName} changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
             <View style={styles.gameplayersDiv}>
-                <GamePlayerComponent playerId={1} />
+                <GamePlayerComponent playerId={1} playerPawn={player1Pawn} />
 
-                <GamePlayerComponent playerId={2} />
+                <GamePlayerComponent playerId={2} playerPawn={player2Pawn} />
             </View>
 
         </View>

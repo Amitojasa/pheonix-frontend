@@ -4,7 +4,7 @@ import { Alert, Dimensions, Image, ImageBackground, StyleSheet, Text, View } fro
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Icons from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { EndPosition, flags, mines, StartPosition, taskList } from '../Config';
+import { EndPosition, flags, mines, StartPosition } from '../Config';
 import { useFirstRender } from '../customhooks/useFirstRender';
 import { AuthContext } from '../context/AuthContext';
 import blueTile from '../../assets/blueTile.png';
@@ -13,11 +13,10 @@ import bomb from '../../assets/bomb.png'
 import trophy from '../../assets/trophy.png'
 import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
-import pawn from '../../assets/pawn.png'
-import pawn2 from '../../assets/pawn2.png'
 
-function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, diceVal }) {
-    const { activePlayerId, myPlayerId, taskIndex } = useContext(AuthContext);
+
+function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns }) {
+    const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
 
     const [matrix, setMatrix] = useState([])
     const windowWidth = Dimensions.get('window').width;
@@ -87,7 +86,10 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
         const a = setTimeout(async () => {
             // const rndInt = Math.floor(Math.random() * (3) + 1);
             // console.log("Random back" + rndInt, activeUserId);
-            await playBackMove(2, activeUserId);
+            if (activePlayerId == 2)
+                await playBackMove((player1[0] + player1[1]) % 3 + 1, activeUserId);
+            else
+                await playBackMove((player2[0] + player2[1]) % 3 + 1, activeUserId);
             changePlayerId(myPlayerId != activePlayerId);
         }, 200);
 
@@ -108,7 +110,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                 // TODO: confirm this thing == or != because activePlayerId changes before this
 
                 if (activePId == 1) {
-                    console.log("rr 1");
+                    // console.log("rr 1");
                     if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
                         Alert.alert("Player 1 Won the game", "Both the players will go for luch together and Player 2 will have to pay.")
                         setGameEnded(true);
@@ -140,13 +142,13 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                     }
                     for (let i = 0; i < 5; i++) {
                         if (player2[0] == flags[i][0] && player2[1] == flags[i][1]) {
-                            console.log("flag for 2", player2);
+                            // console.log("flag for 2", player2);
                             reachedFlag(activePId, i);
                             return;
 
                         } else if (player2[0] == mines[i][0] && player2[1] == mines[i][1]) {
                             reachedMine(activePId);
-                            console.log("mine for 2", player2);
+                            // console.log("mine for 2", player2);
                             return;
                         }
                     }
@@ -159,20 +161,36 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     }, [player1, player2])
 
+    const selectPawns = () => {
+        let rn = (roomName)
+        let rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2])) % pawns.length
+        let rndInt2 = (parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % pawns.length
+        console.log(rn, rndInt1, rndInt2);
+        if (rndInt1 == rndInt2) {
+            rndInt2 = (rndInt2 + 1) % pawns.length
+        }
+
+        setPlayer1Pawn(pawns[rndInt1])
+        setPlayer2Pawn(pawns[rndInt2])
+    }
+
+
     useEffect(() => {
+        selectPawns();
         create2DMatrix();
     }, [])
 
 
     const pawnMovement = (index1, index2) => {
         return ((index1 == player1[0] && index2 == player1[1]) || (index1 == player2[0] && index2 == player2[1])) &&
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                {(index1 == player1[0] && index2 == player1[1]) && <Image source={pawn} style={{
-                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0,
-                }}></Image>}
-                {(index1 == player2[0] && index2 == player2[1]) && <Image source={pawn2} style={{
-                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0,
-                }}></Image>}
+            <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: 'absolute', right: 0, left: 0, top: 0, bottom: 0, }]}>
+                {(index1 == player1[0] && index2 == player1[1]) && <Image source={player1Pawn} style={[{
+                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5
+
+                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: '20%', right: 0, bottom: 0, }]}></Image>}
+                {(index1 == player2[0] && index2 == player2[1]) && <Image source={player2Pawn} style={[{
+                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5
+                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: "30%" }]}></Image>}
             </View>
 
 

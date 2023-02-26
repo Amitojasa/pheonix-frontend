@@ -6,9 +6,9 @@ function TaskShowComponent({ task, setShowTask }) {
     // console.log(task)
     return (
         task && <View style={styles.container}>
-            <Text style={styles.title}>{task.title}</Text>
-            <Text >{task.description}</Text>
-            <Text style={styles.time}>{task.time}</Text>
+            <Text style={styles.title}>{task.taskName}</Text>
+            <Text >{task.taskDesc}</Text>
+            <Text style={styles.time}>{task.taskTiming} sec</Text>
             <Button onPress={() => setShowTask(false)} title="Done"></Button>
         </View>
 

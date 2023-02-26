@@ -11,35 +11,51 @@ import {
     getDoc
 } from 'firebase/firestore';
 import { database } from '../configs/firebase';
-import { StartPosition } from '../Config';
+import { BASE_URL, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
+import axios from 'axios';
 
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { myPlayerId, setMyPlayerId } = useContext(AuthContext);
+    const { myPlayerId, setTaskList, taskList, setMyPlayerId } = useContext(AuthContext);
 
-    function handleJoinRoom() {
+    const handleJoinRoom = async () => {
         console.log(roomName);
         if (true) {
 
 
-            onSnapshot(doc(database, 'rooms', roomName), (snapshot) => {
+            var d = await getDoc(await doc(database, 'rooms', roomName))
 
-                if (snapshot.data()) {
-                    setMyPlayerId(2);
-                    navigation.navigate('Game', { data: snapshot.data(), roomName: roomName })
-                } else {
-                    Alert.alert("Sorry, Wrong Room ID.")
-                }
-                // console.log(snapshot.data().latestMessage.text)
-            })
+
+            if (d.data()) {
+                setMyPlayerId(2);
+
+                await getTaskListFromAPI()
+
+                navigation.navigate('Game', { data: d.data(), roomName: roomName })
+            } else {
+                Alert.alert("Sorry, Wrong Room ID.")
+            }
+            // console.log(snapshot.data().latestMessage.text)
+
         }
     }
 
+
+    const getTaskListFromAPI = async () => {
+
+
+        await axios.get(`${BASE_URL}/api/room/${roomName}`).then((apiRes) => {
+            console.log('res join tasks :: = > :: ', JSON.parse(apiRes.request._response).message[0].tasks);
+            JSON.parse(apiRes.request._response).message[0].tasks && setTaskList(JSON.parse(apiRes.request._response).message[0].tasks);
+        }).catch(err => {
+            console.log("Error :", err);
+        })
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -67,7 +83,7 @@ const JoinRoom = ({ navigation, route }) => {
 
                     <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>Room Id:</Text></View>
                     <View style={styles.roomIdValContainer}><TextInput style={styles.roomIdTextEditVal} placeholder="Enter Room Id" value={roomName} onChangeText={setRoomName}></TextInput></View>
-                    <TouchableOpacity onPress={handleJoinRoom} style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>Join Room</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleJoinRoom()} style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>Join Room</Text></TouchableOpacity>
                     {/* <Button onPress={handleButtonPress} title="create"></Button> */}
                 </View>
             </LinearGradient>

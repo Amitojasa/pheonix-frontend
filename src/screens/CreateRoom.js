@@ -11,23 +11,25 @@ import {
     getDoc
 } from 'firebase/firestore';
 import { database } from '../configs/firebase';
-import { StartPosition } from '../Config';
+import { BASE_URL, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
+import axios from 'axios';
 
 
 
 function CreateRoom({ navigation, route, }) {
 
 
-    const { myPlayerId, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
 
     const [roomName, setRoomName] = useState()
     var f = 1;
+
     async function handleButtonPress() {
-        let n = await Math.floor(100000 + Math.random() * 900000).toString()
+        var n = await Math.floor(100000 + Math.random() * 900000).toString()
         // console.log(n);
         if (n.length > 0) {
             // create new thread using firebase & firestore
@@ -39,7 +41,7 @@ function CreateRoom({ navigation, route, }) {
                 handleButtonPress();
                 return;
             }
-            await setDoc(doc(database, 'rooms', "123456"), { // TODO:change this
+            await setDoc(doc(database, 'rooms', n), { // TODO:change this
 
                 name: n,
                 latestMessage: {
@@ -58,19 +60,37 @@ function CreateRoom({ navigation, route, }) {
                 activePlayerId: activePlayerId,
                 taskIndex: 0,
                 playBackSteps: 2
-            }).then(() => {
+            }).then(async () => {
 
                 // send an api request to backend to store room info:
 
                 setMyPlayerId(1);
                 setRoomName(n);
+                // console.log(JSON.parse(userInfo).id);
+                await getTaskListFromBackend(n);
 
-                navigation.navigate('Game', { roomName: "123456" }) //TODO:
+                setTimeout(() => {
+                    navigation.navigate('Game', { roomName: n }) //TODO:
+                }, 3000);
+
             })
         }
     }
 
-
+    const getTaskListFromBackend = async (rn) => {
+        await axios.post(`${BASE_URL}/api/room/create`, {
+            "taskNo": 10,
+            // "hostUserId": (JSON.parse(userInfo).id),
+            "hostUserId": "123456",
+            "roomId": rn,
+            "taskType": "online"
+        }).then((apiRes) => {
+            console.log('res tasks create :: = > :: ', apiRes.data.message.tasks);
+            apiRes.data.message.tasks && setTaskList(apiRes.data.message.tasks);
+        }).catch(err => {
+            console.log("Error :", err);
+        })
+    }
     useEffect(() => {
         handleButtonPress()
     }, [])

@@ -19,7 +19,7 @@ import {Avatar} from "./screens/Avatar";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    const {isUserLoggedIn, splashLoading} = useContext(AuthContext);
+    const {isUserLoggedIn, splashLoading, userExist} = useContext(AuthContext);
     return (
         <NavigationContainer>
 
@@ -33,7 +33,7 @@ const Navigation = () => {
                         name="Splash"
                         component={Splash}
                     ></Stack.Screen> : isUserLoggedIn ?
-                        (<Stack.Group>
+                        userExist ? (<Stack.Group>
 
                                 <Stack.Screen
                                     name="Home"
@@ -63,8 +63,14 @@ const Navigation = () => {
 
                                 />
 
-                            </Stack.Group>
-                        ) : (
+                            </Stack.Group>) :
+                            <Stack.Screen
+                                name="Game"
+                                component={Game}
+
+                            />
+
+                        : (
                             <Stack.Screen
                                 name="Login"
                                 component={Login}

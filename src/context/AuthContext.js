@@ -7,6 +7,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
+import { UserDataModel } from "../models/userDataModel";
 
 export const AuthContext = createContext();
 
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
+    const [userData, setUserData] = useState(new UserDataModel());
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: Constants.manifest.extra.IOS_KEY,
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     })
 
     const [isAvatar, setIsAvatar] = useState(false);
-    const [avatar, setAvatar] = useState('male');
+    const [avatar, setAvatar] = useState('../../assets/maleAvatar.png');
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -50,43 +52,32 @@ export const AuthProvider = ({ children }) => {
         })
 
         userInfoResponse.json().then(async data => {
-            if (await AsyncStorage.getItem('userInfo')) {
+            setUserData(prevState => {
+                prevState.id = data.id
+                prevState.family_name = data.family_name
+                prevState.given_name = data.given_name
+                prevState.name = data.name
+                prevState.email = data.email
+                prevState.verified_email = data.verified_email
+                prevState.profileImage = data.picture
+                return prevState
+            })
+            await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
+            await axios.post(`${BASE_URL}/api/loginByOAuth`, userData).then((apiRes) => {
                 setUserExist(true);
-            } else {
-                await AsyncStorage.setItem('userInfo', JSON.stringify(data));
-                setUserInfo(data);
-
-                axios.post(`${BASE_URL}/api/loginByOAuth`, data).then((apiRes) => {
-                    console.log('res :: = > :: ', apiRes);
-                });
-                setIsUserLoggedIn(true); //TODO do this instead of line 31.
-                setUserExist(false);
+                setIsUserLoggedIn(true);
+            });
+            const coinsData = {
+                "userId": data.id,
+                "userCoins": 1000,
+                "operation": "add"
             }
+            // await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then((res)=>{
+            //     console.log("res coins :: => ::",res);
+            // }) //todo update when backend is fixed
 
         })
-    }
 
-    const login = (username, password) => {
-        if (username == '' || password == '') {
-            // Toast.show("Password or Username is empty"); //ToDo use some other toaster
-            return;
-        }
-        setIsLoading(true);
-        //change link
-
-        // axios.post(`${BASE_URL}/api/v1/login`, {
-        //     username, password
-        // }).then(res => {
-        let loginRes = 'a';
-
-        AsyncStorage.setItem('userInfo', JSON.stringify(loginRes))
-        setIsLoading(false);
-        console.log('success')
-        // }).catch(e => {
-        //     // console.log(e.response)
-        //     Toast.show(e?.response?.data?.msg ? e?.response?.data?.msg : "Some error occured. Contact support team");
-        //     setIsLoading(false);
-        // })
     }
 
     const logout = () => {
@@ -125,8 +116,8 @@ export const AuthProvider = ({ children }) => {
             setAvatar(res);
         })
 
-        // AsyncStorage.removeItem('googleAccessToken');
-        // AsyncStorage.removeItem('userInfo');
+        AsyncStorage.removeItem('googleAccessToken');
+        AsyncStorage.removeItem('userInfo');
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -137,15 +128,25 @@ export const AuthProvider = ({ children }) => {
                 try {
                     await AsyncStorage.getItem('userInfo').then(async (res) => {
                         if (res) {
-                            console.log("RES :: => ::", res);
                             setUserInfo(res);
-                            // axios.post(`${BASE_URL}/api/loginByOAuth`, res).then((apiRes) => {
-                            //     if (apiRes.message === 'User Exists. Please log in.') {
-                            //         setUserExist(true);  //ToDo uncomment this when backend api is fixed.
-                            //     }
-                            // });
-                            setUserExist(true);  //ToDo uncomment this when backend api is fixed.
-                            setIsUserLoggedIn(true);
+                            setUserData(prevState => {
+                                const response = JSON.parse(res);
+                                prevState.id = response.id
+                                prevState.family_name = response.family_name
+                                prevState.given_name = response.given_name
+                                prevState.name = response.name
+                                prevState.email = response.email
+                                prevState.verified_email = response.verified_email
+                                prevState.profileImage = isAvatar ? avatar : response.picture
+                                return prevState
+                            })
+                            await axios.post(`${BASE_URL}/api/loginByOAuth`, userData).then((apiRes) => {
+                                console.log("TRUE :: => ::", apiRes);
+                                if (apiRes.data.message === 'User Exists. Please log in.') {
+                                    setUserExist(true);
+                                    setIsUserLoggedIn(true);
+                                }
+                            })
                         } else {
                             setIsUserLoggedIn(false);
                         }
@@ -174,7 +175,6 @@ export const AuthProvider = ({ children }) => {
             setMyPlayerId,
             activePlayerId,
             setActivePlayerId,
-            login,
             setIsLoading,
             isLoading,
             splashLoading,

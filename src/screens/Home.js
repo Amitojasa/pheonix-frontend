@@ -7,11 +7,14 @@ import { loginScreenStyles } from "../css/loginScreenStyles";
 import { homeScreenStyles } from "../css/homeScreenStyles";
 import { AuthContext } from "../context/AuthContext";
 import { useIsFocused } from "@react-navigation/native";
+import axios from "axios";
+import { BASE_URL } from "../Config";
 
 function Home({ navigation }) {
     const { userInfo, isAvatar } = useContext(AuthContext);
-    var userDetails = "";
+    const userDetails = JSON.parse(userInfo);
     const [avatar, setAvatar] = useState('male');
+    const [userData, setUserData] = useState(null);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -20,12 +23,17 @@ function Home({ navigation }) {
         })
     }, [isFocused]);
 
-
     useEffect(() => {
-        // console.log("userInfo:", userInfo);
-        if (userInfo)
-            userDetails = JSON.parse(userInfo)
-    }, [userInfo])
+        getUserData().then();
+    }, []);
+
+    const getUserData = async () => {
+        const userInfo = await AsyncStorage.getItem('userInfo');
+        const userId = JSON.parse(userInfo);
+        await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
+            setUserData(res.data);
+        })
+    }
 
     return (<View style={commonStyles.centerContainer}>
         <LinearGradient colors={['#DB4A39', '#FFFFFF']}
@@ -35,12 +43,14 @@ function Home({ navigation }) {
                 <Image source={require('../../assets/logoHorizontal.png')} />
                 <View style={{ marginBottom: 30 }}>
                     <ImageBackground
-                        source={isAvatar ? avatar === 'male' ? require('../../assets/maleAvatar.png') : require('../../assets/femaleAvatar.png') : { uri: `${JSON.parse(userInfo).picture}` }}
+                        // source={isAvatar ? userData ? userData.profileImage : require('../../assets/placeholder.jpeg')
+                        //     : userData ? {uri: `${userData.profileImage}`} : require('../../assets/placeholder.jpeg')} //TODO update this when backend is fixed
+                        source={require('../../assets/placeholder.jpeg')}
                         imageStyle={{ borderRadius: 30 }}
                         style={homeScreenStyles.userImage}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Avatar')}>
-                            <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo} />
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={() => navigation.navigate('Avatar')}>*/}
+                        {/*    <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo}/>*/}
+                        {/*</TouchableOpacity>*/}
                     </ImageBackground>
                 </View>
                 <View style={homeScreenStyles.coinsDiv}>

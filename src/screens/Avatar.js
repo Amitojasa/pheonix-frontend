@@ -54,9 +54,7 @@ export const Avatar = ({navigation}) => {
                                     source={require('../../assets/femaleAvatar.png')}/>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={avatarScreenStyles.continueBtn} onPress={() => {
-                            handleAvatarChange().then()
-                        }}>
+                        <TouchableOpacity style={avatarScreenStyles.continueBtn}>
                             <Text style={avatarScreenStyles.continueText}>Continue</Text>
                         </TouchableOpacity>
                     </LinearGradient>

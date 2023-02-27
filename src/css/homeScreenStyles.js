@@ -60,5 +60,14 @@ export const homeScreenStyles = StyleSheet.create({
     coinImg:{
         width:50,
         height:50
+    },
+    usernameDiv:{
+        alignItems: "center",
+        justifyContent: "center",
+        top:"70%"
+    },
+    usernameText:{
+        fontWeight: "bold",
+        fontSize: 18
     }
 })

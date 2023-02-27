@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
                 "userCoins": 1000,
                 "operation": "add"
             }
+            // console.log("COINS :: +> :: ",coinsData)
             // await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then((res)=>{
             //     console.log("res coins :: => ::",res);
             // }) //todo update when backend is fixed
@@ -116,8 +117,8 @@ export const AuthProvider = ({ children }) => {
             setAvatar(res);
         })
 
-        AsyncStorage.removeItem('googleAccessToken');
-        AsyncStorage.removeItem('userInfo');
+        // AsyncStorage.removeItem('googleAccessToken');
+        // AsyncStorage.removeItem('userInfo');
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {

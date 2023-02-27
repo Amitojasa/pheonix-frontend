@@ -21,7 +21,8 @@ export const AuthProvider = ({ children }) => {
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
-
+    // const [avatar, setAvatar] = useState('male');
+    // const [userData, setUserData] = useState(null);
     const [taskList, setTaskList] = useState(taskList1)
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -184,7 +185,8 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar,
-            avatar
+            avatar, setAvatar, userData, setUserData,
+
         }}>{children}
         </AuthContext.Provider>
 

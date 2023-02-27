@@ -11,10 +11,9 @@ import axios from "axios";
 import { BASE_URL } from "../Config";
 
 function Home({ navigation }) {
-    const { userInfo, isAvatar } = useContext(AuthContext);
+    const { userInfo, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
     const userDetails = JSON.parse(userInfo);
-    const [avatar, setAvatar] = useState('male');
-    const [userData, setUserData] = useState(null);
+
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -51,7 +50,9 @@ function Home({ navigation }) {
                         {/*<TouchableOpacity onPress={() => navigation.navigate('Avatar')}>*/}
                         {/*    <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo}/>*/}
                         {/*</TouchableOpacity>*/}
+
                     </ImageBackground>
+
                 </View>
                 <View style={homeScreenStyles.coinsDiv}>
                     <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />

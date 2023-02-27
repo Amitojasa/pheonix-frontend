@@ -86,7 +86,7 @@ function CreateRoom({ navigation, route, }) {
             "taskType": "online"
         }).then((apiRes) => {
             console.log('res tasks create :: = > :: ', apiRes.data.message.tasks);
-            apiRes.data.message.tasks && setTaskList(apiRes.data.message.tasks);
+            if (apiRes.data.message.tasks) setTaskList(apiRes.data.message.tasks);
         }).catch(err => {
             console.log("Error :", err);
         })

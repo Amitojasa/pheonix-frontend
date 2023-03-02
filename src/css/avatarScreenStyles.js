@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from "react-native";
 
 export const avatarScreenStyles = StyleSheet.create({
     avatarDiv: {
@@ -19,25 +19,25 @@ export const avatarScreenStyles = StyleSheet.create({
         color: "#DB4A39",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
     },
     avatarOptionsDiv: {
-        // display: "inline",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        marginBottom: 50
+        marginBottom: 20,
+        padding: 5
     },
     imageDiv: {
-        width: 120,
-        height: 120,
-        borderRadius: 30
+        width: 80,
+        height: 80,
+        borderRadius: 10,
     },
     imageBorder: {
         borderColor: "#DB4A39",
-        borderWidth: 20
+        borderWidth: 5,
+        borderRadius:15
+    },
+    marginBtm: {
+        marginBottom: 20
     },
     continueBtn: {
         width: "50%",
@@ -47,7 +47,7 @@ export const avatarScreenStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         shadowColor: "rgba(0, 0, 0, 25)",
-        shadowOffset: { width: 1, height: 1 },
+        shadowOffset: {width: 1, height: 1},
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,

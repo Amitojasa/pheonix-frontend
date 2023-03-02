@@ -120,6 +120,36 @@ export const taskList1 = [
 ]
 
 
+export const avatars = [
+    [{
+        id: 1,
+        avatar: "cat"
+    }, {
+        id: 2,
+        avatar: "panda"
+    }],
+    [{
+        id: 3,
+        avatar: "pig"
+    }, {
+        id: 4,
+        avatar: "monkey"
+    }],
+    [{
+        id: 5,
+        avatar: "hen"
+    }, {
+        id: 6,
+        avatar: "fox"
+    }],
+    [{
+        id: 7,
+        avatar: "dog"
+    }, {
+        id: 8,
+        avatar: "cow"
+    }]
+]
 
 
 //uncomment the one that you want to use and comment other

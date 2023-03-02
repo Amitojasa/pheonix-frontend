@@ -23,7 +23,7 @@ function Home({ navigation }) {
     }, [isFocused]);
 
     useEffect(() => {
-
+        console.log(userData);
         getUserData().then();
     }, []);
 

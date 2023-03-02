@@ -1,17 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useRef, useState } from 'react'
-import { BASE_URL, taskList1 } from '../Config';
+import React, {createContext, useEffect, useRef, useState} from 'react'
+import {BASE_URL, taskList1} from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import { UserDataModel } from "../models/userDataModel";
+import {UserDataModel} from "../models/userDataModel";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
-    const [userData, setUserData] = useState(new UserDataModel());
+    const [userData, setUserData] = useState();
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: Constants.manifest.extra.IOS_KEY,
@@ -41,35 +41,36 @@ export const AuthProvider = ({ children }) => {
         if (response?.type === 'success') {
             AsyncStorage.setItem('googleAccessToken', JSON.stringify(response.authentication.accessToken)).then();
             setUserExist(false);
-            // setIsUserLoggedIn(true); // TODO check line 54.
             setGoogleUserLoginData(response).then();
         }
     }, [response]);
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
         })
 
         userInfoResponse.json().then(async data => {
-
-            setUserData(prevState => {
-                prevState.id = data.id
-                prevState.family_name = data.family_name
-                prevState.given_name = data.given_name
-                prevState.name = data.name
-                prevState.email = data.email
-                prevState.verified_email = data.verified_email
-                prevState.profileImage = data.picture
-                return prevState
-            })
-
-            //TODO: user dataa will not work here
-            await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
-            await axios.post(`${BASE_URL}/api/loginByOAuth`, userData).then((apiRes) => {
+            const username = (data.given_name + Math.floor(Math.random() * 100000)).toLowerCase()
+            console.log("userNAME : :=> ::", username);
+            const userDetails = {
+                id: data.id,
+                family_name: data.family_name,
+                given_name: data.given_name,
+                name: data.name,
+                email: data.email,
+                verified_email: data.verified_email,
+                profileImage: data.picture,
+                username: username
+            }
+            await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
+            console.log("USER DETAILS :: => ::", userDetails);
+            await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then((apiRes) => {
+                console.log("res",apiRes);
                 setUserExist(true);
                 setIsUserLoggedIn(true);
             });
+
             const coinsData = {
                 "userId": data.id,
                 "userCoins": 1000,
@@ -122,10 +123,9 @@ export const AuthProvider = ({ children }) => {
             setAvatar(res);
         })
 
-
-        //TODO: commment them
-        AsyncStorage.removeItem('googleAccessToken');
-        AsyncStorage.removeItem('userInfo');
+        // AsyncStorage.removeItem('googleAccessToken');
+        // AsyncStorage.removeItem('userInfo');
+        // AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -137,18 +137,18 @@ export const AuthProvider = ({ children }) => {
                     await AsyncStorage.getItem('userInfo').then(async (res) => {
                         if (res) {
                             setUserInfo(res);
-                            setUserData(prevState => {
-                                const response = JSON.parse(res);
-                                prevState.id = response.id
-                                prevState.family_name = response.family_name
-                                prevState.given_name = response.given_name
-                                prevState.name = response.name
-                                prevState.email = response.email
-                                prevState.verified_email = response.verified_email
-                                prevState.profileImage = isAvatar ? avatar : response.picture
-                                return prevState
-                            })
-                            await axios.post(`${BASE_URL}/api/loginByOAuth`, userData).then((apiRes) => {
+                            const response = JSON.parse(res);
+                            const userDetails = {
+                                id: response.id,
+                                family_name: response.family_name,
+                                given_name: response.given_name,
+                                name: response.name,
+                                email: response.email,
+                                verified_email: response.verified_email,
+                                profileImage: response.picture,
+                                username: response.username
+                            }
+                            await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then((apiRes) => {
                                 console.log("TRUE :: => ::", apiRes);
                                 if (apiRes.data.message === 'User Exists. Please log in.') {
                                     setUserExist(true);

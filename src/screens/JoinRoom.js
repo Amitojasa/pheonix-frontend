@@ -8,7 +8,8 @@ import {
     onSnapshot,
     doc,
     setDoc,
-    getDoc
+    getDoc,
+    updateDoc
 } from 'firebase/firestore';
 import { database } from '../configs/firebase';
 import { BASE_URL, StartPosition } from '../Config';
@@ -21,7 +22,9 @@ import axios from 'axios';
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { myPlayerId, setTaskList, taskList, setMyPlayerId } = useContext(AuthContext);
+    const { myPlayerId, setTaskList, taskList, setMyPlayerId, userData } = useContext(AuthContext);
+    console.log(userData);
+    const [player1Details, setPlayer1Details] = useState()
 
     const handleJoinRoom = async () => {
         console.log(roomName);
@@ -32,11 +35,30 @@ const JoinRoom = ({ navigation, route }) => {
 
 
             if (d.data()) {
-                setMyPlayerId(2);
 
-                await getTaskListFromAPI()
+                await updateDoc(doc(database, 'rooms', roomName), {
 
-                navigation.navigate('Game', { data: d.data(), roomName: roomName })
+
+                    GameInfo: {
+                        player1Id: d.data().GameInfo.player1Id,
+                        player2Id: 2,
+                        player1Points: d.data().GameInfo.player1Points,
+                        player2Points: d.data().GameInfo.player2Points,
+
+                    },
+
+
+                }).then(async (data) => {
+                    setMyPlayerId(2);
+                    setPlayer1Details({ name: "amitoj" })
+
+                    await getTaskListFromAPI()
+
+                    navigation.navigate('Game', { data: d.data(), roomName: roomName })
+                })
+
+
+
             } else {
                 Alert.alert("Sorry, Wrong Room ID.")
             }
@@ -72,9 +94,9 @@ const JoinRoom = ({ navigation, route }) => {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <CreateJoinPlayerMatching playerId={1} />
+                            <CreateJoinPlayerMatching playerId={1} playerDetails={player1Details} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <CreateJoinPlayerMatching playerId={2} />
+                            <CreateJoinPlayerMatching playerId={2} playerDetails={userData} />
                         </View>
 
                     </LinearGradient>

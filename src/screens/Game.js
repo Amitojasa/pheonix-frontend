@@ -14,9 +14,7 @@ import bgImg from '../../assets/gameBackgroundImage.png'
 import pawn1 from '../../assets/pawn1.png'
 import pawn2 from '../../assets/pawn2.png'
 import pawn3 from '../../assets/pawn4.png'
-import pawn5 from '../../assets/pawn5.png'
 import pawn4 from '../../assets/pawn4.png'
-import pawn6 from '../../assets/pawn6.png'
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {
 
@@ -26,8 +24,8 @@ const Game = ({ navigation, route }) => {
     const [diceMove, setDiceMove] = useState(1)
     const [diceVal, setDiceVal] = useState(1)
 
-    // const pawns = [pawn1, pawn2, pawn3, pawn4, pawn5, pawn6];
-    const pawns = [pawn1, pawn3, pawn4, pawn6];
+    const pawns = [pawn1, pawn2, pawn3, pawn4];
+    // const pawns = [pawn1, pawn3, pawn4, pawn6];
     const [player1Pawn, setPlayer1Pawn] = useState(pawn1);
     const [player2Pawn, setPlayer2Pawn] = useState(pawn4);
 
@@ -310,7 +308,7 @@ const Game = ({ navigation, route }) => {
             {/* <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}> */}
             <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
                 <LandscapeLogo />
-                <BoardGame roomName={roomName} setPlayer1Pawn={setPlayer1Pawn} setPlayer2Pawn={setPlayer2Pawn} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} diceVal={diceVal} setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
+                <BoardGame navigation={navigation} roomName={roomName} setPlayer1Pawn={setPlayer1Pawn} setPlayer2Pawn={setPlayer2Pawn} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} diceVal={diceVal} setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
                 <BottomComponent player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
                 {showTask && <ScreenOverlayComponent />}
                 {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}

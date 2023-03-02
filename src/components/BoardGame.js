@@ -15,7 +15,7 @@ import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
 
 
-function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns }) {
+function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation }) {
     const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
 
     const [matrix, setMatrix] = useState([])
@@ -114,6 +114,9 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                     if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
                         Alert.alert("Player 1 Won the game", "Both the players will go for luch together and Player 2 will have to pay.")
                         setGameEnded(true);
+                        setTimeout(() => {
+                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                        }, 2000);
                         return;
                     }
 
@@ -138,6 +141,9 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                     if (player2[0] == EndPosition[0] && player2[1] == EndPosition[1]) {
                         Alert.alert("Player 2 Won the game", "Player 1 has to buy a movie for Player 2 and both have to go together for a movie.");
                         setGameEnded(true);
+                        setTimeout(() => {
+                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                        }, 2000);
                         return;
                     }
                     for (let i = 0; i < 5; i++) {
@@ -166,8 +172,10 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
         let rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2])) % pawns.length
         let rndInt2 = (parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % pawns.length
         console.log(rn, rndInt1, rndInt2);
-        if (rndInt1 == rndInt2) {
-            rndInt2 = (rndInt2 + 1) % pawns.length
+        let i = 1;
+        while (rndInt1 == rndInt2) {
+            rndInt2 = (rndInt2 + i) % pawns.length
+            i++;
         }
 
         setPlayer1Pawn(pawns[rndInt1])
@@ -183,15 +191,26 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     const pawnMovement = (index1, index2) => {
         return ((index1 == player1[0] && index2 == player1[1]) || (index1 == player2[0] && index2 == player2[1])) &&
+            // <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: 'absolute', right: 0, left: 0, top: 0, bottom: 0, }]}>
+            //     {(index1 == player1[0] && index2 == player1[1]) && <Image source={player1Pawn} style={[{
+            //         height: 50, width: 50, resizeMode: "center", margin: 0, padding: 0, elevation: 5
+
+            //     }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: '20%', right: 0, bottom: 0, }]}></Image>}
+            //     {(index1 == player2[0] && index2 == player2[1]) && <Image source={player2Pawn} style={[{
+            //         height: 50, width: 50, resizeMode: "center", margin: 0, padding: 0, elevation: 5
+            //     }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: "20%" }]}></Image>}
+            // </View>
+
             <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: 'absolute', right: 0, left: 0, top: 0, bottom: 0, }]}>
                 {(index1 == player1[0] && index2 == player1[1]) && <Image source={player1Pawn} style={[{
-                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5
+                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5,
 
-                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: '20%', right: 0, bottom: 0, }]}></Image>}
+                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { top: 10 }]}></Image>}
                 {(index1 == player2[0] && index2 == player2[1]) && <Image source={player2Pawn} style={[{
-                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5
-                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { position: "absolute", top: "20%", left: "30%" }]}></Image>}
+                    height: 40, width: 40, resizeMode: "center", margin: 0, padding: 0, elevation: 5,
+                }, (player1[0] == player2[0] && player2[1] == player1[1]) && { top: -10 }]}></Image>}
             </View>
+
 
 
     }

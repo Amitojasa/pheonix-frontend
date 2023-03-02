@@ -23,8 +23,9 @@ import axios from 'axios';
 function CreateRoom({ navigation, route, }) {
 
 
-    const { setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
 
+    const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()
     var f = 1;
 
@@ -50,7 +51,7 @@ function CreateRoom({ navigation, route, }) {
                 },
                 GameInfo: {
                     player1Id: 1,
-                    player2Id: 2,
+                    player2Id: -1,
                     player1Points: StartPosition,
                     player2Points: StartPosition,
 
@@ -69,17 +70,42 @@ function CreateRoom({ navigation, route, }) {
                 // console.log(JSON.parse(userInfo).id);
                 await getTaskListFromBackend(n);
 
-                setTimeout(() => {
-                    navigation.navigate('Game', { roomName: n }) //TODO:
-                }, 3000);
+
 
             })
         }
     }
 
+
+    useEffect(() => {
+        // console.log("yess", roomName);
+        if (roomName) {
+            // console.log("inside");
+            const ref = doc(database, 'rooms', roomName)
+            const unsubscribe = onSnapshot(ref, (snapshot) => {
+
+                if (snapshot && !snapshot.metadata.hasPendingWrites) {
+
+                    // console.log(snapshot.metadata.hasPendingWrites);
+                    if (snapshot.data().GameInfo.player2Id != -1)
+                        setPlayer2Details({ name: "hello" }); // TODO: 
+                    setTimeout(() => {
+                        navigation.navigate('Game', { roomName: roomName }) //TODO:
+                    }, 3000);
+                }
+
+                // console.log(snapshot.data().latestMessage.text)
+            })
+
+            return () => unsubscribe();
+        }
+    }, [roomName]);
+
+
+
     const getTaskListFromBackend = async (rn) => {
         await axios.post(`${BASE_URL}/api/room/create`, {
-            "taskNo": 10,
+            "taskNo": 20,
             // "hostUserId": (JSON.parse(userInfo).id),
             "hostUserId": "123456",
             "roomId": rn,
@@ -111,9 +137,9 @@ function CreateRoom({ navigation, route, }) {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <CreateJoinPlayerMatching playerId={1} />
+                            <CreateJoinPlayerMatching playerId={1} playerDetails={userData} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <CreateJoinPlayerMatching playerId={2} />
+                            <CreateJoinPlayerMatching playerId={2} playerDetails={player2Details} />
                         </View>
 
                     </LinearGradient>

@@ -21,8 +21,7 @@ export const AuthProvider = ({ children }) => {
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
-    // const [avatar, setAvatar] = useState('male');
-    // const [userData, setUserData] = useState(null);
+
     const [taskList, setTaskList] = useState(taskList1)
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -53,6 +52,7 @@ export const AuthProvider = ({ children }) => {
         })
 
         userInfoResponse.json().then(async data => {
+
             setUserData(prevState => {
                 prevState.id = data.id
                 prevState.family_name = data.family_name
@@ -63,6 +63,8 @@ export const AuthProvider = ({ children }) => {
                 prevState.profileImage = data.picture
                 return prevState
             })
+
+            //TODO: user dataa will not work here
             await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
             await axios.post(`${BASE_URL}/api/loginByOAuth`, userData).then((apiRes) => {
                 setUserExist(true);
@@ -73,6 +75,7 @@ export const AuthProvider = ({ children }) => {
                 "userCoins": 1000,
                 "operation": "add"
             }
+            // console.log("COINS :: +> :: ",coinsData)
             // await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then((res)=>{
             //     console.log("res coins :: => ::",res);
             // }) //todo update when backend is fixed
@@ -94,6 +97,8 @@ export const AuthProvider = ({ children }) => {
 
         // }).catch(e => {
         //     console.log(`logout error ${e.response}`);
+
+
         AsyncStorage.removeItem('googleAccessToken');
         setIsLoading(false);
         // })
@@ -117,6 +122,8 @@ export const AuthProvider = ({ children }) => {
             setAvatar(res);
         })
 
+
+        //TODO: commment them
         AsyncStorage.removeItem('googleAccessToken');
         AsyncStorage.removeItem('userInfo');
 
@@ -185,8 +192,7 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar,
-            avatar, setAvatar, userData, setUserData,
-
+            avatar, setUserData, setAvatar
         }}>{children}
         </AuthContext.Provider>
 

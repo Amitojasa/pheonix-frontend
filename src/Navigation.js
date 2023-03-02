@@ -1,7 +1,7 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 /// bring all screens
@@ -9,17 +9,18 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Login from './screens/Login';
-import {AuthContext, AuthProvider} from './context/AuthContext';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 import Game from './screens/Game';
 import CreateRoom from './screens/CreateRoom';
 import JoinRoom from './screens/JoinRoom';
-import {Avatar} from "./screens/Avatar";
+import Win from './screens/Win';
+import { Avatar } from "./screens/Avatar";
 
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    const {isUserLoggedIn, splashLoading, userExist} = useContext(AuthContext);
+    const { isUserLoggedIn, splashLoading, userExist } = useContext(AuthContext);
     return (
         <NavigationContainer>
 
@@ -35,40 +36,47 @@ const Navigation = () => {
                     ></Stack.Screen> : isUserLoggedIn ?
                         userExist ? (<Stack.Group>
 
-                                <Stack.Screen
-                                    name="Home"
-                                    component={Home}
+                            <Stack.Screen
+                                name="Home"
+                                component={Home}
 
-                                />
-                                <Stack.Screen
-                                    name="CreateRoom"
-                                    component={CreateRoom}
+                            />
+                            <Stack.Screen
+                                name="CreateRoom"
+                                component={CreateRoom}
 
-                                />
-                                <Stack.Screen
-                                    name="JoinRoom"
-                                    component={JoinRoom}
+                            />
+                            <Stack.Screen
+                                name="JoinRoom"
+                                component={JoinRoom}
 
-                                />
+                            />
 
-                                <Stack.Screen
-                                    name="Game"
-                                    component={Game}
-
-                                />
-
-                                <Stack.Screen
-                                    name="Avatar"
-                                    component={Avatar}
-
-                                />
-
-                            </Stack.Group>) :
                             <Stack.Screen
                                 name="Game"
                                 component={Game}
 
                             />
+
+                            <Stack.Screen
+                                name="Avatar"
+                                component={Avatar}
+
+                            />
+                            <Stack.Screen
+                                name="Win"
+                                component={Win}
+
+                            />
+
+                        </Stack.Group>) :
+                            // <></>
+                            <Stack.Screen
+                                name="Game"
+                                component={Game}
+
+                            />
+
 
                         : (
                             <Stack.Screen

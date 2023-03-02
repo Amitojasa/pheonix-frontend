@@ -23,6 +23,7 @@ function Home({ navigation }) {
     }, [isFocused]);
 
     useEffect(() => {
+
         getUserData().then();
     }, []);
 
@@ -47,10 +48,12 @@ function Home({ navigation }) {
                         source={require('../../assets/placeholder.jpeg')}
                         imageStyle={{ borderRadius: 30 }}
                         style={homeScreenStyles.userImage}>
-                        {/*<TouchableOpacity onPress={() => navigation.navigate('Avatar')}>*/}
-                        {/*    <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo}/>*/}
-                        {/*</TouchableOpacity>*/}
-
+                        <TouchableOpacity onPress={() => navigation.navigate('Avatar')}>
+                            <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo} />
+                        </TouchableOpacity>
+                        <View style={homeScreenStyles.usernameDiv}>
+                            <Text style={homeScreenStyles.usernameText}>Username</Text>
+                        </View>
                     </ImageBackground>
 
                 </View>

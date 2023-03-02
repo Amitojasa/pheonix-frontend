@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 0,
         top: 0,
+        zIndex: 10,
+        margin: 2,
         // backgroundColor: "#000"
     },
     usernameText: {

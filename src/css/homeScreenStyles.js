@@ -1,21 +1,21 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export const homeScreenStyles = StyleSheet.create({
-    coinsDiv:{
+    coinsDiv: {
         backgroundColor: "#ffffff", width: "35%", borderRadius: 25,
-        paddingBottom:10,
-        paddingRight:15,
-        paddingTop:10,
-        paddingLeft:10,
-        flexDirection:"row",
-        alignItems:"center",
-        justifyContent:"center",
-        elevation:10
+        paddingBottom: 10,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingLeft: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        elevation: 10
     },
-    userSection:{
+    userSection: {
         height: "60%",
-        alignItems:"center",
-        justifyContent:"center"
+        alignItems: "center",
+        justifyContent: "center"
     },
     coinsText: {
         fontSize: 25,
@@ -26,39 +26,48 @@ export const homeScreenStyles = StyleSheet.create({
         textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 1,
     },
-    userImage:{
-        width:180,
-        height:180,
+    userImage: {
+        width: 180,
+        height: 180,
     },
-    editLogo:{
-        width:30,
-        height:30,
-        alignSelf:"flex-end",
-        top:10,
-        marginRight:5
+    editLogo: {
+        width: 30,
+        height: 30,
+        alignSelf: "flex-end",
+        top: 10,
+        marginRight: 5
     },
-    homeBtn:{
-        width:"80%",
-        backgroundColor:"#fff",
-        alignItems:"center",
-        justifyContent:"center",
-        borderRadius:10,
-        padding:10,
-        shadowColor:"rgba(0, 0, 0, 25)",
-        shadowOffset:{ width: 1, height: 1 },
-        shadowOpacity:  0.4,
+    homeBtn: {
+        width: "80%",
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        padding: 10,
+        shadowColor: "rgba(0, 0, 0, 25)",
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,
-        marginBottom:40
+        marginBottom: 40
     },
-    homeBtnText:{
-        color:"#0048D5",
-        fontSize:20,
-        fontStyle:"normal",
-        fontWeight:"bold"
+    homeBtnText: {
+        color: "#0048D5",
+        fontSize: 20,
+        fontStyle: "normal",
+        fontWeight: "bold"
     },
-    coinImg:{
-        width:50,
-        height:50
+    coinImg: {
+        width: 50,
+        height: 50
+    },
+    usernameDiv: {
+        alignItems: "center",
+        justifyContent: "center",
+        top: "70%"
+    },
+    usernameText: {
+        fontWeight: "bold",
+        fontSize: 18
     }
 })

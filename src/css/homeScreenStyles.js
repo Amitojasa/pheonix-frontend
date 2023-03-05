@@ -69,5 +69,10 @@ export const homeScreenStyles = StyleSheet.create({
     usernameText: {
         fontWeight: "bold",
         fontSize: 18
+    },
+    userName:{
+        color:"#fff",
+        fontWeight: "bold",
+        fontSize: 18
     }
 })

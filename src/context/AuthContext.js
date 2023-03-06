@@ -124,9 +124,9 @@ export const AuthProvider = ({ children }) => {
         //     setAvatar(res);
         // })
 
-        AsyncStorage.removeItem('googleAccessToken');
-        AsyncStorage.removeItem('userInfo');
-        AsyncStorage.clear();
+        // AsyncStorage.removeItem('googleAccessToken');
+        // AsyncStorage.removeItem('userInfo');
+        // AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {

@@ -4,13 +4,14 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import boy from '../../assets/boy.png'
 import girl from '../../assets/girl.png'
 import { AuthContext } from '../context/AuthContext';
-function GamePlayerComponent({ playerId, playerPawn }) {
+import { UserProfileImage } from '../Config';
+function GamePlayerComponent({ playerId, playerPawn, playerDetails }) {
     const { myPlayerId, setMyPlayerId, activePlayerId } = useContext(AuthContext);
     console.log(activePlayerId);
     return (
         playerId == 1 ?
-            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={boy} style={styles.avatar} /><Text style={styles.usernameText}>Player 1</Text></View> :
-            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={girl} style={styles.avatar} /><Text style={styles.usernameText}>Player 2</Text></View>
+            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View> :
+            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View>
     )
 }
 
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "#000"
     },
     usernameText: {
+        fontSize: 12,
         fontWeight: "bold"
     }
     // { flex: 1, alignSelf: "center", color: "#FFF", fontWeight: "bold" }

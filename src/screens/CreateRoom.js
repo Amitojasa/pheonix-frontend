@@ -17,6 +17,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
+import { StackActions } from '@react-navigation/native';
 
 
 
@@ -29,9 +30,7 @@ function CreateRoom({ navigation, route, }) {
     const [roomName, setRoomName] = useState()
     var f = 1;
 
-    useEffect(() => {
-        console.log("aaa", userData);
-    }, [])
+
 
 
     async function handleButtonPress() {
@@ -62,7 +61,7 @@ function CreateRoom({ navigation, route, }) {
 
 
                 },
-                player1Details: { userName: userData.name },
+                player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins },
                 player2Details: {},
                 diceMove: 1,
                 activePlayerId: activePlayerId,
@@ -97,9 +96,10 @@ function CreateRoom({ navigation, route, }) {
                     // console.log(snapshot.metadata.hasPendingWrites);
                     if (snapshot.data().GameInfo.player2Id != -1) {
 
-                        setPlayer2Details({ userName: snapshot.data().player2Details.userName })// TODO: 
+                        setPlayer2Details({ userName: snapshot.data().player2Details.userName, coins: snapshot.data().player2Details.coins, profileImage: snapshot.data().player2Details.profileImage })// TODO: 
                         setTimeout(() => {
-                            navigation.navigate('Game', { roomName: roomName }) //TODO:
+                            navigation.dispatch(
+                                StackActions.replace('Game', { roomName: roomName, player2Details: { userName: snapshot.data().player2Details.userName, coins: snapshot.data().player2Details.coins, profileImage: snapshot.data().player2Details.profileImage }, player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } })) //TODO:
                         }, 3000);
                     }
                 }
@@ -147,7 +147,7 @@ function CreateRoom({ navigation, route, }) {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <CreateJoinPlayerMatching playerId={1} playerDetails={{ userName: userData.name }} />
+                            <CreateJoinPlayerMatching playerId={1} playerDetails={{ userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins }} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
                             <CreateJoinPlayerMatching playerId={2} playerDetails={player2Details} />
                         </View>

@@ -18,6 +18,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
+import { StackActions } from '@react-navigation/native';
 
 
 const JoinRoom = ({ navigation, route }) => {
@@ -47,15 +48,16 @@ const JoinRoom = ({ navigation, route }) => {
 
                     },
 
-                    player2Details: { userName: userData.name },
+                    player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins },
 
                 }).then(async (data) => {
                     setMyPlayerId(2);
-                    setPlayer1Details({ userName: d.data().player1Details.userName })
+                    setPlayer1Details({ userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage })
 
                     await getTaskListFromAPI()
 
-                    navigation.navigate('Game', { data: d.data(), roomName: roomName })
+                    navigation.dispatch(
+                        StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
                 })
 
 
@@ -97,7 +99,7 @@ const JoinRoom = ({ navigation, route }) => {
                         <View style={styles.gameplayersDiv}>
                             <CreateJoinPlayerMatching playerId={1} playerDetails={player1Details} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <CreateJoinPlayerMatching playerId={2} playerDetails={{ userName: userData.name }} />
+                            <CreateJoinPlayerMatching playerId={2} playerDetails={{ userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins }} />
                         </View>
 
                     </LinearGradient>

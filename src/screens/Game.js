@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
+import { Alert, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
 import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
@@ -18,7 +18,7 @@ import pawn4 from '../../assets/pawn4.png'
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {
 
-    const { roomName, } = route.params;
+    const { roomName, player1Details, player2Details } = route.params;
     const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
     const [diceMove, setDiceMove] = useState(1)
@@ -130,6 +130,10 @@ const Game = ({ navigation, route }) => {
 
         firstTime = true;
     }
+
+
+
+
 
     const playBackMove = async (moveVal, playerID) => {
         console.log("back call");
@@ -303,13 +307,48 @@ const Game = ({ navigation, route }) => {
 
     // console.log(route.params.data);
 
+
+
+    const hasUnsavedChanges = Boolean('');
+
+    React.useEffect(
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+                // if (!hasUnsavedChanges) {
+                //     // If we don't have unsaved changes, then we don't need to do anything
+                //     return;
+                // }
+
+                // Prevent default behavior of leaving the screen
+                e.preventDefault();
+
+                // Prompt the user before leaving the screen
+                Alert.alert(
+                    'Are you sure?',
+                    'You will loose this match if you leave.',
+                    [
+                        { text: "Don't leave", style: 'cancel', onPress: () => { } },
+                        {
+                            text: 'Leave',
+                            style: 'destructive',
+                            // If the user confirmed, then we dispatch the action we blocked earlier
+                            // This will continue the action that had triggered the removal of the screen
+                            onPress: () => navigation.dispatch(e.data.action)
+                        },
+                    ]
+                );
+            }),
+        [navigation, hasUnsavedChanges]
+    );
+
+
     return (
         <SafeAreaView style={styles.container}>
             {/* <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}> */}
             <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
                 <LandscapeLogo />
                 <BoardGame navigation={navigation} roomName={roomName} setPlayer1Pawn={setPlayer1Pawn} setPlayer2Pawn={setPlayer2Pawn} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} diceVal={diceVal} setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
-                <BottomComponent player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
+                <BottomComponent player1Details={player1Details} player2Details={player2Details} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
                 {showTask && <ScreenOverlayComponent />}
                 {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}
             </ImageBackground>

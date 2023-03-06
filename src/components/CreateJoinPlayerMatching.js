@@ -4,20 +4,21 @@ import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import boy from '../../assets/boy.png'
 import girl from '../../assets/girl.png'
 import coin from '../../assets/coin.png'
+import { UserProfileImage } from '../Config'
 
 const CreateJoinPlayerMatching = ({ playerId, playerDetails }) => {
     // console.log("aaa" + playerId, playerDetails);
     return (
         playerId == 1 ?
             <View style={styles.container}>
-                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
+                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
                 {playerDetails ?
-                    <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
+                    <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails ? playerDetails.coins : "2500"}</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
             </View>
             : <View style={styles.container}>
-                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
+                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
                 {playerDetails ?
-                    <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
+                    <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails ? playerDetails.coins : "2500"}</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
             </View>
     )
 }

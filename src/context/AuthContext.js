@@ -27,15 +27,13 @@ export const AuthProvider = ({ children }) => {
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
     const [userData, setUserData] = useState();
+    const [isAvatar, setIsAvatar] = useState(null);
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: Constants.manifest.extra.IOS_KEY,
         iosClientId: Constants.manifest.extra.ANDROID_KEY,
         expoClientId: Constants.manifest.extra.EXPO_CLIENT_ID
     })
-
-    const [isAvatar, setIsAvatar] = useState(false);
-    const [avatar, setAvatar] = useState('../../assets/maleAvatar.png');
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -52,7 +50,6 @@ export const AuthProvider = ({ children }) => {
 
         userInfoResponse.json().then(async data => {
             const username = (data.given_name + Math.floor(Math.random() * 100000)).toLowerCase()
-            console.log("userNAME : :=> ::", username);
             const userDetails = {
                 id: data.id,
                 family_name: data.family_name,
@@ -61,27 +58,29 @@ export const AuthProvider = ({ children }) => {
                 email: data.email,
                 verified_email: data.verified_email,
                 profileImage: data.picture,
-                username: username
+                userName: username
             }
             await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
-            console.log("USER DETAILS :: => ::", userDetails);
-            await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then((apiRes) => {
-                console.log("res1:", userDetails);
+            await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
+                const coinsData = {
+                    "userId": data.id,
+                    "userCoins": 1000,
+                    "operation": "add"
+                }
+                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
+
                 setUserExist(true);
                 setIsUserLoggedIn(true);
                 console.log(userDetails);
                 setUserData(userDetails)
             });
 
-            const coinsData = {
-                "userId": data.id,
-                "userCoins": 1000,
-                "operation": "add"
-            }
-            // console.log("COINS :: +> :: ",coinsData)
-            // await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then((res)=>{
-            //     console.log("res coins :: => ::",res);
-            // }) //todo update when backend is fixed
+            if (userDetails.profileImage === 'cat' || userDetails.profileImage === 'panda' || userDetails.profileImage === 'pig' || userDetails.profileImage === 'monkey' || userDetails.profileImage === 'hen' || userDetails.profileImage === 'fox' || userDetails.profileImage === 'dog' || userDetails.profileImage === 'cow')
+                await AsyncStorage.setItem('isAvatar', "true")
+            else
+                await AsyncStorage.setItem('isAvatar', "false")
+
+
 
         })
 
@@ -117,17 +116,17 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         }, 8000);
 
-        await AsyncStorage.getItem('isAvatar').then((res) => {
-            setIsAvatar(res)
-        })
+        // await AsyncStorage.getItem('isAvatar').then((res) => {
+        //     setIsAvatar(res)
+        // })
 
-        await AsyncStorage.getItem('avatar').then(res => {
-            setAvatar(res);
-        })
+        // await AsyncStorage.getItem('avatar').then(res => {
+        //     setAvatar(res);
+        // })
 
         AsyncStorage.removeItem('googleAccessToken');
         AsyncStorage.removeItem('userInfo');
-        // AsyncStorage.clear();
+        AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {
@@ -148,10 +147,9 @@ export const AuthProvider = ({ children }) => {
                                 email: response.email,
                                 verified_email: response.verified_email,
                                 profileImage: response.picture,
-                                username: response.username
+                                userName: response.username
                             }
                             await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then((apiRes) => {
-                                console.log("TRUE :: => ::", apiRes);
                                 if (apiRes.data.message === 'User Exists. Please log in.') {
                                     setUserExist(true);
                                     setIsUserLoggedIn(true);
@@ -194,8 +192,8 @@ export const AuthProvider = ({ children }) => {
             isUserLoggedIn,
             userExist,
             userInfo,
-            isAvatar,
-            avatar, setUserData, setAvatar, userData
+            isAvatar
+            , setUserData, userData, setIsAvatar
         }}>{children}
         </AuthContext.Provider>
 

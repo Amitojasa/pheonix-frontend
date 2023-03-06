@@ -152,6 +152,31 @@ export const avatars = [
 ]
 
 
+export const UserProfileImage = (profileImage) => {
+    switch (profileImage) {
+        case 'cat':
+            return require('../assets/cat.png')
+        case 'panda':
+            return require('../assets/panda.png')
+        case 'pig':
+            return require('../assets/pig.png')
+        case 'monkey':
+            return require('../assets/monkey.png')
+        case 'hen':
+            return require('../assets/hen.png')
+        case 'fox':
+            return require('../assets/fox.png')
+        case 'dog':
+            return require('../assets/dog.png')
+        case 'cow':
+            return require('../assets/cow.png')
+        default:
+            return require('../assets/placeholder.jpeg')
+
+    }
+}
+
+
 //uncomment the one that you want to use and comment other
 
 export const BASE_URL = PROD;

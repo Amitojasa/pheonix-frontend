@@ -29,6 +29,11 @@ function CreateRoom({ navigation, route, }) {
     const [roomName, setRoomName] = useState()
     var f = 1;
 
+    useEffect(() => {
+        console.log("aaa", userData);
+    }, [])
+
+
     async function handleButtonPress() {
         var n = await Math.floor(100000 + Math.random() * 900000).toString()
         // console.log(n);

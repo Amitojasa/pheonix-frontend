@@ -8,39 +8,43 @@ import { homeScreenStyles } from "../css/homeScreenStyles";
 import { AuthContext } from "../context/AuthContext";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
-import { BASE_URL } from "../Config";
+import { BASE_URL, UserProfileImage } from "../Config";
 
 function Home({ navigation }) {
-    const { userInfo, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
-    const [userDetails, setUserDetails] = useState(userData);
+    const { userInfo, setIsAvatar, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
+    const [userDetails, setUserDetails] = useState(null);
 
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        AsyncStorage.getItem('avatar').then((res) => {
-            setAvatar(res);
+        AsyncStorage.getItem('isAvatar').then((res) => {
+            setIsAvatar(res);
         })
+        getUserData().then();
     }, [isFocused]);
 
     useEffect(() => {
-
-        // console.log(userData);
-        getUserData().then(
-
-        );
+        getUserData().then();
     }, []);
 
     const getUserData = async () => {
         const userInfo = await AsyncStorage.getItem('userInfo');
-        console.log("userInfo :: => ::", userInfo);
         const userId = JSON.parse(userInfo);
-        console.log("USER ID :: => ::", userId.id);
         await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
-            console.log("TRUE", res.data.message[0])
+            setUserDetails(res.data.message[0]);
             setUserData(res.data.message[0]);
-            setUserDetails(res.data.message[0])
+        })
+        AsyncStorage.getItem('isAvatar').then((res) => {
+            if (res === 'true') {
+                setIsAvatar(true)
+            } else {
+                setIsAvatar(false)
+            }
+
         })
     }
+
+
 
     return (<View style={commonStyles.centerContainer}>
         <LinearGradient colors={['#DB4A39', '#FFFFFF']}
@@ -49,24 +53,36 @@ function Home({ navigation }) {
             <View style={homeScreenStyles.userSection}>
                 <Image source={require('../../assets/logoHorizontal.png')} />
                 <View style={{ marginBottom: 30 }}>
-                    <ImageBackground
-                        // source={isAvatar ? userData ? userData.profileImage : require('../../assets/placeholder.jpeg')
-                        //     : userData ? {uri: `${userData.profileImage}`} : require('../../assets/placeholder.jpeg')} //TODO update this when backend is fixed
-                        source={require('../../assets/placeholder.jpeg')}
+                    {isAvatar ? <ImageBackground
+                        source={UserProfileImage(userDetails ? userDetails.profileImage : '')}
                         imageStyle={{ borderRadius: 30 }}
                         style={homeScreenStyles.userImage}>
                         <TouchableOpacity onPress={() => navigation.navigate('Avatar')}>
                             <Image source={require('../../assets/editLogo.png')} style={homeScreenStyles.editLogo} />
                         </TouchableOpacity>
                         <View style={homeScreenStyles.usernameDiv}>
-                            <Text style={homeScreenStyles.usernameText}>{userDetails?.name}</Text>
+                            <Text style={homeScreenStyles.usernameText}>{userDetails ? userDetails.userName : ''}</Text>
                         </View>
-                    </ImageBackground>
+                    </ImageBackground> :
+                        <ImageBackground
+                            source={userDetails ? { uri: userDetails.profileImage } : require('../../assets/placeholder.jpeg')}
+                            imageStyle={{ borderRadius: 30 }}
+                            style={homeScreenStyles.userImage}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Avatar')}>
+                                <Image source={require('../../assets/editLogo.png')}
+                                    style={homeScreenStyles.editLogo} />
+                            </TouchableOpacity>
+                            <View style={homeScreenStyles.usernameDiv}>
+                                <Text
+                                    style={homeScreenStyles.userName}>{userDetails ? userDetails.userName : ''}</Text>
+                            </View>
+                        </ImageBackground>
 
+                    }
                 </View>
                 <View style={homeScreenStyles.coinsDiv}>
                     <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
-                    <Text style={homeScreenStyles.coinsText}>2500</Text>
+                    <Text style={homeScreenStyles.coinsText}>{userDetails ? userDetails.coins : "2500"}</Text>
                 </View>
             </View>
             <View style={loginScreenStyles.authSection}>

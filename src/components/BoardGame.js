@@ -169,12 +169,13 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     const selectPawns = () => {
         let rn = (roomName)
-        let rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2])) % pawns.length
-        let rndInt2 = (parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % pawns.length
+        var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2])) % pawns.length
+        var rndInt2 = (parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % pawns.length
         console.log(rn, rndInt1, rndInt2);
         let i = 1;
         while (rndInt1 == rndInt2) {
-            rndInt2 = (rndInt2 + i) % pawns.length
+            rndInt2 = (rndInt2 + i) % pawns.length;
+            console.log("in", rndInt1, rndInt2)
             i++;
         }
 

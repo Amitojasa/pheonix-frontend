@@ -23,7 +23,7 @@ import axios from 'axios';
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
     const { myPlayerId, setTaskList, taskList, setMyPlayerId, userData } = useContext(AuthContext);
-    console.log(userData);
+
     const [player1Details, setPlayer1Details] = useState()
 
     const handleJoinRoom = async () => {
@@ -41,16 +41,17 @@ const JoinRoom = ({ navigation, route }) => {
 
                     GameInfo: {
                         player1Id: d.data().GameInfo.player1Id,
-                        player2Id: 2,
+                        player2Id: userData._id,
                         player1Points: d.data().GameInfo.player1Points,
                         player2Points: d.data().GameInfo.player2Points,
 
                     },
 
+                    player2Details: { userName: userData.name },
 
                 }).then(async (data) => {
                     setMyPlayerId(2);
-                    setPlayer1Details({ name: "amitoj" })
+                    setPlayer1Details({ userName: d.data().player1Details.userName })
 
                     await getTaskListFromAPI()
 
@@ -96,7 +97,7 @@ const JoinRoom = ({ navigation, route }) => {
                         <View style={styles.gameplayersDiv}>
                             <CreateJoinPlayerMatching playerId={1} playerDetails={player1Details} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <CreateJoinPlayerMatching playerId={2} playerDetails={userData} />
+                            <CreateJoinPlayerMatching playerId={2} playerDetails={{ userName: userData.name }} />
                         </View>
 
                     </LinearGradient>

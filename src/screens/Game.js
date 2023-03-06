@@ -13,7 +13,7 @@ import { AuthContext } from '../context/AuthContext';
 import bgImg from '../../assets/gameBackgroundImage.png'
 import pawn1 from '../../assets/pawn1.png'
 import pawn2 from '../../assets/pawn2.png'
-import pawn3 from '../../assets/pawn4.png'
+import pawn3 from '../../assets/pawn3.png'
 import pawn4 from '../../assets/pawn4.png'
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {

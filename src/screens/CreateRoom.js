@@ -50,13 +50,15 @@ function CreateRoom({ navigation, route, }) {
                     // createdAt: new Date().getTime()
                 },
                 GameInfo: {
-                    player1Id: 1,
+                    player1Id: userData._id,
                     player2Id: -1,
                     player1Points: StartPosition,
                     player2Points: StartPosition,
 
 
                 },
+                player1Details: { userName: userData.name },
+                player2Details: {},
                 diceMove: 1,
                 activePlayerId: activePlayerId,
                 taskIndex: 0,
@@ -66,6 +68,7 @@ function CreateRoom({ navigation, route, }) {
                 // send an api request to backend to store room info:
 
                 setMyPlayerId(1);
+
                 setRoomName(n);
                 // console.log(JSON.parse(userInfo).id);
                 await getTaskListFromBackend(n);
@@ -87,11 +90,13 @@ function CreateRoom({ navigation, route, }) {
                 if (snapshot && !snapshot.metadata.hasPendingWrites) {
 
                     // console.log(snapshot.metadata.hasPendingWrites);
-                    if (snapshot.data().GameInfo.player2Id != -1)
-                        setPlayer2Details({ name: "hello" }); // TODO: 
-                    setTimeout(() => {
-                        navigation.navigate('Game', { roomName: roomName }) //TODO:
-                    }, 3000);
+                    if (snapshot.data().GameInfo.player2Id != -1) {
+
+                        setPlayer2Details({ userName: snapshot.data().player2Details.userName })// TODO: 
+                        setTimeout(() => {
+                            navigation.navigate('Game', { roomName: roomName }) //TODO:
+                        }, 3000);
+                    }
                 }
 
                 // console.log(snapshot.data().latestMessage.text)
@@ -137,7 +142,7 @@ function CreateRoom({ navigation, route, }) {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <CreateJoinPlayerMatching playerId={1} playerDetails={userData} />
+                            <CreateJoinPlayerMatching playerId={1} playerDetails={{ userName: userData.name }} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
                             <CreateJoinPlayerMatching playerId={2} playerDetails={player2Details} />
                         </View>

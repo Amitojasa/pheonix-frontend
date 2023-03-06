@@ -1,17 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, {createContext, useEffect, useRef, useState} from 'react'
-import {BASE_URL, taskList1} from '../Config';
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { BASE_URL, taskList1 } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import {UserDataModel} from "../models/userDataModel";
+import { UserDataModel } from "../models/userDataModel";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -47,7 +47,7 @@ export const AuthProvider = ({children}) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
+            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
         })
 
         userInfoResponse.json().then(async data => {
@@ -66,9 +66,11 @@ export const AuthProvider = ({children}) => {
             await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
             console.log("USER DETAILS :: => ::", userDetails);
             await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then((apiRes) => {
-                console.log("res",apiRes);
+                console.log("res1:", userDetails);
                 setUserExist(true);
                 setIsUserLoggedIn(true);
+                console.log(userDetails);
+                setUserData(userDetails)
             });
 
             const coinsData = {
@@ -123,8 +125,8 @@ export const AuthProvider = ({children}) => {
             setAvatar(res);
         })
 
-        // AsyncStorage.removeItem('googleAccessToken');
-        // AsyncStorage.removeItem('userInfo');
+        AsyncStorage.removeItem('googleAccessToken');
+        AsyncStorage.removeItem('userInfo');
         // AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
@@ -153,6 +155,7 @@ export const AuthProvider = ({children}) => {
                                 if (apiRes.data.message === 'User Exists. Please log in.') {
                                     setUserExist(true);
                                     setIsUserLoggedIn(true);
+                                    setUserData(userDetails);
                                 }
                             })
                         } else {
@@ -192,7 +195,7 @@ export const AuthProvider = ({children}) => {
             userExist,
             userInfo,
             isAvatar,
-            avatar, setUserData, setAvatar
+            avatar, setUserData, setAvatar, userData
         }}>{children}
         </AuthContext.Provider>
 

@@ -6,16 +6,16 @@ import girl from '../../assets/girl.png'
 import coin from '../../assets/coin.png'
 
 const CreateJoinPlayerMatching = ({ playerId, playerDetails }) => {
-    // console.log("aaa" + playerId);
+    // console.log("aaa" + playerId, playerDetails);
     return (
         playerId == 1 ?
             <View style={styles.container}>
-                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>Player 1</Text>}</View>
+                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
                 {playerDetails ?
                     <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
             </View>
             : <View style={styles.container}>
-                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>Player 2</Text>}</View>
+                <View style={styles.internalContainer}>{!playerDetails ? <ActivityIndicator size="large" style={{ flex: 1 }} /> : <Image source={girl} style={styles.avatar} />}{!playerDetails ? <Text style={styles.usernameText}></Text> : <Text style={styles.usernameText}>{playerDetails.userName}</Text>}</View>
                 {playerDetails ?
                     <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View> : <View style={[styles.coinContainer, { backgroundColor: "transparent" }]}><Text style={styles.coinNumber}></Text></View>}
             </View>

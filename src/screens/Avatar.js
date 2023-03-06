@@ -1,4 +1,3 @@
-
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {commonStyles} from "../css/commonStyles";
 import {LinearGradient} from "expo-linear-gradient";
@@ -17,12 +16,19 @@ export const Avatar = ({navigation}) => {
     const handleAvatarChange = async () => {
         await AsyncStorage.setItem("isAvatar", "true");
         const userInfo = await AsyncStorage.getItem('userInfo');
-        console.log("userInfo :: => ::", userInfo);
         const parsedUserInfo = JSON.parse(userInfo);
-        console.log('selected avatar ;; ', selectedAvatar);
-        // await axios.post(`${BASE_URL}/api/tasks/${parsedUserInfo.id}`, {profileImage: selectedAvatar}).then((res) => {
-        //     console.log("RES API :: = >: : ",res);
-        // }) //todo uncomment when backend is fixed
+        const updatedUserData = {
+            profileImage: selectedAvatar
+        }
+        await axios.put(`${BASE_URL}/api/OAuthUsers/${parsedUserInfo.id}`, updatedUserData).then((res) => {
+            AsyncStorage.getItem('userInfo').then(res => {
+                const userDetails = JSON.parse(res);
+                userDetails.profileImage = selectedAvatar;
+                AsyncStorage.removeItem('userInfo');
+                AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
+            });
+
+        }) //todo uncomment when backend is fixed
         navigation.goBack(null)
     }
 
@@ -63,40 +69,40 @@ export const Avatar = ({navigation}) => {
 
                 <View style={loginScreenStyles.authSection}>
                     <LinearGradient colors={['#0073C5', '#9069FF']}
-                               start={{x: 1, y: 0}}
-                               end={{x: 0, y: 1}}
-                               style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
+                                    start={{x: 1, y: 0}}
+                                    end={{x: 0, y: 1}}
+                                    style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
 
-                            <View style={{
-                                flexDirection: "row",
-                                width: "100%",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}>
-                                {avatars.map((items, index1) =>
-                                    <View style={[avatarScreenStyles.avatarOptionsDiv]} key={index1}>
-                                        {items.map((subItems, index2) =>
-                                            <TouchableOpacity
-                                                style={[isSelected === subItems.id && avatarScreenStyles.imageBorder,
-                                                    avatarScreenStyles.marginBtm]}
-                                                key={index2} onPress={() => {
-                                                setSelectedAvatar(subItems.avatar);
-                                                setIsSelected(subItems.id)
-                                            }}>
-                                                {renderAvatarImage(subItems)}
-                                            </TouchableOpacity>
-                                        )}
-                                    </View>
-                                )}
-                            </View>
-                            <TouchableOpacity style={avatarScreenStyles.continueBtn} onPress={() => {
-                                handleAvatarChange().then()
-                            }}>
-                                <Text style={avatarScreenStyles.continueText}>Continue</Text>
-                            </TouchableOpacity>
+                        <View style={{
+                            flexDirection: "row",
+                            width: "100%",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>
+                            {avatars.map((items, index1) =>
+                                <View style={[avatarScreenStyles.avatarOptionsDiv]} key={index1}>
+                                    {items.map((subItems, index2) =>
+                                        <TouchableOpacity
+                                            style={[isSelected === subItems.id && avatarScreenStyles.imageBorder,
+                                                avatarScreenStyles.marginBtm]}
+                                            key={index2} onPress={() => {
+                                            setSelectedAvatar(subItems.avatar);
+                                            setIsSelected(subItems.id)
+                                        }}>
+                                            {renderAvatarImage(subItems)}
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                        <TouchableOpacity style={avatarScreenStyles.continueBtn} onPress={() => {
+                            handleAvatarChange().then()
+                        }}>
+                            <Text style={avatarScreenStyles.continueText}>Continue</Text>
+                        </TouchableOpacity>
+                    </LinearGradient>
+                </View>
             </LinearGradient>
         </View>
-</LinearGradient>
-</View>
-)
+    )
 }

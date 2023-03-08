@@ -33,6 +33,7 @@ function Home({ navigation }) {
         await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
             setUserDetails(res.data.message[0]);
             setUserData(res.data.message[0]);
+            console.log(res.data.message[0]);
         })
         AsyncStorage.getItem('isAvatar').then((res) => {
             if (res === 'true') {
@@ -100,9 +101,21 @@ function Home({ navigation }) {
                             <Text style={homeScreenStyles.homeBtnText}>Join Room</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }}>
+                            <TouchableOpacity style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }} onPress={() => {
+                                navigation.navigate('Offline', {
+                                    roomName: Math.floor(100000 + Math.random() * 900000).toString(), player1Details: {
+                                        userName: userData.userName, id: userData.id, profileImage: userData.profileImage, coins: userData.coins
+                                    }, player2Details: {
+
+                                        userName: "Guest", profileImage: '', coins: 0
+                                    }
+
+                                })
+                            }}
+                            >
+
                                 <Text style={loginScreenStyles.facebookText}>Play Offline</Text>
-                            </View>
+                            </TouchableOpacity>
                         </TouchableOpacity>
                     </View>
                 </LinearGradient>

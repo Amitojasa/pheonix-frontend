@@ -42,7 +42,7 @@ const JoinRoom = ({ navigation, route }) => {
 
                     GameInfo: {
                         player1Id: d.data().GameInfo.player1Id,
-                        player2Id: userData._id,
+                        player2Id: userData.id,
                         player1Points: d.data().GameInfo.player1Points,
                         player2Points: d.data().GameInfo.player2Points,
 
@@ -55,9 +55,11 @@ const JoinRoom = ({ navigation, route }) => {
                     setPlayer1Details({ userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage })
 
                     await getTaskListFromAPI()
+                    setTimeout(() => {
+                        navigation.dispatch(
+                            StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
+                    }, 2000);
 
-                    navigation.dispatch(
-                        StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
                 })
 
 

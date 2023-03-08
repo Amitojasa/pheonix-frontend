@@ -8,7 +8,8 @@ import {
     onSnapshot,
     doc,
     setDoc,
-    getDoc
+    getDoc,
+    updateDoc
 } from 'firebase/firestore';
 import { database } from '../configs/firebase';
 import { BASE_URL, StartPosition } from '../Config';
@@ -25,10 +26,60 @@ function Win({ navigation, route, }) {
 
 
     const { setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
-    // const { winPlayer, player1Id, player2Id } = route.params;
-    const winPlayer = 1;
-    const [roomName, setRoomName] = useState()
+    const { winPlayer, player1Id, player2Id, roomName } = route.params;
+    // const winPlayer = 1;
+    // const [roomName, setRoomName] = useState()
     var f = 1;
+
+    const [player1Details, setplayer1Details] = useState()
+    const [player2Details, setplayer2Details] = useState()
+
+    const updateWinning = async () => {
+        // console.log(roomName);
+
+        const docRef = await doc(database, "rooms", roomName);
+        const d = await (await getDoc(docRef)).data();
+        setplayer1Details(d.player1Details)
+        setplayer2Details(d.player2Details)
+        if (d.winningUpdate == false) {
+            await updateDoc(doc(database, 'rooms', roomName), {
+
+                winningUpdate: true,
+                winningPlayer: winPlayer
+
+            }).then(async (data) => {
+                //call api
+                const d = await (await getDoc(docRef)).data();
+                const coinsData1 = {
+                    "userId": winPlayer == 1 ? d.GameInfo.player1Id : d.GameInfo.player2Id,
+                    "userCoins": 50,
+                    "operation": "add"
+                }
+                console.log("con data:", coinsData1);
+                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData1).then().catch(err => {
+                    console.log(err);
+                })
+
+                // const d = await (await getDoc(docRef)).data();
+                const coinsData2 = {
+                    "userId": !(winPlayer == 1) ? d.GameInfo.player1Id : d.GameInfo.player2Id,
+                    "userCoins": 50,
+                    "operation": "sub"
+                }
+                console.log("con data:", coinsData2);
+                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData2).then().catch(err => {
+                    console.log(err);
+                })
+
+
+            })
+        }
+
+    }
+
+    useEffect(() => {
+        updateWinning();
+    }, [])
 
 
 
@@ -49,9 +100,9 @@ function Win({ navigation, route, }) {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <WinPlayerMatching playerId={1} winningPlayer={winPlayer} />
+                            <WinPlayerMatching playerId={1} winningPlayer={winPlayer} playerDetails={player1Details} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <WinPlayerMatching playerId={2} winningPlayer={winPlayer} />
+                            <WinPlayerMatching playerId={2} winningPlayer={winPlayer} playerDetails={player2Details} />
                         </View>
 
                     </LinearGradient>

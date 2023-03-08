@@ -7,7 +7,7 @@ import DiceTwo from "../../assets/dice2.png";
 import DiceThree from "../../assets/dice3.png";
 import { database } from '../configs/firebase';
 import { AuthContext } from '../context/AuthContext';
-function DiceComponent({ diceMove, setDisableDice, disableDice, setDiceMove, playMove, changePlayerId, roomName }) {
+function DiceComponent({ isOffline = false, diceMove, setDisableDice, disableDice, setDiceMove, playMove, changePlayerId, roomName }) {
 
     const diceArray = [DiceOne, DiceTwo, DiceThree]
     const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId } = useContext(AuthContext);
@@ -18,21 +18,27 @@ function DiceComponent({ diceMove, setDisableDice, disableDice, setDiceMove, pla
         setDiceMove(rndInt)
 
         // console.log(activePlayerId);
-        setTimeout(async () => {
-            await updateDoc(doc(database, 'rooms', roomName), {
+        if (isOffline) {
+            setTimeout(() => {
+                playMove(rndInt, activePlayerId);
+                setDisableDice(true);
+            }, 300);
+        } else {
+            setTimeout(async () => {
+                await updateDoc(doc(database, 'rooms', roomName), {
 
 
 
-                diceMove: rndInt
+                    diceMove: rndInt
 
 
-            }).then((data) => {
-                // setActivePlayerId((activePlayerId) % 2 + 1);
-            })
-            await playMove(rndInt, activePlayerId);
-            setDisableDice(true);
-        }, 300);
-
+                }).then((data) => {
+                    // setActivePlayerId((activePlayerId) % 2 + 1);
+                })
+                await playMove(rndInt, activePlayerId);
+                setDisableDice(true);
+            }, 300);
+        }
 
 
 
@@ -75,7 +81,7 @@ function DiceComponent({ diceMove, setDisableDice, disableDice, setDiceMove, pla
     return (
 
         <View style={{ flex: 1, alignSelf: 'center', backgroundColor: "#DB4A39", padding: "3%", borderRadius: 10 }}>
-            <TouchableOpacity disabled={myPlayerId != activePlayerId} onPress={startRotateImage}>
+            <TouchableOpacity disabled={isOffline ? false : myPlayerId != activePlayerId} onPress={startRotateImage}>
                 <Animated.Image
                     style={{
                         transform: [{ rotate: spin }], height: 80, width: 80,

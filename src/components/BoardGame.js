@@ -13,6 +13,7 @@ import bomb from '../../assets/bomb.png'
 import trophy from '../../assets/trophy.png'
 import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
+import { StackActions } from '@react-navigation/native';
 
 
 function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation }) {
@@ -115,7 +116,9 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                         Alert.alert("Player 1 Won the game", "Both the players will go for luch together and Player 2 will have to pay.")
                         setGameEnded(true);
                         setTimeout(() => {
-                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                            navigation.dispatch(
+                                StackActions.replace
+                                    ('Win', { winPlayer: 1, roomName: roomName })); //TODO:
                         }, 2000);
                         return;
                     }
@@ -142,7 +145,9 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                         Alert.alert("Player 2 Won the game", "Player 1 has to buy a movie for Player 2 and both have to go together for a movie.");
                         setGameEnded(true);
                         setTimeout(() => {
-                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                            navigation.dispatch(
+                                StackActions.replace
+                                    ('Win', { winPlayer: 2, roomName: roomName })); //TODO:
                         }, 2000);
                         return;
                     }

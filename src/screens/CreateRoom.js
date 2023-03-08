@@ -11,7 +11,7 @@ import {
     getDoc
 } from 'firebase/firestore';
 import { database } from '../configs/firebase';
-import { BASE_URL, StartPosition } from '../Config';
+import { BASE_URL, EndPosition, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
@@ -54,7 +54,7 @@ function CreateRoom({ navigation, route, }) {
                     // createdAt: new Date().getTime()
                 },
                 GameInfo: {
-                    player1Id: userData._id,
+                    player1Id: userData.id,
                     player2Id: -1,
                     player1Points: StartPosition,
                     player2Points: StartPosition,
@@ -66,7 +66,8 @@ function CreateRoom({ navigation, route, }) {
                 diceMove: 1,
                 activePlayerId: activePlayerId,
                 taskIndex: 0,
-                playBackSteps: 2
+                playBackSteps: 2,
+                winningUpdate: false
             }).then(async () => {
 
                 // send an api request to backend to store room info:
@@ -117,7 +118,7 @@ function CreateRoom({ navigation, route, }) {
         await axios.post(`${BASE_URL}/api/room/create`, {
             "taskNo": 20,
             // "hostUserId": (JSON.parse(userInfo).id),
-            "hostUserId": "123456",
+            "hostUserId": userData.id,
             "roomId": rn,
             "taskType": "online"
         }).then((apiRes) => {

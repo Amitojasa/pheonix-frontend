@@ -15,6 +15,7 @@ import pawn1 from '../../assets/pawn1.png'
 import pawn2 from '../../assets/pawn2.png'
 import pawn3 from '../../assets/pawn3.png'
 import pawn4 from '../../assets/pawn4.png'
+import { StackActions } from '@react-navigation/native';
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {
 
@@ -297,6 +298,13 @@ const Game = ({ navigation, route }) => {
                 setDiceMove(snapshot.data().diceMove)
 
                 setTaskIndex(snapshot.data().taskIndex)
+
+                if (snapshot.data().winningUpdate == true) {
+                    navigation.dispatch(
+                        StackActions.replace
+                            ('Win', { winPlayer: snapshot.data().winningPlayer, roomName: roomName })
+                    )
+                }
             }
 
             // console.log(snapshot.data().latestMessage.text)
@@ -311,32 +319,39 @@ const Game = ({ navigation, route }) => {
 
     const hasUnsavedChanges = Boolean('');
 
-    React.useEffect(
+    useEffect(
         () =>
             navigation.addListener('beforeRemove', (e) => {
-                // if (!hasUnsavedChanges) {
-                //     // If we don't have unsaved changes, then we don't need to do anything
-                //     return;
-                // }
+                if (e.data.action.type == "GO_BACK") {
+                    // if (!hasUnsavedChanges) {
+                    //     // If we don't have unsaved changes, then we don't need to do anything
+                    //     return;
+                    // }
 
-                // Prevent default behavior of leaving the screen
-                e.preventDefault();
+                    // Prevent default behavior of leaving the screen
+                    e.preventDefault();
 
-                // Prompt the user before leaving the screen
-                Alert.alert(
-                    'Are you sure?',
-                    'You will loose this match if you leave.',
-                    [
-                        { text: "Don't leave", style: 'cancel', onPress: () => { } },
-                        {
-                            text: 'Leave',
-                            style: 'destructive',
-                            // If the user confirmed, then we dispatch the action we blocked earlier
-                            // This will continue the action that had triggered the removal of the screen
-                            onPress: () => navigation.dispatch(e.data.action)
-                        },
-                    ]
-                );
+                    // Prompt the user before leaving the screen
+                    Alert.alert(
+                        'Are you sure?',
+                        'You will loose this match if you leave.',
+                        [
+                            { text: "Don't leave", style: 'cancel', onPress: () => { } },
+                            {
+                                text: 'Leave',
+                                style: 'destructive',
+                                // If the user confirmed, then we dispatch the action we blocked earlier
+                                // This will continue the action that had triggered the removal of the screen
+                                onPress: () =>
+                                    navigation.dispatch(
+                                        StackActions.replace
+                                            ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName })
+                                    )
+
+                            },
+                        ]
+                    );
+                }
             }),
         [navigation, hasUnsavedChanges]
     );

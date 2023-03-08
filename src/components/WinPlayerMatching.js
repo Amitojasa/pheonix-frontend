@@ -4,22 +4,25 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import boy from '../../assets/boy.png'
 import girl from '../../assets/girl.png'
 import coin from '../../assets/coin.png'
+import { UserProfileImage } from '../Config'
 
-const WinPlayerMatching = ({ playerId, winningPlayer }) => {
+const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails }) => {
     // console.log("aaa" + playerId);
+
+    console.log(playerDetails);
     return (
         playerId == 1 ?
             <View style={styles.container}>
                 {winningPlayer == 1 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
-                <View style={styles.internalContainer}><Image source={boy} style={styles.avatar} /><Text style={styles.usernameText}>Player 1</Text></View>
-                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View>
+                <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
+                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
                 <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 1 ? '+' : '-'}50</Text></View>
 
             </View>
             : <View style={styles.container}>
-                {winningPlayer == 2 ? <View style={styles.winnerContainer}><Text style={styles.coinNumber}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
-                <View style={styles.internalContainer}><Image source={girl} style={styles.avatar} /><Text style={styles.usernameText}>Player 2</Text></View>
-                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>1000</Text></View>
+                {winningPlayer == 2 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
+                <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
+                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
                 <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 2 ? '+' : '-'}50</Text></View>
             </View>
     )
@@ -39,7 +42,9 @@ const styles = StyleSheet.create({
 
     avatar: {
         flex: 1,
-        resizeMode: "center"
+        resizeMode: "center",
+        width: "100%",
+        height: "100%"
 
     },
     coin: {

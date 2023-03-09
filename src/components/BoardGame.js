@@ -16,7 +16,7 @@ import flag from '../../assets/gflag.png'
 import { StackActions } from '@react-navigation/native';
 
 
-function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation }) {
+function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation, isOffline = false, player1Details, player2Details }) {
     const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
 
     const [matrix, setMatrix] = useState([])
@@ -118,7 +118,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                         setTimeout(() => {
                             navigation.dispatch(
                                 StackActions.replace
-                                    ('Win', { winPlayer: 1, roomName: roomName })); //TODO:
+                                    ('Win', { winPlayer: 1, roomName: roomName, isOffline: isOffline, pl1D: player1Details, pl2D: player2Details })); //TODO:
                         }, 2000);
                         return;
                     }
@@ -147,7 +147,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                         setTimeout(() => {
                             navigation.dispatch(
                                 StackActions.replace
-                                    ('Win', { winPlayer: 2, roomName: roomName })); //TODO:
+                                    ('Win', { winPlayer: 2, roomName: roomName, isOffline: isOffline, })); //TODO:
                         }, 2000);
                         return;
                     }

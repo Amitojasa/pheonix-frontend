@@ -19,14 +19,35 @@ import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import WinPlayerMatching from '../components/WinPlayerMatching';
-
+import { InterstitialAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
 
 
 function Win({ navigation, route, }) {
 
 
+    const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : TestIds.INTERSTITIAL;
+
+    const interstitial = InterstitialAd.createForAdRequest(adUnitId);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+            interstitial.show();
+            setLoaded(true);
+        });
+
+        // Start loading the interstitial straight away
+        interstitial.load();
+
+        // Unsubscribe from events on unmount
+        return unsubscribe;
+    }, []);
+
+
+
+
     const { setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
-    const { winPlayer, player1Id, player2Id, roomName } = route.params;
+    const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()
     var f = 1;
@@ -78,7 +99,14 @@ function Win({ navigation, route, }) {
     }
 
     useEffect(() => {
-        updateWinning();
+        // interstitial.show();
+        if (!isOffline) {
+            updateWinning();
+        } else {
+            setplayer1Details(pl1D)
+            setplayer2Details(pl2D)
+        }
+
     }, [])
 
 
@@ -100,9 +128,9 @@ function Win({ navigation, route, }) {
 
 
                         <View style={styles.gameplayersDiv}>
-                            <WinPlayerMatching playerId={1} winningPlayer={winPlayer} playerDetails={player1Details} />
+                            <WinPlayerMatching playerId={1} winningPlayer={winPlayer} playerDetails={player1Details} isOffline={isOffline} />
                             <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <WinPlayerMatching playerId={2} winningPlayer={winPlayer} playerDetails={player2Details} />
+                            <WinPlayerMatching playerId={2} winningPlayer={winPlayer} playerDetails={player2Details} isOffline={isOffline} />
                         </View>
 
                     </LinearGradient>

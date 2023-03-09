@@ -6,7 +6,7 @@ import girl from '../../assets/girl.png'
 import coin from '../../assets/coin.png'
 import { UserProfileImage } from '../Config'
 
-const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails }) => {
+const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails, isOffline = false }) => {
     // console.log("aaa" + playerId);
 
     console.log(playerDetails);
@@ -15,15 +15,23 @@ const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails }) => {
             <View style={styles.container}>
                 {winningPlayer == 1 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
                 <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
-                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
-                <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 1 ? '+' : '-'}50</Text></View>
+                {!isOffline &&
+                    <>
+                        <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
+                        <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 1 ? '+' : '-'}50</Text></View>
+                    </>}
+
+
 
             </View>
             : <View style={styles.container}>
                 {winningPlayer == 2 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
                 <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
-                <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
-                <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 2 ? '+' : '-'}50</Text></View>
+                {!isOffline &&
+                    <>
+                        <View style={styles.coinContainer}><Image source={coin} style={styles.coin} /><Text style={styles.coinNumber}>{playerDetails?.coins}</Text></View>
+                        <View style={[styles.emptyContainer, { marginTop: 0 }]}><Image source={coin} style={styles.coin} /><Text style={[styles.coinNumber, { color: "#FFF" }]}>{winningPlayer == 2 ? '+' : '-'}50</Text></View>
+                    </>}
             </View>
     )
 }

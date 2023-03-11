@@ -18,13 +18,14 @@ import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import { StackActions } from '@react-navigation/native';
+import { getString } from '../language/Strings';
 
 
 
 function CreateRoom({ navigation, route, }) {
 
 
-    const { setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
 
     const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()
@@ -157,7 +158,7 @@ function CreateRoom({ navigation, route, }) {
                 </View>
                 <View style={{ marginTop: 50 }}>
 
-                    <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>Room Id:</Text></View>
+                    <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>{getString('roomId', language)}</Text></View>
                     <View style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>{roomName}</Text></View>
                     {/* <Button onPress={handleButtonPress} title="create"></Button> */}
                 </View>

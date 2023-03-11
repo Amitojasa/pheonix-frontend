@@ -13,6 +13,7 @@ export const homeScreenStyles = StyleSheet.create({
         elevation: 10
     },
     userSection: {
+        // backgroundColor: "#000",
         height: "60%",
         alignItems: "center",
         justifyContent: "center"
@@ -70,8 +71,8 @@ export const homeScreenStyles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18
     },
-    userName:{
-        color:"#fff",
+    userName: {
+        color: "#fff",
         fontWeight: "bold",
         fontSize: 18
     }

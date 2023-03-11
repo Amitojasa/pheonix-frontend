@@ -5,15 +5,16 @@ import boy from '../../assets/boy.png'
 import girl from '../../assets/girl.png'
 import coin from '../../assets/coin.png'
 import { UserProfileImage } from '../Config'
+import { getString } from '../language/Strings'
 
-const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails, isOffline = false }) => {
+const WinPlayerMatching = ({ language, playerId, winningPlayer, playerDetails, isOffline = false }) => {
     // console.log("aaa" + playerId);
 
     console.log(playerDetails);
     return (
         playerId == 1 ?
             <View style={styles.container}>
-                {winningPlayer == 1 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
+                {winningPlayer == 1 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>{getString('winner', language)}</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
                 <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
                 {!isOffline &&
                     <>
@@ -25,7 +26,7 @@ const WinPlayerMatching = ({ playerId, winningPlayer, playerDetails, isOffline =
 
             </View>
             : <View style={styles.container}>
-                {winningPlayer == 2 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>Winner</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
+                {winningPlayer == 2 ? <View style={styles.winnerContainer}><Text style={[styles.coinNumber, { color: "#FFF", fontSize: 20 }]}>{getString('winner', language)}</Text></View> : <View style={styles.emptyContainer} ><Text style={styles.coinNumber}></Text></View>}
                 <View style={styles.internalContainer}><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails?.userName}</Text></View>
                 {!isOffline &&
                     <>

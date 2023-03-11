@@ -19,35 +19,16 @@ import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import WinPlayerMatching from '../components/WinPlayerMatching';
-import { InterstitialAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
+import { getString } from '../language/Strings';
 
 
 function Win({ navigation, route, }) {
 
 
-    const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : TestIds.INTERSTITIAL;
-
-    const interstitial = InterstitialAd.createForAdRequest(adUnitId);
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-            interstitial.show();
-            setLoaded(true);
-        });
-
-        // Start loading the interstitial straight away
-        interstitial.load();
-
-        // Unsubscribe from events on unmount
-        return unsubscribe;
-    }, []);
 
 
-
-
-    const { setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
-    const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
+    const { language, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { bigTask, winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()
     var f = 1;
@@ -117,7 +98,7 @@ function Win({ navigation, route, }) {
         <View style={{ flex: 1 }}>
             <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }} end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
-                <View style={{ height: "65%" }}>
+                <View style={{ height: !isOffline ? "60%" : "55%" }}>
                     <LinearGradient colors={['#0073C5', '#9069FF']} style={[styles.linearGradient, {
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
@@ -127,25 +108,35 @@ function Win({ navigation, route, }) {
                         <LandscapeLogo></LandscapeLogo>
 
 
-                        <View style={styles.gameplayersDiv}>
-                            <WinPlayerMatching playerId={1} winningPlayer={winPlayer} playerDetails={player1Details} isOffline={isOffline} />
-                            <Text style={{ fontWeight: 'bold', color: "#FFF", marginBottom: 60, }}>VS</Text>
-                            <WinPlayerMatching playerId={2} winningPlayer={winPlayer} playerDetails={player2Details} isOffline={isOffline} />
+                        <View style={[styles.gameplayersDiv, isOffline && { marginBottom: "20%" }]}>
+                            <WinPlayerMatching language={language} playerId={1} winningPlayer={winPlayer} playerDetails={player1Details} isOffline={isOffline} />
+                            <Text style={[{ fontWeight: 'bold', color: "#FFF" }, isOffline && { justifyContent: "center", marginTop: "15%" }]}>VS</Text>
+                            <WinPlayerMatching language={language} playerId={2} winningPlayer={winPlayer} playerDetails={player2Details} isOffline={isOffline} />
                         </View>
 
                     </LinearGradient>
                 </View>
 
-                <TouchableOpacity onPress={() => { navigation.navigate("Home") }} style={{
+
+
+                <View style={{ backgroundColor: "#FFF", borderRadius: 15, marginHorizontal: "5%", padding: "5%", marginVertical: isOffline ? "20%" : "10%", elevation: 10 }}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}>{getString('performThisTask', language)}</Text>
+                    <Text style={{ fontSize: 16, marginTop: "5%", textAlign: "justify" }}>{bigTask}</Text>
+                </View>
+                <TouchableOpacity onPress={() => {
+
+                    navigation.navigate("Home")
+
+                }} style={[{
                     padding
-                        : 10, backgroundColor: "#FFF", borderRadius: 10, justifyContent: "center", alignItems: "center", margin: "20%", elevation: 10
-                }}><Text style={{
+                        : 10, backgroundColor: "#FFF", borderRadius: 10, justifyContent: "center", alignItems: "center", marginHorizontal: "20%", elevation: 10,
+                },]}><Text style={{
                     color: "#DB4A39", fontWeight
                         : "bold", fontSize: 20
-                }}>Go To Home</Text></TouchableOpacity>
+                }}>{getString('goToHome', language)}</Text></TouchableOpacity>
 
-            </LinearGradient>
-        </View>
+            </LinearGradient >
+        </View >
     )
 }
 
@@ -156,11 +147,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     gameplayersDiv: {
-        marginTop: 10,
-        flex: 1,
+        // marginTop: 10,
+        // flex: 1,
         flexDirection: 'row',
         // backgroundColor: "#000",
         alignItems: "center",
+
         justifyContent: "space-evenly"
     },
     roomIdText: { flexDirection: "row", justifyContent: "center", slefAlign: "center", marginLeft: "auto", marginRight: "auto", alignItems: 'center', backgroundColor: "#FFF", paddingVertical: 10, borderRadius: 25, width: "30%", height: 50, maxHeight: 50, marginVertical: 20, elevation: 10 },

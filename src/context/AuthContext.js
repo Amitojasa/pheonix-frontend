@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
     const [activePlayerId, setActivePlayerId] = useState(1);
     const [myPlayerId, setMyPlayerId] = useState(1);
     const [userInfo, setUserInfo] = useState(null);
+    const [language, setLanguage] = useState('en');
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
@@ -200,7 +201,7 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar
-            , setUserData, userData, setIsAvatar
+            , setUserData, userData, setIsAvatar, language, setLanguage
         }}>{children}
         </AuthContext.Provider>
 

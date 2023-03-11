@@ -9,9 +9,12 @@ import { AuthContext } from "../context/AuthContext";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { BASE_URL, UserProfileImage } from "../Config";
+import { getString } from '../language/Strings';
+
+import Icons from '@expo/vector-icons/FontAwesome';
 
 function Home({ navigation }) {
-    const { userInfo, setIsAvatar, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
+    const { userInfo, language, setLanguage, setIsAvatar, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState(null);
 
     const isFocused = useIsFocused();
@@ -53,6 +56,9 @@ function Home({ navigation }) {
             end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
             <View style={homeScreenStyles.userSection}>
                 <Image source={require('../../assets/logoHorizontal.png')} />
+                <TouchableOpacity onPress={() => {
+                    setLanguage(language == 'en' ? 'fr' : 'en')
+                }} style={{ backgroundColor: "#0073C5", position: "absolute", left: -10, top: "35%", padding: 10, borderRadius: 10, }}><Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10 }}><Icons name="language" size={20} color="white" /> {language == 'en' ? 'Fr' : 'En'}</Text></TouchableOpacity>
                 <View style={{ marginBottom: 30 }}>
                     {isAvatar ? <ImageBackground
                         source={UserProfileImage(userDetails ? userDetails.profileImage : '')}
@@ -94,11 +100,11 @@ function Home({ navigation }) {
                     <View style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                         <TouchableOpacity style={homeScreenStyles.homeBtn}
                             onPress={() => navigation.navigate('CreateRoom')}>
-                            <Text style={homeScreenStyles.homeBtnText}>Create Room</Text>
+                            <Text style={homeScreenStyles.homeBtnText}>{getString('createRoom', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={homeScreenStyles.homeBtn}
                             onPress={() => navigation.navigate('JoinRoom')}>
-                            <Text style={homeScreenStyles.homeBtnText}>Join Room</Text>
+                            <Text style={homeScreenStyles.homeBtnText}>{getString('joinRoom', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <TouchableOpacity style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }} onPress={() => {
@@ -114,7 +120,7 @@ function Home({ navigation }) {
                             }}
                             >
 
-                                <Text style={loginScreenStyles.facebookText}>Play Offline</Text>
+                                <Text style={loginScreenStyles.facebookText}>{getString('playOnSingleDevice', language)}</Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
                     </View>

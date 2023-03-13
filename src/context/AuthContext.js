@@ -1,13 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useRef, useState } from 'react'
-import { avatarImage, BASE_URL, taskList1 } from '../Config';
-import Navigation from '../Navigation';
+import React, { createContext, useEffect, useState } from 'react'
+import {avatarImage, BASE_URL, FB_APP_ID, taskList1} from '../Config';
 import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import { UserDataModel } from "../models/userDataModel";
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import 'react-native-get-random-values'
+import { nanoid } from 'nanoid'
 
 export const AuthContext = createContext();
 
@@ -36,6 +37,18 @@ export const AuthProvider = ({ children }) => {
         expoClientId: Constants.manifest.extra.EXPO_CLIENT_ID
     })
 
+    const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
+        clientId: FB_APP_ID,
+    });
+
+    useEffect(()=>{
+        if(fbResponse && fbResponse.type === "success" && fbResponse.authentication){
+            AsyncStorage.setItem('facebookAccessToken', JSON.stringify(fbResponse.authentication.accessToken)).then();
+            setUserExist(false);
+            setFacebookUserData(fbResponse).then()
+        }
+    },[fbResponse]);
+
     useEffect(() => {
         if (response?.type === 'success') {
             AsyncStorage.setItem('googleAccessToken', JSON.stringify(response.authentication.accessToken)).then();
@@ -44,6 +57,47 @@ export const AuthProvider = ({ children }) => {
         }
     }, [response]);
 
+    const setUserDetails = async (userDetails,data) => {
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
+        await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
+            console.log("aPI RES ;; => :;", apiRes)
+            const coinsData = {
+                "userId": data.id,
+                "userCoins": 1000,
+                "operation": "add"
+            }
+            console.log("COINS DATA :: => ::",coinsData)
+            if (apiRes.data.message !== 'User Exists. Please log in.') {
+                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
+            }
+
+            setUserExist(true);
+            setIsUserLoggedIn(true);
+            console.log(userDetails);
+            setUserData(userDetails)
+        });
+    }
+
+    const setFacebookUserData = async (fbResponse) => {
+        const userInfoResponse = await fetch(
+            `https://graph.facebook.com/me?access_token=${fbResponse.authentication.accessToken}&fields=id,name,email`
+        );
+        await userInfoResponse.json().then(async data => {
+            const username = (data.name.replace(/ /g, '').substring(0, 5) + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
+            const userDetails = {
+                id: data.id,
+                family_name: data.name.replace(/ /g, ''),
+                given_name: data.name.replace(/ /g, ''),
+                name: data.name,
+                email: data.email,
+                verified_email: true,
+                profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
+                userName: username
+            }
+            setUserDetails(userDetails,data).then();
+        });
+    }
+
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
             headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
@@ -51,7 +105,6 @@ export const AuthProvider = ({ children }) => {
 
         userInfoResponse.json().then(async data => {
             const username = (data.given_name.replace(/ /g, '').substring(0, 5) + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
-            console.log('username ---------', username)
             const userDetails = {
                 id: data.id,
                 family_name: data.family_name,
@@ -63,39 +116,28 @@ export const AuthProvider = ({ children }) => {
                 userName: username
             }
 
-            await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
-            await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
-                console.log("aPI RES ;; => :;", apiRes)
-                const coinsData = {
-                    "userId": data.id,
-                    "userCoins": 1000,
-                    "operation": "add"
-                }
-                if (apiRes.data.message !== 'User Exists. Please log in.') {
-                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
-                }
-
-                setUserExist(true);
-                setIsUserLoggedIn(true);
-                console.log(userDetails);
-                setUserData(userDetails)
-            });
-
-
-            if (userDetails.profileImage === 'cat' || userDetails.profileImage === 'panda' || userDetails.profileImage == "pig" || userDetails.profileImage === 'monkey' || userDetails.profileImage === 'hen' || userDetails.profileImage === 'fox' || userDetails.profileImage === 'dog' || userDetails.profileImage === 'cow') {
-                await AsyncStorage.setItem('isAvatar', "true")
-                // console.log("special", userDetails);
-                // console.log("Setting isAvatar true");
-            }
-            else {
-                await AsyncStorage.setItem('isAvatar', "false")
-                // console.log("special", userDetails);
-                // console.log("Setting isAvatar galse");
-            }
-
-
+            setUserDetails(userDetails,data).then();
         })
 
+    }
+
+    const handleGuestLogin = () => {
+        const username = ('guest' + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
+        const userDetails = {
+            id: nanoid(16),
+            family_name: 'guest',
+            given_name: username,
+            name: username,
+            email: username + `@${nanoid(5)}.com`,
+            verified_email: true,
+            profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
+            userName: username
+        }
+
+        const data = {
+            id: userDetails.id
+        }
+        setUserDetails(userDetails,data).then();
     }
 
     const logout = () => {
@@ -128,16 +170,6 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         }, 8000);
 
-        // await AsyncStorage.getItem('isAvatar').then((res) => {
-        //     setIsAvatar(res)
-        // })
-
-        // await AsyncStorage.getItem('avatar').then(res => {
-        //     setAvatar(res);
-        // })
-
-        // AsyncStorage.removeItem('googleAccessToken');
-        // AsyncStorage.removeItem('userInfo');
         // AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
@@ -205,7 +237,8 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar
-            , setUserData, userData, setIsAvatar, language, setLanguage
+            , setUserData, userData, setIsAvatar, language, setLanguage,
+            fbPromptAsync, handleGuestLogin
         }}>{children}
         </AuthContext.Provider>
 

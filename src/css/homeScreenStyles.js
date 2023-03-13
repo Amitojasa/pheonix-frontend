@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export const homeScreenStyles = StyleSheet.create({
     coinsDiv: {
@@ -24,19 +24,21 @@ export const homeScreenStyles = StyleSheet.create({
         color: "#000",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: {width: -1, height: 1},
+        textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 1,
     },
     userImage: {
-        width: 180,
-        height: 180,
+        width: "80%",
+        height: "80%",
+        maxWidth: "80%",
+        maxHeight: "80%",
+
+
     },
     editLogo: {
         width: 30,
         height: 30,
-        alignSelf: "flex-end",
-        top: 10,
-        left: 5
+
     },
     homeBtn: {
         width: "80%",
@@ -46,7 +48,7 @@ export const homeScreenStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         shadowColor: "rgba(0, 0, 0, 25)",
-        shadowOffset: {width: 1, height: 1},
+        shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,
@@ -68,15 +70,16 @@ export const homeScreenStyles = StyleSheet.create({
         fontSize: 18
     },
 
-    avatarDiv:{
+    avatarDiv: {
         marginBottom: 30,
         width: 200,
         height: 210,
-        backgroundColor: '#fff',
+
+        backgroundColor: '#FFF',
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 30,
-
+    },
     userName: {
         color: "#fff",
         fontWeight: "bold",

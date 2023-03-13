@@ -1,6 +1,4 @@
-
 const PROD = 'http://phoenix-rest-api.herokuapp.com';
-
 
 
 export const primaryColor = "#296896"
@@ -119,6 +117,7 @@ export const taskList1 = [
 
 ]
 
+export const avatarImage = ['cat', 'panda', 'pig', 'monkey', 'hen', 'fox', 'dog', 'cow']
 
 export const avatars = [
     [{
@@ -170,6 +169,30 @@ export const UserProfileImage = (profileImage) => {
             return require('../assets/dog.png')
         case 'cow':
             return require('../assets/cow.png')
+        default:
+            return require('../assets/placeholder.jpeg')
+
+    }
+}
+
+export const HomeUserProfileImage = (profileImage) => {
+    switch (profileImage) {
+        case 'cat':
+            return require('../assets/cat4.png')
+        case 'panda':
+            return require('../assets/panda4.png')
+        case 'pig':
+            return require('../assets/pig4.png')
+        case 'monkey':
+            return require('../assets/monkey4.png')
+        case 'hen':
+            return require('../assets/hen4.png')
+        case 'fox':
+            return require('../assets/fox4.png')
+        case 'dog':
+            return require('../assets/dog4.png')
+        case 'cow':
+            return require('../assets/cow4.png')
         default:
             return require('../assets/placeholder.jpeg')
 

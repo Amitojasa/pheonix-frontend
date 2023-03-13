@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 function TaskShowComponent({ task, setShowTask }) {
 
@@ -9,7 +9,7 @@ function TaskShowComponent({ task, setShowTask }) {
             <Text style={styles.title}>{task.taskName}</Text>
             <Text >{task.taskDesc}</Text>
             <Text style={styles.time}>{task.taskTiming} sec</Text>
-            <Button onPress={() => setShowTask(false)} title="Done"></Button>
+            <TouchableOpacity style={{ backgroundColor: "#DB4A39", borderRadius: 10, flex: 1, width: "80%", flexDirection: "row", padding: 10, justifyContent: "center", marginTop: 10 }} onPress={() => setShowTask(false)}><Text style={{ color: "#FFFFFF", fontSize: 16 }}>Done</Text></TouchableOpacity>
         </View>
 
     )
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
         padding: 20,
+        borderRadius: 10,
 
     },
 
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 
     ,
     description: {
-        fontWeight: 16,
+        fontWeight: 18,
         textAlign: 'justify'
     },
     time: {

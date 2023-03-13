@@ -13,6 +13,7 @@ export const homeScreenStyles = StyleSheet.create({
         elevation: 10
     },
     userSection: {
+        // backgroundColor: "#000",
         height: "60%",
         alignItems: "center",
         justifyContent: "center"
@@ -66,6 +67,7 @@ export const homeScreenStyles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18
     },
+
     avatarDiv:{
         marginBottom: 30,
         width: 200,
@@ -74,5 +76,11 @@ export const homeScreenStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 30,
+
+    userName: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 18
+
     }
 })

@@ -10,8 +10,13 @@ import {useIsFocused} from "@react-navigation/native";
 import axios from "axios";
 import {BASE_URL, HomeUserProfileImage, UserProfileImage} from "../Config";
 
-function Home({navigation}) {
-    const {userInfo, setIsAvatar, isAvatar, userData, avatar, setAvatar, setUserData} = useContext(AuthContext);
+
+import { getString } from '../language/Strings';
+
+import Icons from '@expo/vector-icons/FontAwesome';
+
+function Home({ navigation }) {
+    const { userInfo, language, setLanguage, setIsAvatar, isAvatar, userData, avatar, setAvatar, setUserData } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState(null);
 
     const isFocused = useIsFocused();
@@ -33,6 +38,7 @@ function Home({navigation}) {
         await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
             setUserDetails(res.data.message[0]);
             setUserData(res.data.message[0]);
+            console.log(res.data.message[0]);
         })
         AsyncStorage.getItem('isAvatar').then((res) => {
             if (res === 'true') {
@@ -50,7 +56,10 @@ function Home({navigation}) {
                         start={{x: 1, y: 0.3}}
                         end={{x: 0, y: 1}} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
             <View style={homeScreenStyles.userSection}>
-                <Image source={require('../../assets/logoHorizontal.png')}/>
+                <Image source={require('../../assets/logoHorizontal.png')} />
+                <TouchableOpacity onPress={() => {
+                    setLanguage(language == 'en' ? 'fr' : 'en')
+                }} style={{ backgroundColor: "#0073C5", position: "absolute", left: -10, top: "35%", padding: 10, borderRadius: 10, }}><Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10 }}><Icons name="language" size={20} color="white" /> {language == 'en' ? 'Fr' : 'En'}</Text></TouchableOpacity>
                 <View style={homeScreenStyles.avatarDiv}>
                     <ImageBackground
                         source={HomeUserProfileImage(userDetails ? userDetails.profileImage : '')}
@@ -76,17 +85,29 @@ function Home({navigation}) {
                                 style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
                     <View style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                         <TouchableOpacity style={homeScreenStyles.homeBtn}
-                                          onPress={() => navigation.navigate('CreateRoom')}>
-                            <Text style={homeScreenStyles.homeBtnText}>Create Room</Text>
+                            onPress={() => navigation.navigate('CreateRoom')}>
+                            <Text style={homeScreenStyles.homeBtnText}>{getString('createRoom', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={homeScreenStyles.homeBtn}
-                                          onPress={() => navigation.navigate('JoinRoom')}>
-                            <Text style={homeScreenStyles.homeBtnText}>Join Room</Text>
+                            onPress={() => navigation.navigate('JoinRoom')}>
+                            <Text style={homeScreenStyles.homeBtnText}>{getString('joinRoom', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View style={{borderBottomColor: "#fff", borderBottomWidth: 1}}>
-                                <Text style={loginScreenStyles.facebookText}>Play Offline</Text>
-                            </View>
+                            <TouchableOpacity style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }} onPress={() => {
+                                navigation.navigate('Offline', {
+                                    roomName: Math.floor(100000 + Math.random() * 900000).toString(), player1Details: {
+                                        userName: userData.userName, id: userData.id, profileImage: userData.profileImage, coins: userData.coins
+                                    }, player2Details: {
+
+                                        userName: "Guest", profileImage: '', coins: 0
+                                    }
+
+                                })
+                            }}
+                            >
+
+                                <Text style={loginScreenStyles.facebookText}>{getString('playOnSingleDevice', language)}</Text>
+                            </TouchableOpacity>
                         </TouchableOpacity>
                     </View>
                 </LinearGradient>

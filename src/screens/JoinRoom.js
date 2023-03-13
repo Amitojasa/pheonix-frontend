@@ -19,11 +19,12 @@ import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import { StackActions } from '@react-navigation/native';
+import { getString } from '../language/Strings';
 
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { myPlayerId, setTaskList, taskList, setMyPlayerId, userData } = useContext(AuthContext);
+    const { language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData } = useContext(AuthContext);
 
     const [player1Details, setPlayer1Details] = useState()
 
@@ -42,7 +43,7 @@ const JoinRoom = ({ navigation, route }) => {
 
                     GameInfo: {
                         player1Id: d.data().GameInfo.player1Id,
-                        player2Id: userData._id,
+                        player2Id: userData.id,
                         player1Points: d.data().GameInfo.player1Points,
                         player2Points: d.data().GameInfo.player2Points,
 
@@ -55,15 +56,17 @@ const JoinRoom = ({ navigation, route }) => {
                     setPlayer1Details({ userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage })
 
                     await getTaskListFromAPI()
+                    setTimeout(() => {
+                        navigation.dispatch(
+                            StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
+                    }, 2000);
 
-                    navigation.dispatch(
-                        StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
                 })
 
 
 
             } else {
-                Alert.alert("Sorry, Wrong Room ID.")
+                Alert.alert(getString('wrongRoomId', language))
             }
             // console.log(snapshot.data().latestMessage.text)
 
@@ -106,9 +109,9 @@ const JoinRoom = ({ navigation, route }) => {
                 </View>
                 <View style={{ marginTop: 20 }}>
 
-                    <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>Room Id:</Text></View>
-                    <View style={styles.roomIdValContainer}><TextInput style={styles.roomIdTextEditVal} placeholder="Enter Room Id" value={roomName} onChangeText={setRoomName}></TextInput></View>
-                    <TouchableOpacity onPress={() => handleJoinRoom()} style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>Join Room</Text></TouchableOpacity>
+                    <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>{getString('roomId', language)}</Text></View>
+                    <View style={styles.roomIdValContainer}><TextInput style={styles.roomIdTextEditVal} placeholder={getString('enterRoomId', language)} value={roomName} onChangeText={setRoomName}></TextInput></View>
+                    <TouchableOpacity onPress={() => handleJoinRoom()} style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>{getString('joinRoom', language)}</Text></TouchableOpacity>
                     {/* <Button onPress={handleButtonPress} title="create"></Button> */}
                 </View>
             </LinearGradient>

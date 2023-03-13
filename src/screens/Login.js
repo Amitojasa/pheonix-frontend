@@ -48,6 +48,7 @@ const Login = ({ navigation, route }) => {
                                 <Image source={require('../../assets/facebookLogo.png')} />
                             </View>
                         </TouchableOpacity>
+                        {/* //TODO: remove this */}
                         <TouchableOpacity>
                             <View style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }}>
                                 <Text style={loginScreenStyles.facebookText}>Play as Guest</Text>

@@ -1,18 +1,20 @@
-import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
-import {commonStyles} from "../css/commonStyles";
-import {LinearGradient} from "expo-linear-gradient";
-import {loginScreenStyles} from "../css/loginScreenStyles";
-import {avatarScreenStyles} from "../css/avatarScreenStyles";
-import React, {useEffect, useState} from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { commonStyles } from "../css/commonStyles";
+import { LinearGradient } from "expo-linear-gradient";
+import { loginScreenStyles } from "../css/loginScreenStyles";
+import { avatarScreenStyles } from "../css/avatarScreenStyles";
+import React, { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {avatars, BASE_URL} from "../Config";
+import { avatars, BASE_URL } from "../Config";
 import axios from "axios";
+import { getString } from "../language/Strings";
+import { AuthContext } from "../context/AuthContext";
 
 
-export const Avatar = ({navigation}) => {
+export const Avatar = ({ navigation }) => {
     const [selectedAvatar, setSelectedAvatar] = useState('');
     const [isSelected, setIsSelected] = useState();
-
+    const { language } = useContext(AuthContext);
     const handleAvatarChange = async () => {
         await AsyncStorage.setItem("isAvatar", "true");
         const userInfo = await AsyncStorage.getItem('userInfo');
@@ -35,43 +37,43 @@ export const Avatar = ({navigation}) => {
     const renderAvatarImage = (item) => {
         switch (item.id) {
             case 1:
-                return <Image source={require('../../assets/cat.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/cat.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 2:
-                return <Image source={require('../../assets/panda.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/panda.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 3:
-                return <Image source={require('../../assets/pig.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/pig.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 4:
-                return <Image source={require('../../assets/monkey.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/monkey.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 5:
-                return <Image source={require('../../assets/hen.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/hen.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 6:
-                return <Image source={require('../../assets/fox.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/fox.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 7:
-                return <Image source={require('../../assets/dog.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/dog.png')} style={[avatarScreenStyles.imageDiv]} />;
             case 8:
-                return <Image source={require('../../assets/cow.png')} style={[avatarScreenStyles.imageDiv]}/>;
+                return <Image source={require('../../assets/cow.png')} style={[avatarScreenStyles.imageDiv]} />;
         }
     }
 
     return (
         <View style={commonStyles.centerContainer}>
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
-                            start={{x: 1, y: 0.3}}
-                            end={{x: 0, y: 1}} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
+                start={{ x: 1, y: 0.3 }}
+                end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                 <View style={avatarScreenStyles.avatarThumbnailDiv}>
-                    <Image source={require('../../assets/logoHorizontal.png')}/>
+                    <Image source={require('../../assets/logoHorizontal.png')} />
                     <View style={avatarScreenStyles.avatarDiv}>
                         <View style={avatarScreenStyles.avatarBtn}>
-                            <Text style={avatarScreenStyles.avatarText}>Choose Avatar</Text>
+                            <Text style={avatarScreenStyles.avatarText}>{getString('chooseAvatar', language)}</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={loginScreenStyles.authSection}>
                     <LinearGradient colors={['#0073C5', '#9069FF']}
-                                    start={{x: 1, y: 0}}
-                                    end={{x: 0, y: 1}}
-                                    style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
+                        start={{ x: 1, y: 0 }}
+                        end={{ x: 0, y: 1 }}
+                        style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
 
                         <View style={{
                             flexDirection: "row",
@@ -84,11 +86,11 @@ export const Avatar = ({navigation}) => {
                                     {items.map((subItems, index2) =>
                                         <TouchableOpacity
                                             style={[isSelected === subItems.id && avatarScreenStyles.imageBorder,
-                                                avatarScreenStyles.marginBtm]}
+                                            avatarScreenStyles.marginBtm]}
                                             key={index2} onPress={() => {
-                                            setSelectedAvatar(subItems.avatar);
-                                            setIsSelected(subItems.id)
-                                        }}>
+                                                setSelectedAvatar(subItems.avatar);
+                                                setIsSelected(subItems.id)
+                                            }}>
                                             {renderAvatarImage(subItems)}
                                         </TouchableOpacity>
                                     )}

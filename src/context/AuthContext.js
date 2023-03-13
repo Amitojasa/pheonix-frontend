@@ -18,6 +18,7 @@ export const AuthProvider = ({children}) => {
     const [activePlayerId, setActivePlayerId] = useState(1);
     const [myPlayerId, setMyPlayerId] = useState(1);
     const [userInfo, setUserInfo] = useState(null);
+    const [language, setLanguage] = useState('en');
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(-1)
@@ -80,10 +81,17 @@ export const AuthProvider = ({children}) => {
                 setUserData(userDetails)
             });
 
-            if (userDetails.profileImage === 'cat' || userDetails.profileImage === 'panda' || userDetails.profileImage === 'pig' || userDetails.profileImage === 'monkey' || userDetails.profileImage === 'hen' || userDetails.profileImage === 'fox' || userDetails.profileImage === 'dog' || userDetails.profileImage === 'cow')
+
+            if (userDetails.profileImage === 'cat' || userDetails.profileImage === 'panda' || userDetails.profileImage == "pig" || userDetails.profileImage === 'monkey' || userDetails.profileImage === 'hen' || userDetails.profileImage === 'fox' || userDetails.profileImage === 'dog' || userDetails.profileImage === 'cow') {
                 await AsyncStorage.setItem('isAvatar', "true")
-            else
+                // console.log("special", userDetails);
+                // console.log("Setting isAvatar true");
+            }
+            else {
                 await AsyncStorage.setItem('isAvatar', "false")
+                // console.log("special", userDetails);
+                // console.log("Setting isAvatar galse");
+            }
 
 
         })
@@ -197,7 +205,7 @@ export const AuthProvider = ({children}) => {
             userExist,
             userInfo,
             isAvatar
-            , setUserData, userData, setIsAvatar
+            , setUserData, userData, setIsAvatar, language, setLanguage
         }}>{children}
         </AuthContext.Provider>
 

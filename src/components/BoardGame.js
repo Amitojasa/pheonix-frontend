@@ -13,9 +13,10 @@ import bomb from '../../assets/bomb.png'
 import trophy from '../../assets/trophy.png'
 import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
+import { StackActions } from '@react-navigation/native';
 
 
-function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation }) {
+function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation, isOffline = false, player1Details, player2Details }) {
     const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
 
     const [matrix, setMatrix] = useState([])
@@ -112,10 +113,12 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                 if (activePId == 1) {
                     // console.log("rr 1");
                     if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
-                        Alert.alert("Player 1 Won the game", "Both the players will go for luch together and Player 2 will have to pay.")
+
                         setGameEnded(true);
                         setTimeout(() => {
-                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                            navigation.dispatch(
+                                StackActions.replace
+                                    ('Win', { winPlayer: 1, roomName: roomName, isOffline: isOffline, pl1D: player1Details, pl2D: player2Details, bigTask: "Both the players will go for luch together and loosing player will have to pay." })); //TODO:
                         }, 2000);
                         return;
                     }
@@ -139,10 +142,12 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                 else if (activePId == 2) {
                     console.log("rr 2");
                     if (player2[0] == EndPosition[0] && player2[1] == EndPosition[1]) {
-                        Alert.alert("Player 2 Won the game", "Player 1 has to buy a movie for Player 2 and both have to go together for a movie.");
+
                         setGameEnded(true);
                         setTimeout(() => {
-                            navigation.navigate('Win', { winPlayer: 1 }) //TODO:
+                            navigation.dispatch(
+                                StackActions.replace
+                                    ('Win', { winPlayer: 2, roomName: roomName, isOffline: isOffline, bigTask: "Player 1 has to buy a movie for Player 2 and both have to go together for a movie." })); //TODO:
                         }, 2000);
                         return;
                     }

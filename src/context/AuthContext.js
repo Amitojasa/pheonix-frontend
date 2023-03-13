@@ -1,17 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useRef, useState } from 'react'
-import { BASE_URL, taskList1 } from '../Config';
+import React, {createContext, useEffect, useRef, useState} from 'react'
+import {avatarImage, BASE_URL, taskList1} from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
-import { UserDataModel } from "../models/userDataModel";
+import {UserDataModel} from "../models/userDataModel";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -45,11 +45,12 @@ export const AuthProvider = ({ children }) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
         })
 
         userInfoResponse.json().then(async data => {
-            const username = (data.given_name + Math.floor(Math.random() * 100000)).toLowerCase()
+            const username = (data.given_name.replace(/ /g, '').substring(0, 5) + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
+            console.log('username ---------', username)
             const userDetails = {
                 id: data.id,
                 family_name: data.family_name,
@@ -57,17 +58,21 @@ export const AuthProvider = ({ children }) => {
                 name: data.name,
                 email: data.email,
                 verified_email: data.verified_email,
-                profileImage: data.picture,
+                profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
                 userName: username
             }
+
             await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
             await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
+                console.log("aPI RES ;; => :;", apiRes)
                 const coinsData = {
                     "userId": data.id,
                     "userCoins": 1000,
                     "operation": "add"
                 }
-                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
+                if (apiRes.data.message !== 'User Exists. Please log in.') {
+                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
+                }
 
                 setUserExist(true);
                 setIsUserLoggedIn(true);
@@ -79,7 +84,6 @@ export const AuthProvider = ({ children }) => {
                 await AsyncStorage.setItem('isAvatar', "true")
             else
                 await AsyncStorage.setItem('isAvatar', "false")
-
 
 
         })
@@ -126,7 +130,7 @@ export const AuthProvider = ({ children }) => {
 
         // AsyncStorage.removeItem('googleAccessToken');
         // AsyncStorage.removeItem('userInfo');
-        // AsyncStorage.clear();
+        AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {

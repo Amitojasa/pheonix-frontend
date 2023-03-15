@@ -58,18 +58,27 @@ export const AuthProvider = ({ children }) => {
     }, [response]);
 
     const setUserDetails = async (userDetails,data) => {
-        await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
         await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
-            console.log("aPI RES ;; => :;", apiRes)
             const coinsData = {
                 "userId": data.id,
                 "userCoins": 1000,
                 "operation": "add"
             }
-            console.log("COINS DATA :: => ::",coinsData)
             if (apiRes.data.message !== 'User Exists. Please log in.') {
                 await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
             }
+
+            const userDataRes = {
+                id: apiRes.data.data.id,
+                family_name: apiRes.data.data.family_name,
+                given_name: apiRes.data.data.given_name,
+                name: apiRes.data.data.name,
+                email: apiRes.data.data.email,
+                verified_email: apiRes.data.data.verified_email,
+                profileImage: apiRes.data.data.profileImage,
+                userName: apiRes.data.data.userName
+            }
+            await AsyncStorage.setItem('userInfo', JSON.stringify(userDataRes));
 
             setUserExist(true);
             setIsUserLoggedIn(true);
@@ -140,22 +149,12 @@ export const AuthProvider = ({ children }) => {
         setUserDetails(userDetails,data).then();
     }
 
-    const logout = () => {
+    const logout = async () => {
         setIsLoading(true);
-        // axios.post(`${BASE_URL}/api/v1/logout`, {}, {
-        //     headers: {
-        //         Authorization: `Bearer ${userInfo.access_token}`
-        //     }
-        // }).then(res => {
-        //     AsyncStorage.removeItem('userInfo');
-        //     setUserInfo(null);
-        //     setIsLoading(false);
-
-        // }).catch(e => {
-        //     console.log(`logout error ${e.response}`);
-
-
-        AsyncStorage.removeItem('googleAccessToken');
+        setUserExist(false);
+        setIsUserLoggedIn(false);
+        setUserData(null);
+        await AsyncStorage.clear();
         setIsLoading(false);
         // })
 

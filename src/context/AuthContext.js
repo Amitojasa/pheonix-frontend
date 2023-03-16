@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
-import { avatarImage, BASE_URL, FB_APP_ID, taskList1 } from '../Config';
+import { avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1 } from '../Config';
 import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
 import Constants from 'expo-constants';
@@ -172,7 +172,7 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         }, 8000);
 
-        // AsyncStorage.clear();
+        AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {

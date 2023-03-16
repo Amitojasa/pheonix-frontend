@@ -125,7 +125,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
                 if (activePId == 1) {
                     // console.log("rr 1");
-                    if (player1[0] >= EndPosition[0] && player1[1] >= EndPosition[1]) {
+                    if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
 
                         setGameEnded(true);
                         setTimeout(() => {
@@ -153,8 +153,8 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
                 }
                 else if (activePId == 2) {
-                    console.log("rr 2");
-                    if (player2[0] >= EndPosition[0] && player2[1] >= EndPosition[1]) {
+
+                    if (player2[0] == EndPosition[0] && player2[1] == EndPosition[1]) {
 
                         setGameEnded(true);
                         setTimeout(() => {

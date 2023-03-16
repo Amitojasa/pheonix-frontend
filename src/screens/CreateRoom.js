@@ -62,7 +62,7 @@ function CreateRoom({ navigation, route, }) {
 
 
                 },
-                player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins },
+                player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id },
                 player2Details: {},
                 diceMove: 1,
                 activePlayerId: activePlayerId,

@@ -37,7 +37,7 @@ const JoinRoom = ({ navigation, route }) => {
 
 
             if (d.data()) {
-
+                console.log(d.data());
                 await updateDoc(doc(database, 'rooms', roomName), {
 
 

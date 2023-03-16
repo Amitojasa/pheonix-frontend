@@ -109,6 +109,9 @@ const Game = ({ navigation, route }) => {
                 // createdAt: new Date().getTime(),
 
             },
+
+
+
             GameInfo: {
                 player1Id: player1Details.id,
                 player2Id: player2Details.id,
@@ -119,6 +122,7 @@ const Game = ({ navigation, route }) => {
             activePlayerId: (activePlayerId)
 
         }).then((data) => {
+
             playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
             // setActivePlayerId((activePlayerId) % 2 + 1);
             // changePlayerId();
@@ -239,7 +243,7 @@ const Game = ({ navigation, route }) => {
         setDisableDice(false)
         let r = (activePlayerId) % 2 + 1;
 
-        d = {
+        var d = {
 
         }
 

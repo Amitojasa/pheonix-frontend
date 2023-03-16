@@ -9,6 +9,8 @@ export const en = {
     goToHome: "Go To Home",
     performThisTask: "Perform This Task",
     winner: "Winner",
-    rollTheDice: "Roll Dice"
-
+    rollTheDice: "Roll Dice",
+    loginWithGoogle: "Login with Google",
+    loginWithFacebook: "Login with Facebook",
+    playAsGuest: "Play as Guest"
 }

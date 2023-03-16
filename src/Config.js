@@ -199,6 +199,7 @@ export const HomeUserProfileImage = (profileImage) => {
     }
 }
 
+export const FB_APP_ID = "230981376160035"
 
 //uncomment the one that you want to use and comment other
 

@@ -6,5 +6,8 @@ export const fr = {
     chooseAvatar: "Choose Avatar",
     enterRoomId: "Enter Room Id",
     wrongRoomId: "Sorry, Wrong Room ID.",
-    winner: "Winner"
+    winner: "Winner",
+    loginWithGoogle: "Login with Google",
+    loginWithFacebook: "Login with Facebook",
+    playAsGuest: "Play as Guest"
 }

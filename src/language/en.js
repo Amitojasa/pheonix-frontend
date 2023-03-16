@@ -8,5 +8,8 @@ export const en = {
     wrongRoomId: "Sorry, Wrong Room ID.",
     goToHome: "Go To Home",
     performThisTask: "Perform This Task",
-    winner: "Winner"
+    winner: "Winner",
+    loginWithGoogle: "Login with Google",
+    loginWithFacebook: "Login with Facebook",
+    playAsGuest: "Play as Guest"
 }

@@ -4,7 +4,7 @@ import { Alert, Dimensions, Image, ImageBackground, StyleSheet, Text, View } fro
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Icons from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { EndPosition, flags, mines, StartPosition } from '../Config';
+import { EndPosition, boards, StartPosition } from '../Config';
 import { useFirstRender } from '../customhooks/useFirstRender';
 import { AuthContext } from '../context/AuthContext';
 import blueTile from '../../assets/blueTile.png';
@@ -18,13 +18,25 @@ import { StackActions } from '@react-navigation/native';
 
 function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation, isOffline = false, player1Details, player2Details }) {
     const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
-
+    let rn = (roomName)
+    var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+    var flags = boards[rndInt1].flags
+    var mines = boards[rndInt1].mines
     const [matrix, setMatrix] = useState([])
     const windowWidth = Dimensions.get('window').width;
-
+    // const [flags, setFlags] = useState(boards[0].flags)
+    // const [mines, setMines] = useState(boards[0].mines)
     const firstRender = useFirstRender();
 
     const create2DMatrix = () => {
+
+        let rn = (roomName)
+        var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+
+        // setFlags(boards[rndInt1].flags);
+        // setMines(boards[rndInt1].mines);
+        // let flags=boards[rndInt1].flags
+        // let mines=boards[rndInt1].mines
 
         var a = [];
 
@@ -33,14 +45,15 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
             a[i] = [0, 0, 0, 0, 0];
         }
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
 
             a[flags[i][0]][flags[i][1]] = 1
         }
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
 
             a[mines[i][0]][mines[i][1]] = -1
+
         }
 
 
@@ -112,18 +125,18 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
                 if (activePId == 1) {
                     // console.log("rr 1");
-                    if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
+                    if (player1[0] >= EndPosition[0] && player1[1] >= EndPosition[1]) {
 
                         setGameEnded(true);
                         setTimeout(() => {
                             navigation.dispatch(
                                 StackActions.replace
-                                    ('Win', { winPlayer: 1, roomName: roomName, isOffline: isOffline, pl1D: player1Details, pl2D: player2Details, bigTask: "Both the players will go for luch together and loosing player will have to pay." })); //TODO:
+                                    ('Win', { winPlayer: 1, roomName: roomName, isOffline: isOffline, pl1D: player1Details, pl2D: player2Details })); //TODO:
                         }, 2000);
                         return;
                     }
 
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < 6; i++) {
                         if (player1[0] == flags[i][0] && player1[1] == flags[i][1]) {
                             console.log("flag for 1", player2);
                             reachedFlag(activePId, i);
@@ -141,17 +154,17 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                 }
                 else if (activePId == 2) {
                     console.log("rr 2");
-                    if (player2[0] == EndPosition[0] && player2[1] == EndPosition[1]) {
+                    if (player2[0] >= EndPosition[0] && player2[1] >= EndPosition[1]) {
 
                         setGameEnded(true);
                         setTimeout(() => {
                             navigation.dispatch(
                                 StackActions.replace
-                                    ('Win', { winPlayer: 2, roomName: roomName, isOffline: isOffline, bigTask: "Player 1 has to buy a movie for Player 2 and both have to go together for a movie." })); //TODO:
+                                    ('Win', { winPlayer: 2, roomName: roomName, isOffline: isOffline, pl1D: player1Details, pl2D: player2Details, })); //TODO:
                         }, 2000);
                         return;
                     }
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < 6; i++) {
                         if (player2[0] == flags[i][0] && player2[1] == flags[i][1]) {
                             // console.log("flag for 2", player2);
                             reachedFlag(activePId, i);
@@ -191,6 +204,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     useEffect(() => {
         selectPawns();
+
         create2DMatrix();
     }, [])
 

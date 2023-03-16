@@ -7,10 +7,11 @@ import DiceTwo from "../../assets/dice2.png";
 import DiceThree from "../../assets/dice3.png";
 import { database } from '../configs/firebase';
 import { AuthContext } from '../context/AuthContext';
+import { getString } from '../language/Strings';
 function DiceComponent({ isOffline = false, diceMove, setDisableDice, disableDice, setDiceMove, playMove, changePlayerId, roomName }) {
 
     const diceArray = [DiceOne, DiceTwo, DiceThree]
-    const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId } = useContext(AuthContext);
+    const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, language } = useContext(AuthContext);
 
     const rollDice = () => {
         // startRotateImage();
@@ -88,7 +89,7 @@ function DiceComponent({ isOffline = false, diceMove, setDisableDice, disableDic
 
                     }}
                     source={diceArray[diceMove - 1]}
-                /><Text style={{ flex: 1, alignSelf: "center", color: "#FFF", fontWeight: "bold" }}>Roll the Dice</Text>
+                /><Text style={{ flex: 1, alignSelf: "center", color: "#FFF", fontWeight: "bold" }}>{getString('rollTheDice', language)}</Text>
             </TouchableOpacity>
         </View>
     )

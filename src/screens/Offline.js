@@ -4,7 +4,7 @@ import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { BASE_URL, Cols, EndPosition, flags, mines, noOfTasks, Rows, StartPosition } from '../Config';
+import { BASE_URL, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { AuthContext } from '../context/AuthContext';
@@ -19,7 +19,7 @@ import axios from 'axios';
 const Offline = ({ navigation, route }) => {
 
     const { roomName, player1Details, player2Details } = route.params;
-    const [player1, setPlayer1] = useState(EndPosition)
+    const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
     const [diceMove, setDiceMove] = useState(1)
     const [diceVal, setDiceVal] = useState(1)
@@ -38,18 +38,23 @@ const Offline = ({ navigation, route }) => {
 
     var firstTime = false;
 
-    const { taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList } = useContext(AuthContext);
+    const { taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask } = useContext(AuthContext);
 
     const getTaskListFromBackend = async (rn) => {
+
         await axios.post(`${BASE_URL}/api/room/create`, {
-            "taskNo": 20,
+            "taskNo": 40,
             // "hostUserId": (JSON.parse(userInfo).id),
             "hostUserId": "123456",
             "roomId": rn,
-            "taskType": "offline"
+            "taskType": "offline",
+            "bigTaskNo": 1,
+            "bigTaskType": "offline"
+
         }).then((apiRes) => {
-            console.log('res tasks create :: = > :: ', apiRes.data.message.tasks);
-            if (apiRes.data.message.tasks) setTaskList(apiRes.data.message.tasks);
+            console.log('res tasks create :: = > :: ', apiRes.data.message);
+            if (apiRes.data.message.tasks && apiRes.data.message.tasks.length > 0) setTaskList(apiRes.data.message.tasks);
+            if (apiRes.data.message.bigTasks && apiRes.data.message.bigTasks.length > 0) setBigTask(apiRes.data.message.bigTasks[0]);
         }).catch(err => {
             console.log("Error :", err);
         })
@@ -265,7 +270,7 @@ const Offline = ({ navigation, route }) => {
                                 onPress: () =>
                                     navigation.dispatch(
                                         StackActions.replace
-                                            ('Win', { winPlayer: (activePlayerId % 2) + 1, roomName: roomName, isOffline: true })
+                                            ('Win', { winPlayer: (activePlayerId % 2) + 1, roomName: roomName, isOffline: true, pl1D: player1Details, pl2D: player2Details, })
                                     )
 
                             },

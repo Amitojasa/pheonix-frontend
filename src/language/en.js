@@ -8,5 +8,7 @@ export const en = {
     wrongRoomId: "Sorry, Wrong Room ID.",
     goToHome: "Go To Home",
     performThisTask: "Perform This Task",
-    winner: "Winner"
+    winner: "Winner",
+    rollTheDice: "Roll Dice"
+
 }

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import React, { createContext, useEffect, useRef, useState } from 'react'
-import { avatarImage, BASE_URL, taskList1 } from '../Config';
+import { avatarImage, BASE_URL, taskList1, bigTaskList1 } from '../Config';
 import Navigation from '../Navigation';
 import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
     const [taskIndex, setTaskIndex] = useState(-1)
 
     const [taskList, setTaskList] = useState(taskList1)
+    const [bigTask, setBigTask] = useState(bigTaskList1[Math.floor(Math.random() * (10))])
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
@@ -43,6 +44,48 @@ export const AuthProvider = ({ children }) => {
             setGoogleUserLoginData(response).then();
         }
     }, [response]);
+
+    const setUserDetails = async (userDetails, data) => {
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userDetails));
+        await axios.post(`${BASE_URL}/api/loginByOAuth`, userDetails).then(async (apiRes) => {
+            console.log("aPI RES ;; => :;", apiRes)
+            const coinsData = {
+                "userId": data.id,
+                "userCoins": 1000,
+                "operation": "add"
+            }
+            console.log("COINS DATA :: => ::", coinsData)
+            if (apiRes.data.message !== 'User Exists. Please log in.') {
+                await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).catch(er => console.log(er));
+            }
+
+            setUserExist(true);
+            setIsUserLoggedIn(true);
+            console.log(userDetails);
+            setUserData(userDetails)
+        });
+    }
+
+    const handleGuestLogin = () => {
+        const username = ('guest' + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
+
+        const userDetails = {
+            id: Math.floor(Math.random() * 10000000000),
+            family_name: 'guest',
+            given_name: username,
+            name: username,
+            email: username + '@gmail.com',
+            verified_email: true,
+            profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
+            userName: username
+        }
+
+        const data = {
+            id: userDetails.id
+        }
+        setUserDetails(userDetails, data).then();
+        console.log("GUEST USER DETAILS :: => ::", userDetails)
+    }
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
@@ -71,14 +114,15 @@ export const AuthProvider = ({ children }) => {
                     "userCoins": 1000,
                     "operation": "add"
                 }
+
                 if (apiRes.data.message !== 'User Exists. Please log in.') {
-                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData);
+                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).catch(er => console.log(er));
                 }
 
                 setUserExist(true);
                 setIsUserLoggedIn(true);
                 console.log(userDetails);
-                setUserData(userDetails)
+                setUserData(userDetails) //store response
             });
 
 
@@ -186,6 +230,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
+            bigTask, setBigTask,
             setTaskList,
             taskList,
             taskIndex,
@@ -205,7 +250,7 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar
-            , setUserData, userData, setIsAvatar, language, setLanguage
+            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin
         }}>{children}
         </AuthContext.Provider>
 

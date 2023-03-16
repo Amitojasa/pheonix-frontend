@@ -7,7 +7,7 @@ import { loginScreenStyles } from "../css/loginScreenStyles";
 import { splashScreenStyle } from "../css/splashScreenStyles";
 
 const Login = ({ navigation, route }) => {
-    const { login, promptAsync } = useContext(AuthContext);
+    const { login, promptAsync, handleGuestLogin } = useContext(AuthContext);
 
     return (
         <View style={commonStyles.centerContainer}>
@@ -49,7 +49,7 @@ const Login = ({ navigation, route }) => {
                             </View>
                         </TouchableOpacity>
                         {/* //TODO: remove this */}
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleGuestLogin()}>
                             <View style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }}>
                                 <Text style={loginScreenStyles.facebookText}>Play as Guest</Text>
                             </View>

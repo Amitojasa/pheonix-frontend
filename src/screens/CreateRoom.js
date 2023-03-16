@@ -25,7 +25,7 @@ import { getString } from '../language/Strings';
 function CreateRoom({ navigation, route, }) {
 
 
-    const { language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask } = useContext(AuthContext);
 
     const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()
@@ -101,7 +101,7 @@ function CreateRoom({ navigation, route, }) {
                         setPlayer2Details({ userName: snapshot.data().player2Details.userName, coins: snapshot.data().player2Details.coins, profileImage: snapshot.data().player2Details.profileImage })// TODO: 
                         setTimeout(() => {
                             navigation.dispatch(
-                                StackActions.replace('Game', { roomName: roomName, player2Details: { userName: snapshot.data().player2Details.userName, coins: snapshot.data().player2Details.coins, profileImage: snapshot.data().player2Details.profileImage }, player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } })) //TODO:
+                                StackActions.replace('Game', { roomName: roomName, player2Details: { userName: snapshot.data().player2Details.userName, coins: snapshot.data().player2Details.coins, profileImage: snapshot.data().player2Details.profileImage, id: snapshot.data().player2Details.id }, player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id } })) //TODO:
                         }, 3000);
                     }
                 }
@@ -117,14 +117,21 @@ function CreateRoom({ navigation, route, }) {
 
     const getTaskListFromBackend = async (rn) => {
         await axios.post(`${BASE_URL}/api/room/create`, {
-            "taskNo": 20,
+            "taskNo": 40,
+            "bigTaskNo": 1,
             // "hostUserId": (JSON.parse(userInfo).id),
             "hostUserId": userData.id,
             "roomId": rn,
-            "taskType": "online"
+            "taskType": "online",
+            "bigTaskNo": 1,
+            "bigTaskType": "offline"
+            // "isSmallTask": true,
         }).then((apiRes) => {
-            console.log('res tasks create :: = > :: ', apiRes.data.message.tasks);
-            if (apiRes.data.message.tasks) setTaskList(apiRes.data.message.tasks);
+            console.log('res tasks create :: = > :: ', apiRes.data.message);
+            if (apiRes.data.message.tasks && apiRes.data.message.tasks.length > 0) setTaskList(apiRes.data.message.tasks);
+            if (apiRes.data.message.bigTasks && apiRes.data.message.bigTasks.length > 0) setBigTask(apiRes.data.message.bigTasks[0]);
+            // if (apiRes.data.message.bigTask) setBigTask(apiRes.data.message.bigTasks[0]);
+
         }).catch(err => {
             console.log("Error :", err);
         })

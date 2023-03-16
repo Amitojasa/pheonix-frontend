@@ -38,7 +38,7 @@ function Home({ navigation }) {
         await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
             setUserDetails(res.data.message[0]);
             setUserData(res.data.message[0]);
-            console.log(res.data.message[0]);
+            console.log("check it", res.data.message[0]);
         })
         AsyncStorage.getItem('isAvatar').then((res) => {
             if (res === 'true') {

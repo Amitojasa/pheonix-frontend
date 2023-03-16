@@ -27,8 +27,8 @@ function Win({ navigation, route, }) {
 
 
 
-    const { language, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
-    const { bigTask, winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
+    const { language, bigTask, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()
     var f = 1;
@@ -121,7 +121,7 @@ function Win({ navigation, route, }) {
 
                 <View style={{ backgroundColor: "#FFF", borderRadius: 15, marginHorizontal: "5%", padding: "5%", marginVertical: isOffline ? "20%" : "10%", elevation: 10 }}>
                     <Text style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}>{getString('performThisTask', language)}</Text>
-                    <Text style={{ fontSize: 16, marginTop: "5%", textAlign: "justify" }}>{bigTask}</Text>
+                    <Text style={{ fontSize: 16, marginTop: "5%", textAlign: "justify" }}>{bigTask.taskDesc}</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
 

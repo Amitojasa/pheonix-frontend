@@ -24,7 +24,7 @@ import { getString } from '../language/Strings';
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData } = useContext(AuthContext);
+    const { language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask } = useContext(AuthContext);
 
     const [player1Details, setPlayer1Details] = useState()
 
@@ -49,7 +49,7 @@ const JoinRoom = ({ navigation, route }) => {
 
                     },
 
-                    player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins },
+                    player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id },
 
                 }).then(async (data) => {
                     setMyPlayerId(2);
@@ -58,7 +58,7 @@ const JoinRoom = ({ navigation, route }) => {
                     await getTaskListFromAPI()
                     setTimeout(() => {
                         navigation.dispatch(
-                            StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins } }))
+                            StackActions.replace('Game', { data: d.data(), roomName: roomName, player1Details: { userName: d.data().player1Details.userName, coins: d.data().player1Details.coins, profileImage: d.data().player1Details.profileImage, id: d.data().player1Details.id }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id } }))
                     }, 2000);
 
                 })
@@ -79,7 +79,9 @@ const JoinRoom = ({ navigation, route }) => {
 
         await axios.get(`${BASE_URL}/api/room/${roomName}`).then((apiRes) => {
             console.log('res join tasks :: = > :: ', JSON.parse(apiRes.request._response).message[0].tasks);
-            JSON.parse(apiRes.request._response).message[0].tasks && setTaskList(JSON.parse(apiRes.request._response).message[0].tasks);
+            JSON.parse(apiRes.request._response).message[0].tasks && JSON.parse(apiRes.request._response).message[0].tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message[0].tasks);
+            JSON.parse(apiRes.request._response).message[0].bigTasks && JSON.parse(apiRes.request._response).message[0].bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message[0].bigTasks[0]);
+
         }).catch(err => {
             console.log("Error :", err);
         })

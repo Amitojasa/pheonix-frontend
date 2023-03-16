@@ -4,7 +4,7 @@ import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { Cols, EndPosition, flags, mines, noOfTasks, Rows, StartPosition } from '../Config';
+import { Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
@@ -110,8 +110,8 @@ const Game = ({ navigation, route }) => {
 
             },
             GameInfo: {
-                player1Id: 1,
-                player2Id: 2,
+                player1Id: player1Details.id,
+                player2Id: player2Details.id,
                 player1Points: playerID == 1 ? resArr : player1,
                 player2Points: playerID == 2 ? resArr : player2,
 
@@ -203,13 +203,13 @@ const Game = ({ navigation, route }) => {
 
             name: roomName,
             latestMessage: {
-                text: `${diceVal + 1} 123456 created. Welcome!`,
+                text: `${roomName}  created. Welcome!`,
                 // createdAt: new Date().getTime(),
 
             },
             GameInfo: {
-                player1Id: 1,
-                player2Id: 2,
+                player1Id: player1Details.id,
+                player2Id: player2Details.id,
                 player1Points: playerID == 1 ? resArr : player1,
                 player2Points: playerID == 2 ? resArr : player2,
 

@@ -38,17 +38,18 @@ export const AuthProvider = ({ children }) => {
         expoClientId: Constants.manifest.extra.EXPO_CLIENT_ID
     })
 
-    const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
-        clientId: FB_APP_ID,
-    });
+    // FACEBOOK LOGIN CODE
+    // const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
+    //     clientId: FB_APP_ID,
+    // });
 
-    useEffect(() => {
-        if (fbResponse && fbResponse.type === "success" && fbResponse.authentication) {
-            AsyncStorage.setItem('facebookAccessToken', JSON.stringify(fbResponse.authentication.accessToken)).then();
-            setUserExist(false);
-            setFacebookUserData(fbResponse).then()
-        }
-    }, [fbResponse]);
+    // useEffect(() => {
+    //     if (fbResponse && fbResponse.type === "success" && fbResponse.authentication) {
+    //         AsyncStorage.setItem('facebookAccessToken', JSON.stringify(fbResponse.authentication.accessToken)).then();
+    //         setUserExist(false);
+    //         setFacebookUserData(fbResponse).then()
+    //     }
+    // }, [fbResponse]);
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -88,26 +89,27 @@ export const AuthProvider = ({ children }) => {
         });
     }
 
-    const setFacebookUserData = async (fbResponse) => {
-        const userInfoResponse = await fetch(
-            `https://graph.facebook.com/me?access_token=${fbResponse.authentication.accessToken}&fields=id,name,email`
-        );
-        await userInfoResponse.json().then(async data => {
-            const username = (data.name.replace(/ /g, '').substring(0, 5) + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
-            const userDetails = {
-                id: data.id,
-                family_name: data.name.replace(/ /g, ''),
-                given_name: data.name.replace(/ /g, ''),
-                name: data.name,
-                email: data.email,
-                verified_email: true,
-                profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
-                userName: username
-            }
-            setUserDetails(userDetails, data).then();
-        });
-
-    }
+    // FACEBOOK LOGIN CODE
+    // const setFacebookUserData = async (fbResponse) => {
+    //     const userInfoResponse = await fetch(
+    //         `https://graph.facebook.com/me?access_token=${fbResponse.authentication.accessToken}&fields=id,name,email`
+    //     );
+    //     await userInfoResponse.json().then(async data => {
+    //         const username = (data.name.replace(/ /g, '').substring(0, 5) + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
+    //         const userDetails = {
+    //             id: data.id,
+    //             family_name: data.name.replace(/ /g, ''),
+    //             given_name: data.name.replace(/ /g, ''),
+    //             name: data.name,
+    //             email: data.email,
+    //             verified_email: true,
+    //             profileImage: avatarImage[Math.floor(Math.random() * avatarImage.length)],
+    //             userName: username
+    //         }
+    //         setUserDetails(userDetails, data).then();
+    //     });
+    //
+    // }
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
@@ -240,8 +242,7 @@ export const AuthProvider = ({ children }) => {
             userExist,
             userInfo,
             isAvatar
-            , setUserData, userData, setIsAvatar, language, setLanguage,
-            fbPromptAsync, handleGuestLogin
+            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin
         }}>{children}
         </AuthContext.Provider>
 

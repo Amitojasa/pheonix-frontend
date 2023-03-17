@@ -7,7 +7,7 @@ import { loginScreenStyles } from "../css/loginScreenStyles";
 import { splashScreenStyle } from "../css/splashScreenStyles";
 
 const Login = ({ navigation, route }) => {
-    const { login, promptAsync, fbPromptAsync, handleGuestLogin } = useContext(AuthContext);
+    const { login, promptAsync, handleGuestLogin } = useContext(AuthContext);
 
     return (
         <View style={commonStyles.centerContainer}>
@@ -42,18 +42,19 @@ const Login = ({ navigation, route }) => {
                                 <Image source={require('../../assets/googleLogo.png')} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[loginScreenStyles.facebookLogin]} onPress={() => {
-                            fbPromptAsync();
-                        }}>
-                            <View>
-                                <Text style={loginScreenStyles.facebookText}>Login with Facebook</Text>
-                            </View>
-                            <View style={{ marginTop: 3, marginLeft: 15 }}>
-                                <Image source={require('../../assets/facebookLogo.png')} />
-                            </View>
-                        </TouchableOpacity>
-                        {/* //TODO: remove this */}
-                        <TouchableOpacity onPress={() => { handleGuestLogin() }}>
+
+                        {/* FACEBOOK LOGIN CODE
+                        <TouchableOpacity style={[loginScreenStyles.facebookLogin]} onPress={() => {*/}
+                        {/*    fbPromptAsync();*/}
+                        {/*}}>*/}
+                        {/*    <View>*/}
+                        {/*        <Text style={loginScreenStyles.facebookText}>Login with Facebook</Text>*/}
+                        {/*    </View>*/}
+                        {/*    <View style={{ marginTop: 3, marginLeft: 15 }}>*/}
+                        {/*        <Image source={require('../../assets/facebookLogo.png')} />*/}
+                        {/*    </View>*/}
+                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity  onPress={() => { handleGuestLogin() }}>
                             <View style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }}>
                                 <Text style={loginScreenStyles.facebookText}>Play as Guest</Text>
                             </View>

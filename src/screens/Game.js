@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native'
 import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
@@ -16,6 +16,7 @@ import pawn2 from '../../assets/pawn2.png'
 import pawn3 from '../../assets/pawn3.png'
 import pawn4 from '../../assets/pawn4.png'
 import { StackActions } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {
 

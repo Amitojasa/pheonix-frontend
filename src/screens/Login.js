@@ -34,7 +34,7 @@ const Login = ({ navigation, route }) => {
                             promptAsync({ useProxy: true, showInRecents: true })
                         }}>
                             {/* TODO: change useProxy while making apk */}
-
+                            {/* TODO: I tried using false,  */}
                             <View>
                                 <Text style={loginScreenStyles.googleText}>Login with Google</Text>
                             </View>
@@ -54,8 +54,12 @@ const Login = ({ navigation, route }) => {
                         {/*        <Image source={require('../../assets/facebookLogo.png')} />*/}
                         {/*    </View>*/}
                         {/*</TouchableOpacity>*/}
-                        <TouchableOpacity  onPress={() => { handleGuestLogin() }}>
-                            <View style={{ borderBottomColor: "#fff", borderBottomWidth: 1 }}>
+                        <TouchableOpacity onPress={() => { handleGuestLogin() }}>
+                            <View style={{
+                                borderColor: "#fff", borderWidth: 1, paddingHorizontal: 40, paddingVertical: 10,
+                                borderRadius: 15,
+
+                            }}>
                                 <Text style={loginScreenStyles.facebookText}>Play as Guest</Text>
                             </View>
                         </TouchableOpacity>

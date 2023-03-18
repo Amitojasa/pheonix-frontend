@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native'
 import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
@@ -15,9 +15,11 @@ import pawn3 from '../../assets/pawn3.png'
 import pawn4 from '../../assets/pawn4.png'
 import { StackActions } from '@react-navigation/native';
 import axios from 'axios';
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 // import firestore from '@react-native-firebase/firestore'
 const Offline = ({ navigation, route }) => {
-
+    const { language } = useContext(AuthContext);
     const { roomName, player1Details, player2Details } = route.params;
     const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
@@ -49,8 +51,8 @@ const Offline = ({ navigation, route }) => {
             "roomId": rn,
             "taskType": "offline",
             "bigTaskNo": 1,
-            "bigTaskType": "offline"
-
+            "bigTaskType": "offline",
+            "lang": language
         }).then((apiRes) => {
             console.log('res tasks create :: = > :: ', apiRes.data.message);
             if (apiRes.data.message.tasks && apiRes.data.message.tasks.length > 0) setTaskList(apiRes.data.message.tasks);
@@ -216,19 +218,13 @@ const Offline = ({ navigation, route }) => {
 
     }
 
-    const changePlayerId = async (update = false, backUpdate = false) => {
+    const changePlayerId = (update = false, backUpdate = false) => {
 
         setDisableDice(false);
         setActivePlayerId((activePlayerId) % 2 + 1);
 
 
         setTaskIndex((taskIndex + 1) % noOfTasks)
-
-
-
-
-
-
 
     }
 

@@ -1,11 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { Alert, Dimensions, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Icons from '@expo/vector-icons/FontAwesome';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
 import { EndPosition, boards, StartPosition } from '../Config';
-import { useFirstRender } from '../customhooks/useFirstRender';
 import { AuthContext } from '../context/AuthContext';
 import blueTile from '../../assets/blueTile.png';
 import redTile from '../../assets/redTile2.png';
@@ -24,9 +21,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
     var mines = boards[rndInt1].mines
     const [matrix, setMatrix] = useState([])
     const windowWidth = Dimensions.get('window').width;
-    // const [flags, setFlags] = useState(boards[0].flags)
-    // const [mines, setMines] = useState(boards[0].mines)
-    const firstRender = useFirstRender();
+
 
     const create2DMatrix = () => {
 
@@ -247,10 +242,10 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
         }}>
             {
                 matrix.map((i, index1) => (
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                    <View key={(index1 + 1) * 100} style={{ flexDirection: 'row', flex: 1 }}>
                         {i.map((j, index2) => (
 
-                            <ImageBackground source={((index1 + index2) % 2 == 0) ? blueTile : redTile} resizeMode="cover" style={[styles.image, styles.bgImage]}>
+                            <ImageBackground key={(index1 + index2 + 2) * 1000} source={((index1 + index2) % 2 == 0) ? blueTile : redTile} resizeMode="cover" style={[styles.image, styles.bgImage]}>
 
                                 <View key={index1 * 5 + index2} style={styles.box}>
 

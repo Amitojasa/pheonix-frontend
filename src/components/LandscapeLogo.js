@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { Dimensions, Image, View } from 'react-native'
 import landscape_logo from "../../assets/landscape_logo.png";
@@ -10,7 +11,9 @@ function LandscapeLogo() {
 
             style={{
                 height: 100,
-                marginTop: '15%',
+                marginTop: '5%',
+                // padding: 15,
+                // marginTop: StatusBar.currentHeight,
                 flexDirection: 'row',
                 alignSelf: 'center',
                 width: '90%',

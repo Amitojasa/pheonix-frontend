@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }) => {
             setSplashLoading(false);
         }, 8000);
 
-        AsyncStorage.clear();
+        // AsyncStorage.clear();
 
         NetInfo.fetch().then(async (state) => {
             if (!state.isConnected) {

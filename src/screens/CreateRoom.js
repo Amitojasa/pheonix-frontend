@@ -119,6 +119,7 @@ function CreateRoom({ navigation, route, }) {
         await axios.post(`${BASE_URL}/api/room/create`, {
             "taskNo": 40,
             "bigTaskNo": 1,
+            "lang": language,
             // "hostUserId": (JSON.parse(userInfo).id),
             "hostUserId": userData.id,
             "roomId": rn,

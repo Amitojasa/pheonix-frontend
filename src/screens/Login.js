@@ -31,7 +31,7 @@ const Login = ({ navigation, route }) => {
                         end={{ x: 0, y: 1 }}
                         style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
                         <TouchableOpacity style={[loginScreenStyles.googleLogin]} onPress={() => {
-                            promptAsync({ useProxy: false, showInRecents: true })
+                            promptAsync({ useProxy: true, showInRecents: true })
                         }}>
                             {/* TODO: change useProxy while making apk */}
                             {/* TODO: I tried using false,  */}

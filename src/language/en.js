@@ -9,8 +9,12 @@ export const en = {
     goToHome: "Go To Home",
     performThisTask: "Perform This Task",
     winner: "Winner",
-    rollTheDice: "Roll Dice",
+    rollTheDice: "Roll The Dice",
     loginWithGoogle: "Login with Google",
     loginWithFacebook: "Login with Facebook",
-    playAsGuest: "Play as Guest"
+    playAsGuest: "Play as Guest",
+    continue: "Continue",
+    lessCoinsTitle: "You have less than 50 coins",
+    lessCoinsDesc: "You must have more than 50 coins to create a room, buy some coins first."
+
 }

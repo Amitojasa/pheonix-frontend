@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import { commonStyles } from "../css/commonStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -86,9 +86,9 @@ function Home({ navigation }) {
                         <Text style={{ fontSize: 10, fontWeight: "bold", color: "#FFF", elevation: 10 }}>Log Out</Text>
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity onPress={() => {
-                    setLanguage(language == 'en' ? 'fr' : 'en')
-                }} style={{ backgroundColor: "#0073C5", position: "absolute", left: -10, top: "35%", padding: 10, borderRadius: 10, }}><Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10 }}><Icons name="language" size={20} color="white" /> {language == 'en' ? 'Fr' : 'En'}</Text></TouchableOpacity> */}
+                    <TouchableOpacity onPress={() => {
+                        setLanguage(language == 'en' ? 'fr' : 'en')
+                    }} style={{ backgroundColor: "#0073C5", position: "absolute", left: -10, top: "35%", padding: 10, borderRadius: 10, }}><Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10 }}><Icons name="language" size={20} color="white" /> {language == 'en' ? 'Fr' : 'En'}</Text></TouchableOpacity>
                     <View style={homeScreenStyles.avatarDiv}>
                         <TouchableOpacity onPress={() => navigation.navigate('Avatar')} style={{
                             position: "absolute",
@@ -121,7 +121,7 @@ function Home({ navigation }) {
                         style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
                         <View style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                             <TouchableOpacity style={homeScreenStyles.homeBtn}
-                                onPress={() => navigation.navigate('CreateRoom')}>
+                                onPress={() => userData.coins > 50 ? navigation.navigate('CreateRoom') : Alert.alert(getString("lessCoinsTitle", language), getString("lessCoinsDesc", language),)}>
                                 <Text style={homeScreenStyles.homeBtnText}>{getString('createRoom', language)}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={homeScreenStyles.homeBtn}

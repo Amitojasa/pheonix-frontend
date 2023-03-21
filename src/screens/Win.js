@@ -20,6 +20,7 @@ import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import WinPlayerMatching from '../components/WinPlayerMatching';
 import { getString } from '../language/Strings';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 function Win({ navigation, route, }) {
@@ -95,7 +96,7 @@ function Win({ navigation, route, }) {
 
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }} end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
                 <View style={{ height: !isOffline ? "60%" : "55%" }}>
@@ -136,7 +137,7 @@ function Win({ navigation, route, }) {
                 }}>{getString('goToHome', language)}</Text></TouchableOpacity>
 
             </LinearGradient >
-        </View >
+        </SafeAreaView >
     )
 }
 

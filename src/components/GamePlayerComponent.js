@@ -10,8 +10,8 @@ function GamePlayerComponent({ playerId, playerPawn, playerDetails }) {
     console.log(activePlayerId);
     return (
         playerId == 1 ?
-            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View> :
-            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#DB4A39", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View>
+            <View style={[styles.container, activePlayerId == 1 && { borderColor: "#3DBE29", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View> :
+            <View style={[styles.container, activePlayerId == 2 && { borderColor: "#3DBE29", borderWidth: 5 }]}><Image source={playerPawn} style={styles.pawn} /><Image source={UserProfileImage(playerDetails ? playerDetails.profileImage : '')} style={styles.avatar} /><Text style={styles.usernameText}>{playerDetails.userName}</Text></View>
     )
 }
 

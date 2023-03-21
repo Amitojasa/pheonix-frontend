@@ -10,7 +10,7 @@ const Login = ({ navigation, route }) => {
     const { login, promptAsync, handleGuestLogin } = useContext(AuthContext);
 
     return (
-        <View style={commonStyles.centerContainer}>
+        <SafeAreaView style={commonStyles.centerContainer}>
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
@@ -66,7 +66,7 @@ const Login = ({ navigation, route }) => {
                     </LinearGradient>
                 </View>
             </LinearGradient>
-        </View>
+        </SafeAreaView>
     )
 }
 

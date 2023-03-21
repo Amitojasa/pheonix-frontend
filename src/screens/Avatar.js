@@ -9,6 +9,7 @@ import { avatars, BASE_URL } from "../Config";
 import axios from "axios";
 import { getString } from "../language/Strings";
 import { AuthContext } from "../context/AuthContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export const Avatar = ({ navigation }) => {
@@ -56,7 +57,7 @@ export const Avatar = ({ navigation }) => {
     }
 
     return (
-        <View style={commonStyles.centerContainer}>
+        <SafeAreaView style={commonStyles.centerContainer}>
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
@@ -100,11 +101,11 @@ export const Avatar = ({ navigation }) => {
                         <TouchableOpacity style={avatarScreenStyles.continueBtn} onPress={() => {
                             handleAvatarChange().then()
                         }}>
-                            <Text style={avatarScreenStyles.continueText}>Continue</Text>
+                            <Text style={avatarScreenStyles.continueText}>{getString('continue', language)}</Text>
                         </TouchableOpacity>
                     </LinearGradient>
                 </View>
             </LinearGradient>
-        </View>
+        </SafeAreaView>
     )
 }

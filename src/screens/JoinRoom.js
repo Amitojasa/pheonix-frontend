@@ -20,6 +20,7 @@ import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import { StackActions } from '@react-navigation/native';
 import { getString } from '../language/Strings';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const JoinRoom = ({ navigation, route }) => {
@@ -88,7 +89,7 @@ const JoinRoom = ({ navigation, route }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }} end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
                 <View style={{ height: "55%" }}>
@@ -117,7 +118,7 @@ const JoinRoom = ({ navigation, route }) => {
                     {/* <Button onPress={handleButtonPress} title="create"></Button> */}
                 </View>
             </LinearGradient>
-        </View>
+        </SafeAreaView>
     )
 }
 

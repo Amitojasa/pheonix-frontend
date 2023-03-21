@@ -87,7 +87,7 @@ function DiceComponent({ isOffline = false, diceMove, setDisableDice, disableDic
     console.log("Dice:" + myPlayerId, activePlayerId);
     return (
 
-        <View style={{ flex: 1, alignSelf: 'center', backgroundColor: "#DB4A39", padding: "3%", borderRadius: 10, bottom: -20 }}>
+        <View style={{ flex: 1, alignSelf: 'center', backgroundColor: (myPlayerId != activePlayerId) ? "#DB4A39" : "#3DBE29", padding: "3%", borderRadius: 10, bottom: -20 }}>
             <TouchableOpacity disabled={a || disableDice || isOffline ? false : myPlayerId != activePlayerId} onPress={() => {
 
                 startRotateImage()
@@ -96,11 +96,12 @@ function DiceComponent({ isOffline = false, diceMove, setDisableDice, disableDic
             }>
                 <Animated.Image
                     style={{
+                        alignSelf: "center",
                         transform: [{ rotate: spin }], height: 80, width: 80,
 
                     }}
                     source={diceArray[diceMove - 1]}
-                /><Text style={{ flex: 1, alignSelf: "center", color: "#FFF", fontWeight: "bold" }}>{getString('rollTheDice', language)}</Text>
+                /><Text style={{ fontSize: 12, flex: 1, alignSelf: "center", color: "#FFF", fontWeight: "bold" }}>{getString('rollTheDice', language)}</Text>
             </TouchableOpacity>
         </View>
     )

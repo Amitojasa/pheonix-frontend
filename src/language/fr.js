@@ -10,10 +10,12 @@ export const fr = {
     performThisTask: "Effectuer cette tâche",
     winner: "Gagnant",
     rollTheDice: "Lancer les dés",
+    login: "Connexion",
     loginWithGoogle: "Se connecter avec Google",
     loginWithFacebook: "Se connecter avec Facebook",
     playAsGuest: "Jouer en tant qu’invité",
     continue: "Continuer",
     lessCoinsTitle: "vous avez moins de 50 pièces",
-    lessCoinsDesc: "Vous devez avoir plus de 50 pièces pour créer une salle, achetez d'abord quelques pièces."
+    lessCoinsDesc: "Vous devez avoir plus de 50 pièces pour créer une salle, achetez d'abord quelques pièces.",
+    ok: "d'accord"
 }

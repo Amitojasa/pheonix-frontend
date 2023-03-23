@@ -5,12 +5,17 @@ import { commonStyles } from "../css/commonStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import { loginScreenStyles } from "../css/loginScreenStyles";
 import { splashScreenStyle } from "../css/splashScreenStyles";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import InternetAlert from '../components/InternetAlert';
+import { getString } from '../language/Strings';
 
 const Login = ({ navigation, route }) => {
-    const { login, promptAsync, handleGuestLogin } = useContext(AuthContext);
+    const { isConnected, checkConnection, login, promptAsync, handleGuestLogin, language } = useContext(AuthContext);
 
     return (
         <SafeAreaView style={commonStyles.centerContainer}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
@@ -20,7 +25,7 @@ const Login = ({ navigation, route }) => {
                         <TouchableOpacity style={loginScreenStyles.loginBtn} onPress={() => {
                             login('user', 'password')
                         }}>
-                            <Text style={loginScreenStyles.loginText}>LOGIN</Text>
+                            <Text style={loginScreenStyles.loginText}>{getString('login', language)}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -31,12 +36,12 @@ const Login = ({ navigation, route }) => {
                         end={{ x: 0, y: 1 }}
                         style={[commonStyles.centerContainer, commonStyles.fullWidth, commonStyles.borderTopRd]}>
                         <TouchableOpacity style={[loginScreenStyles.googleLogin]} onPress={() => {
-                            promptAsync({ useProxy: true, showInRecents: true })
+                            promptAsync({ useProxy: false, showInRecents: true })
                         }}>
                             {/* TODO: change useProxy while making apk */}
                             {/* TODO: I tried using false,  */}
                             <View>
-                                <Text style={loginScreenStyles.googleText}>Login with Google</Text>
+                                <Text style={loginScreenStyles.googleText}>{getString('loginWithGoogle', language)}</Text>
                             </View>
                             <View style={{ marginTop: 7, marginLeft: 30 }}>
                                 <Image source={require('../../assets/googleLogo.png')} />
@@ -60,7 +65,7 @@ const Login = ({ navigation, route }) => {
                                 borderRadius: 15,
 
                             }}>
-                                <Text style={loginScreenStyles.facebookText}>Play as Guest</Text>
+                                <Text style={loginScreenStyles.facebookText}>{getString('playAsGuest', language)}</Text>
                             </View>
                         </TouchableOpacity>
                     </LinearGradient>

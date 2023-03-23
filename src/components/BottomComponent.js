@@ -5,14 +5,14 @@ import { AuthContext } from '../context/AuthContext';
 import DiceComponent from './DiceComponent';
 import GamePlayerComponent from './GamePlayerComponent';
 
-const BottomComponent = ({ isOffline = false, roomName, gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice, player1Pawn, player2Pawn, player1Details, player2Details }) => {
+const BottomComponent = ({ showTask, isOffline = false, roomName, gameEnded, setGameEnded, changePlayerId, diceMove, setDiceMove, player1, playMove, player2, setActivePlayerId, activePlayerId, resetForReplay, disableDice, setDisableDice, player1Pawn, player2Pawn, player1Details, player2Details }) => {
 
 
     const { myPlayerId, setMyPlayerId } = useContext(AuthContext);
     return (
         <View style={styles.container}>
             <View>{gameEnded ? <></> :
-                <DiceComponent isOffline={isOffline} roomName={roomName} changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
+                <DiceComponent showTask={showTask} isOffline={isOffline} roomName={roomName} changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} player1={player1} playMove={playMove} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} disableDice={disableDice} setDisableDice={setDisableDice} />}</View>
             <View style={styles.gameplayersDiv}>
                 <GamePlayerComponent isOffline={isOffline} playerId={1} playerPawn={player1Pawn} playerDetails={player1Details} />
 

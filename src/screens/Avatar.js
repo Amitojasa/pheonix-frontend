@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../css/commonStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import { loginScreenStyles } from "../css/loginScreenStyles";
@@ -10,12 +10,14 @@ import axios from "axios";
 import { getString } from "../language/Strings";
 import { AuthContext } from "../context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import InternetAlert from "../components/InternetAlert";
+
 
 
 export const Avatar = ({ navigation }) => {
     const [selectedAvatar, setSelectedAvatar] = useState('');
     const [isSelected, setIsSelected] = useState();
-    const { language } = useContext(AuthContext);
+    const { language, isConnected, checkConnection } = useContext(AuthContext);
     const handleAvatarChange = async () => {
         await AsyncStorage.setItem("isAvatar", "true");
         const userInfo = await AsyncStorage.getItem('userInfo');
@@ -34,6 +36,9 @@ export const Avatar = ({ navigation }) => {
         }) //todo uncomment when backend is fixed
         navigation.goBack(null)
     }
+
+
+
 
     const renderAvatarImage = (item) => {
         switch (item.id) {
@@ -58,6 +63,8 @@ export const Avatar = ({ navigation }) => {
 
     return (
         <SafeAreaView style={commonStyles.centerContainer}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>

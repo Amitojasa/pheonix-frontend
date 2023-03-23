@@ -16,10 +16,11 @@ import pawn4 from '../../assets/pawn4.png'
 import { StackActions } from '@react-navigation/native';
 import axios from 'axios';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import InternetAlert from '../components/InternetAlert';
 
 // import firestore from '@react-native-firebase/firestore'
 const Offline = ({ navigation, route }) => {
-    const { language } = useContext(AuthContext);
+    const { language, isConnected, checkConnection } = useContext(AuthContext);
     const { roomName, player1Details, player2Details } = route.params;
     const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
@@ -280,11 +281,13 @@ const Offline = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             {/* <LinearGradient colors={['#0073C5', '#9069FF']} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} style={styles.linearGradient}> */}
             <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
                 <LandscapeLogo />
                 <BoardGame player1Details={player1Details} player2Details={player2Details} isOffline={true} navigation={navigation} roomName={roomName} setPlayer1Pawn={setPlayer1Pawn} setPlayer2Pawn={setPlayer2Pawn} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} diceVal={diceVal} setShowTask={setShowTask} setShowTaskId={setShowTaskId} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} player2={player2} setPlayer2={setPlayer2} player1={player1} setPlayer1={setPlayer1} playMove={playMove} playBackMove={playBackMove}></BoardGame>
-                <BottomComponent isOffline={true} player1Details={player1Details} player2Details={player2Details} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
+                <BottomComponent showTask={showTask} isOffline={true} player1Details={player1Details} player2Details={player2Details} player2Pawn={player2Pawn} pawns={pawns} player1Pawn={player1Pawn} roomName={roomName} disableDice={disableDice} setDisableDice={setDisableDice} resetForReplay={resetForReplay} gameEnded={gameEnded} setGameEnded={setGameEnded} changePlayerId={changePlayerId} activePlayerId={activePlayerId} setActivePlayerId={setActivePlayerId} diceMove={diceMove} setDiceMove={setDiceMove} playMove={playMove} player1={player1} player2={player2}></BottomComponent>
                 {showTask && <ScreenOverlayComponent />}
                 {showTask && <TaskShowComponent task={taskList[showTaskId]} setShowTask={setShowTask}></TaskShowComponent>}
             </ImageBackground>

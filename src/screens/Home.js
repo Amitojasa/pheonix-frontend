@@ -15,6 +15,8 @@ import { getString } from '../language/Strings';
 
 import Icons from '@expo/vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import InternetAlert from '../components/InternetAlert';
 
 function Home({ navigation }) {
     const {
@@ -27,7 +29,7 @@ function Home({ navigation }) {
         avatar,
         setAvatar,
         logout,
-        setUserData
+        setUserData, isConnected, checkConnection
     } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState(null);
 
@@ -64,7 +66,9 @@ function Home({ navigation }) {
 
 
     return (
-        <View style={commonStyles.centerContainer}>
+        <SafeAreaView style={commonStyles.centerContainer}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             <LinearGradient colors={['#DB4A39', '#FFFFFF']}
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
@@ -156,7 +160,7 @@ function Home({ navigation }) {
                     </LinearGradient>
                 </View>
             </LinearGradient>
-        </View>)
+        </SafeAreaView>)
 
     // return (
     //     <View style={{ marginTop: 200 }}>

@@ -21,6 +21,7 @@ import axios from 'axios';
 import WinPlayerMatching from '../components/WinPlayerMatching';
 import { getString } from '../language/Strings';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import InternetAlert from '../components/InternetAlert';
 
 
 function Win({ navigation, route, }) {
@@ -28,7 +29,7 @@ function Win({ navigation, route, }) {
 
 
 
-    const { language, bigTask, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, bigTask, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
     const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()
@@ -97,6 +98,8 @@ function Win({ navigation, route, }) {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }} end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
                 <View style={{ height: !isOffline ? "60%" : "55%" }}>

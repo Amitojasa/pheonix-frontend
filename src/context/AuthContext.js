@@ -20,9 +20,10 @@ export const AuthProvider = ({ children }) => {
     const [myPlayerId, setMyPlayerId] = useState(1);
     const [userInfo, setUserInfo] = useState(null);
     const [language, setLanguage] = useState('en');
+    const [soundOn, setSoundOn] = useState(true)
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
-    const [taskIndex, setTaskIndex] = useState(-1)
+    const [taskIndex, setTaskIndex] = useState(0)
 
     const [taskList, setTaskList] = useState(taskList1)
     const [bigTask, setBigTask] = useState(bigTaskList1[Math.floor(Math.random() * (10))])
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     const [userExist, setUserExist] = useState(false);
     const [userData, setUserData] = useState();
     const [isAvatar, setIsAvatar] = useState(null);
-
+    const [isConnected, setIsConnected] = useState(false)
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: Constants.manifest.extra.IOS_KEY,
         iosClientId: Constants.manifest.extra.ANDROID_KEY,
@@ -50,6 +51,17 @@ export const AuthProvider = ({ children }) => {
     //         setFacebookUserData(fbResponse).then()
     //     }
     // }, [fbResponse]);
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            setIsConnected(state.isConnected);
+        })
+
+        return () => {
+            unsubscribe();
+        }
+    }, [])
+
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -84,10 +96,19 @@ export const AuthProvider = ({ children }) => {
 
             setUserExist(true);
             setIsUserLoggedIn(true);
-            console.log(userDetails);
+            console.log("res::" + userDetails);
             setUserData(userDetails)
         });
     }
+
+    const checkConnection = () => {
+        NetInfo.fetch().then(async (state) => {
+            if (state.isConnected) {
+                setIsConnected(true)
+            }
+        });
+    }
+
 
     // FACEBOOK LOGIN CODE
     // const setFacebookUserData = async (fbResponse) => {
@@ -241,8 +262,8 @@ export const AuthProvider = ({ children }) => {
             isUserLoggedIn,
             userExist,
             userInfo,
-            isAvatar
-            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin
+            isAvatar, checkConnection
+            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin, isConnected, soundOn
         }}>{children}
         </AuthContext.Provider>
 

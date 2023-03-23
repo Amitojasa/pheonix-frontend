@@ -11,16 +11,33 @@ import trophy from '../../assets/trophy.png'
 import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
 import { StackActions } from '@react-navigation/native';
+import { Audio } from 'expo-av';
+import SoundPlayer from 'react-native-sound-player'
 
 
 function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation, isOffline = false, player1Details, player2Details }) {
-    const { activePlayerId, myPlayerId, taskIndex, taskList } = useContext(AuthContext);
+    const { activePlayerId, myPlayerId, taskIndex, taskList, soundOn } = useContext(AuthContext);
     let rn = (roomName)
     var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
     var flags = boards[rndInt1].flags
     var mines = boards[rndInt1].mines
     const [matrix, setMatrix] = useState([])
     const windowWidth = Dimensions.get('window').width;
+
+
+    function playSound(sound) {
+        console.log('Playing ');
+        Audio.Sound.createAsync(
+            sound,
+            { shouldPlay: true }
+        ).then((res) => {
+            res.sound.setOnPlaybackStatusUpdate((status) => {
+                if (!status.didJustFinish) return;
+                res.sound.unloadAsync().catch(() => { });
+            });
+        }).catch((error) => { });
+    }
+
 
 
     const create2DMatrix = () => {
@@ -64,9 +81,13 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
     }
 
-    const reachedFlag = (activeUserId, i) => {
-        console.log(activeUserId, "reached flag")
+    const reachedFlag = async (activeUserId, i) => {
+
+
+        soundOn && playSound(require('../../assets/flag.mp3'))
+
         // const rndInt = Math.floor(Math.random() * (2) + 1);
+        console.log("taskInd" + taskIndex);
         setShowTaskId(taskIndex);
 
 
@@ -81,10 +102,10 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
     }
 
 
-    const reachedMine = (activeUserId) => {
+    const reachedMine = async (activeUserId) => {
 
 
-
+        soundOn && playSound(require('../../assets/mine.mp3'))
 
 
         // showMineMessage(true);
@@ -110,8 +131,11 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
 
 
+
+
+
     useEffect(() => {
-        const unsubscribe = setTimeout(() => {
+        const unsubscribe = setTimeout(async () => {
 
             let activePId = (activePlayerId);
             console.log(activePlayerId, player1, player2, " check");
@@ -122,6 +146,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                     // console.log("rr 1");
                     if (player1[0] == EndPosition[0] && player1[1] == EndPosition[1]) {
 
+                        soundOn && playSound(require('../../assets/win.wav'))
                         setGameEnded(true);
                         setTimeout(() => {
                             navigation.dispatch(
@@ -151,6 +176,7 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
                     if (player2[0] == EndPosition[0] && player2[1] == EndPosition[1]) {
 
+                        soundOn && playSound(require('../../assets/win.wav'))
                         setGameEnded(true);
                         setTimeout(() => {
                             navigation.dispatch(

@@ -21,11 +21,12 @@ import axios from 'axios';
 import { StackActions } from '@react-navigation/native';
 import { getString } from '../language/Strings';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import InternetAlert from '../components/InternetAlert';
 
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask } = useContext(AuthContext);
 
     const [player1Details, setPlayer1Details] = useState()
 
@@ -90,6 +91,8 @@ const JoinRoom = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+
             <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }} end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
                 <View style={{ height: "55%" }}>

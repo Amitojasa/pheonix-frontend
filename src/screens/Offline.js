@@ -20,7 +20,7 @@ import InternetAlert from '../components/InternetAlert';
 
 // import firestore from '@react-native-firebase/firestore'
 const Offline = ({ navigation, route }) => {
-    const { language, isConnected, checkConnection } = useContext(AuthContext);
+
     const { roomName, player1Details, player2Details } = route.params;
     const [player1, setPlayer1] = useState(StartPosition)
     const [player2, setPlayer2] = useState(StartPosition)
@@ -41,7 +41,7 @@ const Offline = ({ navigation, route }) => {
 
     var firstTime = false;
 
-    const { taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask } = useContext(AuthContext);
+    const { taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask, language, isConnected, checkConnection } = useContext(AuthContext);
 
     const getTaskListFromBackend = async (rn) => {
 
@@ -142,10 +142,83 @@ const Offline = ({ navigation, route }) => {
     }
 
 
+    const goBackByOne = (moveVal, playerID) => {
+        console.log("goback call");
+        let tempArr = [];
+        if (playerID == 1) tempArr = player1;
+        else tempArr = player2;
+
+        let c = moveVal;
+        let initValj = -1;
+        let resArr = [];
+        // console.log(player1, player2)
+        for (let i = tempArr[0]; i < Rows && c > 0; i++) {
+
+            if (initValj == -1) initValj = tempArr[1];
+            else initValj = -1;
+
+            if (i % 2 == 1) {
+                let j = initValj == -1 ? 0 : initValj;
+                for (; j < Cols && c > 0; j++) {
+                    c--;
+                }
+                if (c == 0) {
+                    if (j < Cols)
+                        resArr = [i, j]
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                    else {
+                        resArr = [i + 1, j - 1];
+                        // playerID == 1 ? setPlayer1([i + 1, j - 1]) : setPlayer2([i + 1, j - 1]);
+
+                    }
+
+                }
+            } else {
+                let j = initValj == -1 ? Cols - 1 : initValj;
+
+                for (; j >= 0 && c > 0; j--) {
+                    c--;
+                }
+
+                if (c == 0) {
+                    if (j >= 0)
+                        resArr = [i, j];
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                    else {
+                        if (i >= Rows - 1 && j <= 0)
+                            resArr = StartPosition;
+                        // playerID == 1 ? setPlayer1(StartPosition) : setPlayer2(StartPosition);
+                        else
+                            resArr = [i + 1, j + 1]
+                        // playerID == 1 ? setPlayer1([i + 1, j + 1]) : setPlayer2([i + 1, j + 1]);
+                    }
+
+                }
+            }
 
 
 
-    const playBackMove = async (moveVal, playerID) => {
+        }
+
+        return resArr;
+
+    }
+
+    const checkMine = (resArr, mines) => {
+        console.log("mine check");
+        for (let i = 0; i < 6; i++) {
+            if (resArr[0] == mines[i][0] && resArr[1] == mines[i][1]) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    const playBackMove = async (moveVal, playerID, mines) => {
         console.log("back call");
         let tempArr = [];
         if (playerID == 1) tempArr = player1;
@@ -204,6 +277,10 @@ const Offline = ({ navigation, route }) => {
         }
 
 
+
+        if (checkMine(resArr, mines) == true) {
+            resArr = goBackByOne(moveVal - 1, playerID);
+        }
 
         // if (firstTime == true) {
 

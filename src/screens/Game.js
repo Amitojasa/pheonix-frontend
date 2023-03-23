@@ -4,7 +4,7 @@ import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
+import { boards, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
@@ -18,6 +18,7 @@ import pawn4 from '../../assets/pawn4.png'
 import { StackActions } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import InternetAlert from '../components/InternetAlert';
+import { Audio } from 'expo-av';
 // import firestore from '@react-native-firebase/firestore'
 const Game = ({ navigation, route }) => {
 
@@ -36,10 +37,39 @@ const Game = ({ navigation, route }) => {
     const [showTask, setShowTask] = useState(false)
     const [showTaskId, setShowTaskId] = useState(0)
     // const [leftToRight1, setLeftToRight1] = useState(true)
-
+    let rn = (roomName)
+    var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+    var flags = boards[rndInt1].flags
+    var mines = boards[rndInt1].mines
     var firstTime = false;
 
-    const { isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex } = useContext(AuthContext);
+    const { isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn } = useContext(AuthContext);
+
+    function playSound(sound) {
+        console.log('Playing ');
+        Audio.Sound.createAsync(
+            sound,
+            { shouldPlay: true }
+        ).then((res) => {
+            res.sound.setOnPlaybackStatusUpdate((status) => {
+                if (!status.didJustFinish) return;
+                res.sound.unloadAsync().catch(() => { });
+            });
+        }).catch((error) => { });
+    }
+
+    const checkFlag = (resArr) => {
+        for (let i = 0; i < 6; i++) {
+            if (resArr[0] == flags[i][0] && resArr[1] == flags[i][1]) {
+
+
+                soundOn && playSound(require('../../assets/flag.mp3'))
+
+            }
+        }
+    }
+
+
 
     const playMove = async (moveVal, playerID) => {
         let tempArr = [];
@@ -129,6 +159,7 @@ const Game = ({ navigation, route }) => {
             console.log("Play move", playerID, resArr);
         })
 
+        checkFlag(resArr);
 
 
 
@@ -138,9 +169,82 @@ const Game = ({ navigation, route }) => {
 
 
 
+    const goBackByOne = (moveVal, playerID) => {
+        console.log("goback call");
+        let tempArr = [];
+        if (playerID == 1) tempArr = player1;
+        else tempArr = player2;
+
+        let c = moveVal;
+        let initValj = -1;
+        let resArr = [];
+        // console.log(player1, player2)
+        for (let i = tempArr[0]; i < Rows && c > 0; i++) {
+
+            if (initValj == -1) initValj = tempArr[1];
+            else initValj = -1;
+
+            if (i % 2 == 1) {
+                let j = initValj == -1 ? 0 : initValj;
+                for (; j < Cols && c > 0; j++) {
+                    c--;
+                }
+                if (c == 0) {
+                    if (j < Cols)
+                        resArr = [i, j]
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                    else {
+                        resArr = [i + 1, j - 1];
+                        // playerID == 1 ? setPlayer1([i + 1, j - 1]) : setPlayer2([i + 1, j - 1]);
+
+                    }
+
+                }
+            } else {
+                let j = initValj == -1 ? Cols - 1 : initValj;
+
+                for (; j >= 0 && c > 0; j--) {
+                    c--;
+                }
+
+                if (c == 0) {
+                    if (j >= 0)
+                        resArr = [i, j];
+                    // playerID == 1 ? setPlayer1([i, j]) : setPlayer2([i, j]);
+                    else {
+                        if (i >= Rows - 1 && j <= 0)
+                            resArr = StartPosition;
+                        // playerID == 1 ? setPlayer1(StartPosition) : setPlayer2(StartPosition);
+                        else
+                            resArr = [i + 1, j + 1]
+                        // playerID == 1 ? setPlayer1([i + 1, j + 1]) : setPlayer2([i + 1, j + 1]);
+                    }
+
+                }
+            }
 
 
-    const playBackMove = async (moveVal, playerID) => {
+
+        }
+
+        return resArr;
+
+    }
+
+    const checkMine = (resArr, mines) => {
+        console.log("mine check");
+        for (let i = 0; i < 6; i++) {
+            if (resArr[0] == mines[i][0] && resArr[1] == mines[i][1]) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    const playBackMove = async (moveVal, playerID, mines) => {
         console.log("back call");
         let tempArr = [];
         if (playerID == 1) tempArr = player1;
@@ -199,6 +303,9 @@ const Game = ({ navigation, route }) => {
         }
 
 
+        if (checkMine(resArr, mines) == true) {
+            resArr = goBackByOne(moveVal - 1, playerID);
+        }
 
         // if (firstTime == true) {
 

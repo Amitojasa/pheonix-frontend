@@ -84,21 +84,24 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
     const reachedFlag = async (activeUserId, i) => {
 
 
-        soundOn && playSound(require('../../assets/flag.mp3'))
-
+        if (!isOffline && myPlayerId != activePlayerId)
+            soundOn && playSound(require('../../assets/flag.mp3'))
+        else if (isOffline) {
+            soundOn && playSound(require('../../assets/flag.mp3'))
+        }
         // const rndInt = Math.floor(Math.random() * (2) + 1);
         console.log("taskInd" + taskIndex);
         setShowTaskId(taskIndex);
 
 
-        setTimeout(() => {
+        const a = setTimeout(() => {
 
             setShowTask(true);
             changePlayerId(myPlayerId != activePlayerId);
 
         }, 200);
 
-
+        // returnr () => clearTimeout(a);
     }
 
 
@@ -116,10 +119,11 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
         const a = setTimeout(async () => {
             // const rndInt = Math.floor(Math.random() * (3) + 1);
             // console.log("Random back" + rndInt, activeUserId);
+
             if (activePlayerId == 2)
-                await playBackMove((player1[0] + player1[1]) % 3 + 1, activeUserId);
+                await playBackMove((player1[0] + player1[1]) % 3 + 1, activeUserId, mines);
             else
-                await playBackMove((player2[0] + player2[1]) % 3 + 1, activeUserId);
+                await playBackMove((player2[0] + player2[1]) % 3 + 1, activeUserId, mines);
             changePlayerId(myPlayerId != activePlayerId);
         }, 200);
 
@@ -158,12 +162,13 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
                     for (let i = 0; i < 6; i++) {
                         if (player1[0] == flags[i][0] && player1[1] == flags[i][1]) {
-                            console.log("flag for 1", player2);
+                            console.log("flag for 1 mp", myPlayerId, activePlayerId, activePId);
                             reachedFlag(activePId, i);
 
                             return;
 
                         } else if (player1[0] == mines[i][0] && player1[1] == mines[i][1]) {
+                            console.log("mine for 1 mp", myPlayerId, activePlayerId, activePId);
                             reachedMine(activePId)
                             return;
                         }
@@ -187,11 +192,12 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
                     }
                     for (let i = 0; i < 6; i++) {
                         if (player2[0] == flags[i][0] && player2[1] == flags[i][1]) {
-                            // console.log("flag for 2", player2);
+                            console.log("flag for 2 mp apl ap", myPlayerId, activePlayerId, activePId);
                             reachedFlag(activePId, i);
                             return;
 
                         } else if (player2[0] == mines[i][0] && player2[1] == mines[i][1]) {
+                            console.log("mine for 2 mp", myPlayerId, activePlayerId, activePId);
                             reachedMine(activePId);
                             // console.log("mine for 2", player2);
                             return;
@@ -228,6 +234,9 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
 
         create2DMatrix();
     }, [])
+
+
+
 
 
     const pawnMovement = (index1, index2) => {

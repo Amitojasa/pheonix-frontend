@@ -112,7 +112,7 @@ function DiceComponent({ showTask, isOffline = false, diceMove, setDisableDice, 
     console.log("Dice:" + myPlayerId, activePlayerId);
     return (
 
-        <View style={{ flex: 1, alignSelf: 'center', backgroundColor: ((myPlayerId != activePlayerId)) ? "#DB4A39" : "#3DBE29", padding: "3%", borderRadius: 10, bottom: -20 }}>
+        <View style={{ flex: 1, alignSelf: 'center', backgroundColor: ((myPlayerId != activePlayerId)) ? "#DB4A39" : "#3DBE29", padding: "3%", borderRadius: 10, bottom: -30 }}>
             <TouchableOpacity disabled={(a || disableDice || isOffline) && (!showTask) ? false : myPlayerId != activePlayerId} onPress={() => {
 
                 startRotateImage()

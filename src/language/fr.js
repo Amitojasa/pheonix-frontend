@@ -17,5 +17,11 @@ export const fr = {
     continue: "Continuer",
     lessCoinsTitle: "vous avez moins de 50 pièces",
     lessCoinsDesc: "Vous devez avoir plus de 50 pièces pour créer une salle, achetez d'abord quelques pièces.",
-    ok: "d'accord"
+    ok: "d'accord",
+    appSettings: "Paramètres de l'application",
+    chooseLanguage:"Choisissez la langue",
+    chooseSound:"choisir le son",
+    on:"Sur",
+    off:"désactivé",
+    save:"sauvegarder"
 }

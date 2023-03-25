@@ -17,5 +17,11 @@ export const en = {
     login: "Login",
     lessCoinsTitle: "You have less than 50 coins",
     lessCoinsDesc: "You must have more than 50 coins to create a room, buy some coins first.",
-    ok: "Ok"
+    ok: "Ok",
+    buyCoins: "Buy Coins",
+    buyNow: "Buy Now",
+    payNow: "Pay Now",
+    cancel: "Cancel",
+    someErrorOccured: "Some Error Occured",
+    transactionSuccessfull: "Transaction Successful"
 }

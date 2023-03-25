@@ -41,14 +41,15 @@ const Offline = ({ navigation, route }) => {
 
     var firstTime = false;
 
-    const { taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask, language, isConnected, checkConnection } = useContext(AuthContext);
+    const { taskList, userData, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask, language, isConnected, checkConnection } = useContext(AuthContext);
 
     const getTaskListFromBackend = async (rn) => {
 
         await axios.post(`${BASE_URL}/api/room/create`, {
             "taskNo": 40,
             // "hostUserId": (JSON.parse(userInfo).id),
-            "hostUserId": "123456",
+            // TODO: check host id 
+            "hostUserId": userData.id,
             "roomId": rn,
             "taskType": "offline",
             "bigTaskNo": 1,

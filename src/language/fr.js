@@ -17,5 +17,11 @@ export const fr = {
     continue: "Continuer",
     lessCoinsTitle: "vous avez moins de 50 pièces",
     lessCoinsDesc: "Vous devez avoir plus de 50 pièces pour créer une salle, achetez d'abord quelques pièces.",
-    ok: "d'accord"
+    ok: "d'accord",
+    buyCoins: "fr Buy Coins",
+    buyNow: "fr Buy Now",
+    payNow: "fr Pay Now",
+    cancel: "fr Cancel",
+    someErrorOccured: "fr Some Error Occured",
+    transactionSuccessfull: " fr Transaction Successful"
 }

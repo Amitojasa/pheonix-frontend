@@ -16,6 +16,7 @@ import JoinRoom from './screens/JoinRoom';
 import Win from './screens/Win';
 import { Avatar } from "./screens/Avatar";
 import Offline from './screens/Offline';
+import BuyCoins from './screens/BuyCoins';
 
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,11 @@ const Navigation = () => {
                             <Stack.Screen
                                 name="Home"
                                 component={Home}
+
+                            />
+                            <Stack.Screen
+                                name="BuyCoins"
+                                component={BuyCoins}
 
                             />
                             <Stack.Screen

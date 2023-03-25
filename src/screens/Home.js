@@ -91,6 +91,22 @@ function Home({ navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
+                        navigation.navigate('BuyCoins', { userDetails: userDetails })
+                    }} style={{
+                        position: "absolute",
+                        right: -20,
+                        top: "40%",
+                        padding: 10,
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        // flexDirection:'row'
+                    }}>
+                        <Ionicons name="cart" size={20} color="white" />
+                        <Text style={{ fontSize: 10, fontWeight: "bold", color: "#FFF", elevation: 10 }}>Buy Coins</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
                         setLanguage(language == 'en' ? 'fr' : 'en')
                     }} style={{ backgroundColor: "#0073C5", position: "absolute", left: -10, top: "35%", padding: 10, borderRadius: 10, }}><Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10 }}><Icons name="language" size={20} color="white" /> {language == 'en' ? 'Fr' : 'En'}</Text></TouchableOpacity>
                     <View style={homeScreenStyles.avatarDiv}>

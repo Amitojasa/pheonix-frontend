@@ -17,11 +17,5 @@ export const en = {
     login: "Login",
     lessCoinsTitle: "You have less than 50 coins",
     lessCoinsDesc: "You must have more than 50 coins to create a room, buy some coins first.",
-    ok: "Ok",
-    appSettings:"App Settings",
-    chooseLanguage:"Choose Language",
-    chooseSound:"Choose Sound",
-    on:"On",
-    off:"Off",
-    save:"Save"
+    ok: "Ok"
 }

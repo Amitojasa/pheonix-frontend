@@ -95,14 +95,14 @@ function Home({navigation}) {
                         setShowSettings(true);
                     }} style={{
                         position: "absolute",
-                        left: -10,
-                        top: "35%",
+                        left: -5,
+                        top: "30%",
                         padding: 10,
                         borderRadius: 10,
                     }}><Text style={{fontWeight: "bold", color: "#FFF", elevation: 10}}>
                         <Ionicons name="settings"
-                                  size={40}
-                                  color="black"/>
+                                  size={30}
+                                  color="white"/>
                     </Text></TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {

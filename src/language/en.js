@@ -23,5 +23,11 @@ export const en = {
     chooseSound:"Choose Sound",
     on:"On",
     off:"Off",
-    save:"Save"
+    save:"Save",
+    buyCoins: "Buy Coins",
+    buyNow: "Buy Now",
+    payNow: "Pay Now",
+    cancel: "Cancel",
+    someErrorOccured: "Some Error Occured",
+    transactionSuccessfull: "Transaction Successful"
 }

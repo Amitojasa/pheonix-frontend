@@ -39,7 +39,7 @@ const Login = ({ navigation, route }) => {
                             promptAsync({ useProxy: false, showInRecents: true })
                         }}>
                             {/* TODO: change useProxy while making apk */}
-                            {/* TODO: I tried using false,  */}
+
                             <View>
                                 <Text style={loginScreenStyles.googleText}>{getString('loginWithGoogle', language)}</Text>
                             </View>

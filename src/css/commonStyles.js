@@ -13,7 +13,7 @@ export const commonStyles = StyleSheet.create({
     borderRadius: {
         borderRadius: 30
     },
-    borderTopRd:{
+    borderTopRd: {
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40
     }

@@ -23,5 +23,11 @@ export const fr = {
     chooseSound:"choisir le son",
     on:"Sur",
     off:"désactivé",
-    save:"sauvegarder"
+    save:"sauvegarder",
+    buyCoins: "fr Buy Coins",
+    buyNow: "fr Buy Now",
+    payNow: "fr Pay Now",
+    cancel: "fr Cancel",
+    someErrorOccured: "fr Some Error Occured",
+    transactionSuccessfull: " fr Transaction Successful"
 }

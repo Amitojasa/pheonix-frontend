@@ -4,6 +4,7 @@ import Icons from '@expo/vector-icons/FontAwesome';
 import {Ionicons} from '@expo/vector-icons';
 import {AuthContext} from "../context/AuthContext";
 import {getString} from "../language/Strings";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export const SettingsComponent = (params) => {
@@ -18,13 +19,15 @@ export const SettingsComponent = (params) => {
                     <Text style={styles.title2}>{getString('chooseLanguage', language)}</Text>
                     <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                         <TouchableOpacity style={[styles.commonDiv]}
-                                          onPress={() => {
+                                          onPress={async () => {
                                               setLanguage("en")
+                                              await AsyncStorage.setItem("language", "en")
                                           }}>
                             <Text style={language === 'en' && styles.selectedBackground}>English</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.commonDiv} onPress={() => {
+                        <TouchableOpacity style={styles.commonDiv} onPress={async () => {
                             setLanguage("fr")
+                            await AsyncStorage.setItem("language", "fr")
                         }}>
                             <Text style={language === 'fr' && styles.selectedBackground}>French</Text>
                         </TouchableOpacity>

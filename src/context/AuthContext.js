@@ -225,6 +225,9 @@ export const AuthProvider = ({children}) => {
                                     setUserData(userDetails);
                                 }
                             })
+                            AsyncStorage.getItem('language').then((res)=>{
+                                setLanguage(res);
+                            })
                         } else {
                             setIsUserLoggedIn(false);
                         }

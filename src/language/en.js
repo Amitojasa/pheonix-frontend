@@ -29,5 +29,8 @@ export const en = {
     payNow: "Pay Now",
     cancel: "Cancel",
     someErrorOccured: "Some Error Occured",
-    transactionSuccessfull: "Transaction Successful"
+    transactionSuccessfull: "Transaction Successful",
+    redeemCoupon: "Redeem Coupon",
+    redeemNow: "Redeem Now",
+    redeem:"Redeem"
 }

@@ -1,18 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
-import { avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1 } from '../Config';
+import React, {createContext, useEffect, useState} from 'react'
+import {avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1} from '../Config';
 import NetInfo from "@react-native-community/netinfo";
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import 'react-native-get-random-values'
-import { nanoid } from 'nanoid'
+import {nanoid} from 'nanoid'
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
         })
 
         userInfoResponse.json().then(async data => {
@@ -225,6 +225,9 @@ export const AuthProvider = ({ children }) => {
                                     setUserData(userDetails);
                                 }
                             })
+                            AsyncStorage.getItem('language').then((res)=>{
+                                setLanguage(res);
+                            })
                         } else {
                             setIsUserLoggedIn(false);
                         }
@@ -243,7 +246,8 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            bigTask, setBigTask,
+            bigTask,
+            setBigTask,
             setTaskList,
             taskList,
             taskIndex,
@@ -262,8 +266,18 @@ export const AuthProvider = ({ children }) => {
             isUserLoggedIn,
             userExist,
             userInfo,
-            isAvatar, checkConnection
-            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin, isConnected, soundOn
+            isAvatar,
+            checkConnection
+            ,
+            setUserData,
+            userData,
+            setIsAvatar,
+            language,
+            setLanguage,
+            handleGuestLogin,
+            isConnected,
+            soundOn,
+            setSoundOn
         }}>{children}
         </AuthContext.Provider>
 

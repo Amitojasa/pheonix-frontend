@@ -18,10 +18,19 @@ export const fr = {
     lessCoinsTitle: "vous avez moins de 50 pièces",
     lessCoinsDesc: "Vous devez avoir plus de 50 pièces pour créer une salle, achetez d'abord quelques pièces.",
     ok: "d'accord",
+    appSettings: "Paramètres de l'application",
+    chooseLanguage:"Choisissez la langue",
+    chooseSound:"choisir le son",
+    on:"Sur",
+    off:"désactivé",
+    save:"sauvegarder",
     buyCoins: "fr Buy Coins",
     buyNow: "fr Buy Now",
     payNow: "fr Pay Now",
     cancel: "fr Cancel",
     someErrorOccured: "fr Some Error Occured",
-    transactionSuccessfull: " fr Transaction Successful"
+    transactionSuccessfull: " fr Transaction Successful",
+    redeemCoupon: "Utiliser le coupon",
+    redeemNow: "Échangez maintenant",
+    redeem:"Racheter"
 }

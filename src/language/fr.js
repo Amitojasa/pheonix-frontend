@@ -24,7 +24,15 @@ export const fr = {
     cancel: "Annuler",
     someErrorOccured: "Une erreur s’est produite",
     transactionSuccessfull: "Transaction réussie",
-    redeemCoupon: "Utiliser le coupon",
+    appSettings: "Paramètres de l'application",
+    chooseLanguage:"Choisissez la langue",
+    chooseSound:"choisir le son",
+    on:"Sur",
+    off:"désactivé",
+    save:"sauvegarder",
+    redeemCoupon: "Réclamer des coupons et des offres",
     redeemNow: "Échangez maintenant",
-    redeem: "Racheter"
+    redeem:"Racheter",
+    details:"Détails",
+    done:"Fait",
 }

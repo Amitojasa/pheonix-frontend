@@ -38,7 +38,7 @@ const Game = ({ navigation, route }) => {
     const [showTaskId, setShowTaskId] = useState(0)
     // const [leftToRight1, setLeftToRight1] = useState(true)
     let rn = (roomName)
-    var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+    var rndInt1 = ((parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % 6).toString();
     var flags = boards[rndInt1].flags
     var mines = boards[rndInt1].mines
     var firstTime = false;

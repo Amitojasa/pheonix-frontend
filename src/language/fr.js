@@ -23,5 +23,8 @@ export const fr = {
     payNow: "Payer maintenant",
     cancel: "Annuler",
     someErrorOccured: "Une erreur s’est produite",
-    transactionSuccessfull: "Transaction réussie"
+    transactionSuccessfull: "Transaction réussie",
+    redeemCoupon: "Utiliser le coupon",
+    redeemNow: "Échangez maintenant",
+    redeem: "Racheter"
 }

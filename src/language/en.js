@@ -18,10 +18,19 @@ export const en = {
     lessCoinsTitle: "You have less than 50 coins",
     lessCoinsDesc: "You must have more than 50 coins to create a room, buy some coins first.",
     ok: "Ok",
+    appSettings:"App Settings",
+    chooseLanguage:"Choose Language",
+    chooseSound:"Choose Sound",
+    on:"On",
+    off:"Off",
+    save:"Save",
     buyCoins: "Buy Coins",
     buyNow: "Buy Now",
     payNow: "Pay Now",
     cancel: "Cancel",
     someErrorOccured: "Some Error Occured",
-    transactionSuccessfull: "Transaction Successful"
+    transactionSuccessfull: "Transaction Successful",
+    redeemCoupon: "Redeem Coupon",
+    redeemNow: "Redeem Now",
+    redeem:"Redeem"
 }

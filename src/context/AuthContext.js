@@ -225,6 +225,9 @@ export const AuthProvider = ({ children }) => {
                                     setUserData(userDetails);
                                 }
                             })
+                            AsyncStorage.getItem('language').then((res) => {
+                                setLanguage(res);
+                            })
                         } else {
                             setIsUserLoggedIn(false);
                         }
@@ -243,7 +246,8 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            bigTask, setBigTask,
+            bigTask,
+            setBigTask,
             setTaskList,
             taskList,
             taskIndex,
@@ -262,7 +266,17 @@ export const AuthProvider = ({ children }) => {
             isUserLoggedIn,
             userExist,
             userInfo,
-            isAvatar, checkConnection, setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin, isConnected, soundOn
+            isAvatar,
+            checkConnection,
+            setUserData,
+            userData,
+            setIsAvatar,
+            language,
+            setLanguage,
+            handleGuestLogin,
+            isConnected,
+            soundOn,
+            setSoundOn
         }}>{children}
         </AuthContext.Provider>
 

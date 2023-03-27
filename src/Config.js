@@ -419,8 +419,6 @@ export const bigTaskList1 = [
     }
 
 
-
-
 ]
 
 export const avatarImage = ['cat', 'panda', 'pig', 'monkey', 'hen', 'fox', 'dog', 'cow']
@@ -511,4 +509,27 @@ export const FB_APP_ID = "230981376160035"
 
 export const BASE_URL = PROD;
 // export const BASE_URL = TEST;
+
+export const coupons = [
+    {
+        id: 1,
+        couponTitle: "Coupon 1",
+        coins: "1000"
+    },
+    {
+        id: 2,
+        couponTitle: "Coupon 2",
+        coins: "1000"
+    },
+    {
+        id: 3,
+        couponTitle: "Coupon 3",
+        coins: "1000"
+    },
+    {
+        id: 4,
+        couponTitle: "Coupon 4",
+        coins: "1000"
+    },
+]
 

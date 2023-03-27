@@ -12,13 +12,15 @@ import start from '../../assets/start.png'
 import flag from '../../assets/gflag.png'
 import { StackActions } from '@react-navigation/native';
 import { Audio } from 'expo-av';
-import SoundPlayer from 'react-native-sound-player'
 
 
 function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlayer1, player2, changePlayerId, playBackMove, roomName, diceVal, setPlayer1Pawn, setPlayer2Pawn, player1Pawn, player2Pawn, pawns, navigation, isOffline = false, player1Details, player2Details }) {
     const { activePlayerId, myPlayerId, taskIndex, taskList, soundOn } = useContext(AuthContext);
+
+
     let rn = (roomName)
-    var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+    var rndInt1 = ((parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % 6).toString();
+    // console.log("Board Id in bg :", rndInt1);
     var flags = boards[rndInt1].flags
     var mines = boards[rndInt1].mines
     const [matrix, setMatrix] = useState([])
@@ -82,6 +84,8 @@ function BoardGame({ setShowTask, setShowTaskId, setGameEnded, player1, setPlaye
     }
 
     const reachedFlag = async (activeUserId, i) => {
+
+        //TODO:this is running when no one is on flag
 
 
         if (!isOffline && myPlayerId != activePlayerId)

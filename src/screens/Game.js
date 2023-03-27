@@ -7,7 +7,7 @@ import TaskShowComponent from '../components/TaskShowComponent';
 import { boards, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
-import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, updateDoc, runTransaction } from 'firebase/firestore';
 import { database } from '../configs/firebase';
 import { AuthContext } from '../context/AuthContext';
 import bgImg from '../../assets/gameBackgroundImage.png'
@@ -38,11 +38,11 @@ const Game = ({ navigation, route }) => {
     const [showTaskId, setShowTaskId] = useState(0)
     // const [leftToRight1, setLeftToRight1] = useState(true)
     let rn = (roomName)
-    var rndInt1 = (parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % boards.length
+    var rndInt1 = ((parseInt(rn[0]) + parseInt(rn[1]) + parseInt(rn[2]) + parseInt(rn[3]) + parseInt(rn[4]) + parseInt(rn[5])) % 6).toString();
     var flags = boards[rndInt1].flags
     var mines = boards[rndInt1].mines
     var firstTime = false;
-
+    // console.log("Board Id in gg :", rndInt1);
     const { isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn } = useContext(AuthContext);
 
     function playSound(sound) {
@@ -130,41 +130,53 @@ const Game = ({ navigation, route }) => {
 
 
         }
-
-        await updateDoc(doc(database, 'rooms', roomName), {
-
-            name: roomName,
-            latestMessage: {
-                text: `${diceVal + 1} 123456 created. Welcome!`,
-                // createdAt: new Date().getTime(),
-
-            },
+        try {
+            await runTransaction(database, async (t) => {
+                const docref = doc(database, 'rooms', roomName);
 
 
+                await updateDoc(docref, {
 
-            GameInfo: {
-                player1Id: player1Details.id,
-                player2Id: player2Details.id,
-                player1Points: playerID == 1 ? resArr : player1,
-                player2Points: playerID == 2 ? resArr : player2,
+                    name: roomName,
+                    latestMessage: {
+                        text: `${diceVal + 1} 123456 created. Welcome!`,
+                        // createdAt: new Date().getTime(),
 
-            },
-            activePlayerId: (activePlayerId)
-
-        }).then((data) => {
-
-            playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
-            // setActivePlayerId((activePlayerId) % 2 + 1);
-            // changePlayerId();
-            console.log("Play move", playerID, resArr);
-        })
-
-        checkFlag(resArr);
+                    },
 
 
 
+                    GameInfo: {
+                        player1Id: player1Details.id,
+                        player2Id: player2Details.id,
+                        player1Points: playerID == 1 ? resArr : player1,
+                        player2Points: playerID == 2 ? resArr : player2,
 
-        firstTime = true;
+                    },
+                    // activePlayerId: (activePlayerId)
+
+                }).then((data) => {
+
+                    playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
+
+                    // setActivePlayerId((activePlayerId) % 2 + 1);
+                    // changePlayerId();
+                    console.log("Play move", playerID, resArr);
+                    checkFlag(resArr);
+
+
+
+
+
+                    firstTime = true;
+                })
+
+            });
+        } catch (err) {
+            console.log(err);
+        }
+
+
     }
 
 
@@ -310,30 +322,41 @@ const Game = ({ navigation, route }) => {
         // if (firstTime == true) {
 
         // setTimeout(() => {
-        await updateDoc(doc(database, 'rooms', roomName), {
-
-            name: roomName,
-            latestMessage: {
-                text: `${roomName}  created. Welcome!`,
-                // createdAt: new Date().getTime(),
-
-            },
-            GameInfo: {
-                player1Id: player1Details.id,
-                player2Id: player2Details.id,
-                player1Points: playerID == 1 ? resArr : player1,
-                player2Points: playerID == 2 ? resArr : player2,
+        try {
+            await runTransaction(database, async (t) => {
+                const docref = doc(database, 'rooms', roomName);
 
 
-            },
-            activePlayerId: (activePlayerId)
+                await updateDoc(docref, {
 
-        }).then((data) => {
-            playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
-            // setActivePlayerId((activePlayerId) % 2 + 1);
-            // changePlayerId();
-            console.log("Playback", playerID, resArr);
-        })
+                    name: roomName,
+                    latestMessage: {
+                        text: `${roomName}  created. Welcome!`,
+                        // createdAt: new Date().getTime(),
+
+                    },
+                    GameInfo: {
+                        player1Id: player1Details.id,
+                        player2Id: player2Details.id,
+                        player1Points: playerID == 1 ? resArr : player1,
+                        player2Points: playerID == 2 ? resArr : player2,
+
+
+                    },
+                    // activePlayerId: (activePlayerId)
+
+                }).then((data) => {
+                    playerID == 1 ? setPlayer1(resArr) : setPlayer2(resArr);
+                    // setActivePlayerId((activePlayerId) % 2 + 1);
+                    // changePlayerId();
+                    console.log("Playback", playerID, resArr);
+                })
+
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
 
 
 
@@ -346,8 +369,8 @@ const Game = ({ navigation, route }) => {
     }
 
     const changePlayerId = async (update = false, backUpdate = false) => {
+        console.log("changePlayer for:", activePlayerId, myPlayerId);
 
-        setDisableDice(false)
         let r = (activePlayerId) % 2 + 1;
 
         var d = {
@@ -359,22 +382,29 @@ const Game = ({ navigation, route }) => {
             d.taskIndex = (taskIndex + 1) % noOfTasks
         }
 
-        console.log("cccc", myPlayerId, activePlayerId);
+        // console.log("cccc", myPlayerId, activePlayerId);
         if (myPlayerId != activePlayerId) {
 
             d.activePlayerId = r
         }
 
+        try {
+            await runTransaction(database, async (t) => {
+                const docref = doc(database, 'rooms', roomName);
+                await updateDoc(docref, d).then((data) => {
+                    if (myPlayerId != activePlayerId) {
+                        setActivePlayerId((activePlayerId) % 2 + 1);
+                    }
+                    if (update == true) {
+                        setTaskIndex((taskIndex + 1) % noOfTasks)
+                    }
 
-        await updateDoc(doc(database, 'rooms', roomName), d).then((data) => {
-            if (myPlayerId != activePlayerId) {
-                setActivePlayerId((activePlayerId) % 2 + 1);
-            }
-            if (update == true) {
-                setTaskIndex((taskIndex + 1) % noOfTasks)
-            }
+                })
 
-        })
+            });
+        } catch (err) {
+            console.log(err);
+        }
 
 
 
@@ -393,9 +423,11 @@ const Game = ({ navigation, route }) => {
     useEffect(() => {
         const ref = doc(database, 'rooms', roomName)
         const unsubscribe = onSnapshot(ref, (snapshot) => {
-
+            console.log("This upper func called for " + myPlayerId);
             if (snapshot && !snapshot.metadata.hasPendingWrites) {
 
+                // setActivePlayerId(snapshot.data().activePlayerId)
+                // console.log("This func called for " + myPlayerId);
                 // console.log(snapshot.metadata.hasPendingWrites);
                 if (snapshot.data().GameInfo.player1Points != player1)
                     setPlayer1(snapshot.data().GameInfo.player1Points)
@@ -404,7 +436,6 @@ const Game = ({ navigation, route }) => {
                     setPlayer2(snapshot.data().GameInfo.player2Points)
 
 
-                setActivePlayerId(snapshot.data().activePlayerId)
 
                 setDiceMove(snapshot.data().diceMove)
 
@@ -416,6 +447,9 @@ const Game = ({ navigation, route }) => {
                             ('Win', { winPlayer: snapshot.data().winningPlayer, roomName: roomName })
                     )
                 }
+
+                setDisableDice(false)
+
             }
 
             // console.log(snapshot.data().latestMessage.text)

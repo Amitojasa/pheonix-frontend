@@ -22,9 +22,7 @@ const Login = ({ navigation, route }) => {
                 <View style={loginScreenStyles.logoSection}>
                     <Image source={require('../../assets/logoHorizontal.png')} />
                     <View style={loginScreenStyles.loginDiv}>
-                        <TouchableOpacity style={loginScreenStyles.loginBtn} onPress={() => {
-                            login('user', 'password')
-                        }}>
+                        <TouchableOpacity style={loginScreenStyles.loginBtn} >
                             <Text style={loginScreenStyles.loginText}>{getString('login', language)}</Text>
                         </TouchableOpacity>
                     </View>

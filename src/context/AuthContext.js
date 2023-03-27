@@ -262,8 +262,7 @@ export const AuthProvider = ({ children }) => {
             isUserLoggedIn,
             userExist,
             userInfo,
-            isAvatar, checkConnection
-            , setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin, isConnected, soundOn
+            isAvatar, checkConnection, setUserData, userData, setIsAvatar, language, setLanguage, handleGuestLogin, isConnected, soundOn
         }}>{children}
         </AuthContext.Provider>
 

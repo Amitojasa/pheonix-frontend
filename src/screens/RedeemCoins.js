@@ -5,13 +5,11 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import InternetAlert from '../components/InternetAlert'
 import {AuthContext} from '../context/AuthContext'
 import {commonStyles} from '../css/commonStyles'
-import {loginScreenStyles} from '../css/loginScreenStyles'
 import {getString} from '../language/Strings'
 import LandscapeLogo from '../components/LandscapeLogo'
 import {homeScreenStyles} from '../css/homeScreenStyles'
 import axios from 'axios'
 import {BASE_URL, coupons} from '../Config'
-import {useScrollToTop} from "@react-navigation/native";
 
 
 const RedeemCoins = ({navigation, route}) => {
@@ -31,9 +29,11 @@ const RedeemCoins = ({navigation, route}) => {
 
     const [showPopUp, setShowPopUp] = useState(false)
     const [coupon, setCoupon] = useState(0)
-    const [coins, setCoins] = useState(0)
+    const [coins, setCoins] = useState(0);
+    const [description, setDescription] = useState("");
     const [processing, setProcessing] = useState(false);
     const [msg, setMsg] = useState("")
+    const [couponRedeemed, setCouponRedeemed] = useState(false);
 
     const ref = React.useRef(null);
 
@@ -44,11 +44,12 @@ const RedeemCoins = ({navigation, route}) => {
         });
     }
 
-    const purchase = (coupon, coins) => {
+    const purchase = (coupon) => {
         console.log(userDetails);
-        setCoupon(coupon);
-        setCoins(coins);
+        setCoupon(coupon.couponCode);
+        setDescription(coupon.description);
         setShowPopUp(true);
+        setCoins(coupon.coins);
 
     }
 
@@ -64,7 +65,8 @@ const RedeemCoins = ({navigation, route}) => {
         await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then(() => {
                 setMsg(getString("transactionSuccessfull", language))
                 setProcessing(false)
-                setShowPopUp(false)
+                // setShowPopUp(false)
+                setCouponRedeemed(true)
                 setTimeout(() => {
                     setMsg("");
                 }, 5000)
@@ -106,35 +108,58 @@ const RedeemCoins = ({navigation, route}) => {
                 borderRadius: 15
             }}>
                 {processing && <ActivityIndicator/>}
-                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg}/>
-                    <Text style={{fontSize: 20, fontWeight: "bold", marginVertical: 20}}>
-                        {coins}</Text>
-                </View>
 
-
-                <View style={{flexDirection: "row"}}><TouchableOpacity disabled={processing}
-                                                                       onPress={() => setShowPopUp(false)}>
-                    <Text style={{
-                        backgroundColor: "#000",
-                        padding: 10,
-                        paddingHorizontal: 20,
-                        margin: 10,
-                        color: "#FFF",
-                        borderRadius: 10
-                    }}>{getString('cancel', language)}</Text>
-                </TouchableOpacity>
-                    <TouchableOpacity onPress={() => redeemNow()} disabled={processing}>
-                        <Text style={{
-                            backgroundColor: "#1FAA59",
+                {couponRedeemed ?
+                    <View style={styles.centerContainer}>
+                        <Text style={styles.couponText}>Code: {coupon}</Text>
+                        <TouchableOpacity style={{
+                            backgroundColor: "#0073C5",
                             padding: 10,
                             paddingHorizontal: 20,
                             margin: 10,
                             color: "#FFF",
                             borderRadius: 10
-                        }}>{getString('redeem', language)}</Text>
-                    </TouchableOpacity></View>
+                        }} onPress={() => {
+                            setCouponRedeemed(false);
+                            setShowPopUp(false);
+                        }} disabled={processing}>
+                            <Text style={{color: "#fff"}}>{getString('done', language)}</Text>
+                        </TouchableOpacity>
+                    </View> :
+                    <>
+                        <View
+                            style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                            <Text style={{fontSize: 20, fontWeight: "bold", marginVertical: 20}}>
+                                {description}</Text>
+                        </View>
 
+
+                        <View style={{flexDirection: "row"}}>
+                            <TouchableOpacity style={{
+                                backgroundColor: "#000",
+                                padding: 10,
+                                paddingHorizontal: 20,
+                                margin: 10,
+                                color: "#FFF",
+                                borderRadius: 10
+                            }} disabled={processing} onPress={() => setShowPopUp(false)}>
+                                <Text style={{
+                                    color: "#FFF",
+                                }}>{getString('cancel', language)}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                backgroundColor: "#0073C5",
+                                padding: 10,
+                                paddingHorizontal: 20,
+                                margin: 10,
+                                color: "#FFF",
+                                borderRadius: 10
+                            }} onPress={() => redeemNow()} disabled={processing}>
+                                <Text style={{color: "#fff"}}>{getString('redeem', language)}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                }
             </View>
         </>
     )
@@ -145,12 +170,12 @@ const RedeemCoins = ({navigation, route}) => {
             <ScrollView ref={ref}>
                 <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected}/>
                 {showPopUp && redeemNowPopUp()}
-                <LinearGradient colors={['#DB4A39', '#FFFFFF']}
-                                start={{x: 1, y: 0.3}}
+                <LinearGradient colors={['#0073C5', '#9069FF']}
+                                start={{x: 1, y: 0}}
                                 end={{x: 0, y: 1}} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                     <LandscapeLogo/>
-                    <View style={[{marginTop: 10, padding: "5%", borderRadius: 15, backgroundColor: "#FFF"}]}>
-                        <Text style={loginScreenStyles.loginText}>{getString('redeemCoupon', language)}</Text>
+                    <View>
+                        <Text style={styles.text}>{getString('redeemCoupon', language)}</Text>
                     </View>
                     {msg &&
                         <Text style={{
@@ -165,7 +190,9 @@ const RedeemCoins = ({navigation, route}) => {
                                 <View style={{
                                     flexDirection: "row", justifyContent: "center", alignItems: "center",
                                 }}>
-                                    <Text style={homeScreenStyles.coinsText}>{item.couponTitle}</Text>
+                                    {/*<Text style={homeScreenStyles.coinsText}>{item.couponTitle}</Text>*/}
+                                    <Image source={item.image} style={styles.couponImg}/>
+
                                 </View>
                                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                                     <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg}/>
@@ -175,11 +202,11 @@ const RedeemCoins = ({navigation, route}) => {
                                     }]}>{item.coins}</Text>
                                 </View>
                                 <TouchableOpacity onPress={() => {
-                                    purchase(item.id, item.coins);
+                                    purchase(item);
                                     onPressTouch();
-                                }} style={styles.buyNowBtn}>
+                                }} style={styles.detailsBtn}>
                                     <Text style={styles.buyNowText}>{
-                                        getString('redeemNow', language)}
+                                        getString('details', language)}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -205,25 +232,54 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         margin: 10,
         borderRadius: 10,
-        height: 200,
+        height: 210,
         paddingVertical: 20, paddingHorizontal: 10,
+        alignItems: "center",
         justifyContent: "space-between"
     },
     groupOfGroups: {
         paddingVertical: "10%",
         paddingHorizontal: "5%",
         flex: 1,
-        width: "100%"
+        width: "100%",
+
     },
-    buyNowBtn: {
+    detailsBtn: {
         borderRadius: 10,
-        backgroundColor: "#1FAA59",
+        backgroundColor: "#0073C5",
         paddingVertical: 10,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        width: "100%"
     },
     buyNowText: {
         color: "#FFF",
         fontWeight: "bold"
+    },
+    text: {
+        fontSize: 25,
+        letterSpacing: 2,
+        color: "#fff",
+        fontWeight: "bold",
+        textShadowColor: "rgba(0, 0, 0, 0.25)",
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 1,
+    },
+    couponText:{
+        fontSize: 25,
+        letterSpacing: 2,
+        fontWeight: "bold",
+        textShadowColor: "rgba(0, 0, 0, 0.25)",
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 1,
+        marginBottom:20
+    },
+    couponImg: {
+        width: 80,
+        height: 80,
+    },
+    centerContainer:{
+        alignItems:"center",
+        justifyContent:"center"
     }
 })

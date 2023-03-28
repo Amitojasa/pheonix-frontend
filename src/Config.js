@@ -1,5 +1,5 @@
 const PROD = 'http://phoenix-rest-api.herokuapp.com';
-
+export const socketURL = "https://phoenix-socket-server.herokuapp.com/"
 
 export const primaryColor = "#296896"
 export const secondaryColor = "#4A89B7"

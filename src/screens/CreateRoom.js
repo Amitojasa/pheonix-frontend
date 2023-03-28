@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import {
     collection,
     addDoc,
@@ -27,7 +27,7 @@ import InternetAlert from '../components/InternetAlert';
 function CreateRoom({ navigation, route, }) {
 
 
-    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask, socket } = useContext(AuthContext);
 
     const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()
@@ -88,8 +88,61 @@ function CreateRoom({ navigation, route, }) {
     }
 
 
+    // async function handleButtonPress() {
+    //     var n = await Math.floor(100000 + Math.random() * 900000).toString()
+    //     if (n.length > 0) {
+
+
+    //         console.log("creating room");
+    //         await socket.emit("create_room", {
+
+    //             name: n,
+
+    //             GameInfo: {
+    //                 player1Id: userData.id,
+    //                 player2Id: null,
+    //                 player1Points: StartPosition,
+    //                 player2Points: StartPosition,
+
+
+    //             },
+    //             player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id },
+    //             player2Details: null,
+    //             diceMove: 1,
+    //             activePlayerId: activePlayerId,
+    //             taskIndex: 0,
+    //             playBackSteps: 2,
+    //             winningUpdate: false
+    //         }, async (d) => {
+
+    //             console.log(d);
+
+    //             if (d.status && d.message == "Room already exists...") {
+    //                 handleButtonPress();
+    //                 return;
+    //             } else if (!d.status) {
+    //                 Alert.alert(d.message)
+    //             }
+
+
+    //             setMyPlayerId(1);
+
+    //             setRoomName(n);
+    //             // console.log(JSON.parse(userInfo).id);
+    //             await getTaskListFromBackend(n);
+    //         })
+
+
+
+
+
+    //         // })
+    //     }
+    // }
+
+
     useEffect(() => {
-        // console.log("yess", roomName);
+        console.log("yess", roomName);
         if (roomName) {
             // console.log("inside");
             const ref = doc(database, 'rooms', roomName)
@@ -113,7 +166,32 @@ function CreateRoom({ navigation, route, }) {
 
             return () => unsubscribe();
         }
+
     }, [roomName]);
+
+    // useEffect(() => {
+
+    //     socket.on('game_start', (data) => {
+
+    //         if (data.status == true && data.message == "Room updated...") {
+    //             let d = data.data;
+    //             if (d.GameInfo.player2Id != null) {
+
+    //                 setPlayer2Details({ userName: d.player2Details.userName, coins: d.player2Details.coins, profileImage: d.player2Details.profileImage })// TODO: 
+    //                 setTimeout(() => {
+    //                     navigation.dispatch(
+    //                         StackActions.replace('Game', { roomName: roomName, player2Details: { userName: d.player2Details.userName, coins: d.player2Details.coins, profileImage: d.player2Details.profileImage, id: d.player2Details.id }, player1Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id } })) //TODO:
+    //                 }, 3000);
+    //             }
+    //         }
+
+    //     });
+
+    //     // return () => {
+    //     //     socket.disconnect();
+    //     // };
+    // }, [socket]);
+
 
 
 
@@ -121,18 +199,24 @@ function CreateRoom({ navigation, route, }) {
         await axios.post(`${BASE_URL}/api/room/create`, {
             "taskNo": 40,
             "bigTaskNo": 1,
-            "lang": language,
+            // "lang": language,
             // "hostUserId": (JSON.parse(userInfo).id),
             "hostUserId": userData.id,
             "roomId": rn,
-            "taskType": "online",
-            "bigTaskNo": 1,
+            "taskType": "offline",
             "bigTaskType": "offline"
             // "isSmallTask": true,
         }).then((apiRes) => {
-            console.log('res tasks create :: = > :: ', apiRes.data.message);
-            if (apiRes.data.message.tasks && apiRes.data.message.tasks.length > 0) setTaskList(apiRes.data.message.tasks);
-            if (apiRes.data.message.bigTasks && apiRes.data.message.bigTasks.length > 0) setBigTask(apiRes.data.message.bigTasks[0]);
+
+            if (language == 'en') {
+                console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
+                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) setTaskList(apiRes.data.message.enTasks.tasks);
+                if (apiRes.data.message.enTasks.bigTasks && apiRes.data.message.enTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.enTasks.bigTasks[0]);
+            } else {
+                console.log('res tasks create fr :: = > :: ', apiRes.data.message.frTasks);
+                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.tasks.frTasks.length > 0) setTaskList(apiRes.data.message.frTasks.tasks);
+                if (apiRes.data.message.frTasks.bigTasks && apiRes.data.message.frTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.frTasks.bigTasks[0]);
+            }
             // if (apiRes.data.message.bigTask) setBigTask(apiRes.data.message.bigTasks[0]);
 
         }).catch(err => {

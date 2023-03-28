@@ -26,5 +26,11 @@ export const fr = {
     transactionSuccessfull: "Transaction réussie",
     redeemCoupon: "Utiliser le coupon",
     redeemNow: "Échangez maintenant",
-    redeem: "Racheter"
+    redeem: "Racheter",
+    appSettings: "Paramètres de l'application",
+    chooseLanguage: "Choisissez la langue",
+    chooseSound: "choisir le son",
+    on: "Sur",
+    off: "désactivé",
+    save: "sauvegarder",
 }

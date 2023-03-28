@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
-import { avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1 } from '../Config';
+import { avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1, socketURL } from '../Config';
 import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
 import Constants from 'expo-constants';
@@ -9,7 +9,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
-
+import io from 'socket.io-client';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -39,6 +39,8 @@ export const AuthProvider = ({ children }) => {
         expoClientId: Constants.manifest.extra.EXPO_CLIENT_ID
     })
 
+    const socket = io(socketURL);
+
     // FACEBOOK LOGIN CODE
     // const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
     //     clientId: FB_APP_ID,
@@ -61,6 +63,8 @@ export const AuthProvider = ({ children }) => {
             unsubscribe();
         }
     }, [])
+
+
 
 
     useEffect(() => {
@@ -276,7 +280,8 @@ export const AuthProvider = ({ children }) => {
             handleGuestLogin,
             isConnected,
             soundOn,
-            setSoundOn
+            setSoundOn,
+            socket
         }}>{children}
         </AuthContext.Provider>
 

@@ -26,8 +26,8 @@ import InternetAlert from '../components/InternetAlert';
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask } = useContext(AuthContext);
-
+    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask, socket } = useContext(AuthContext);
+    var underProgress = 0;
     const [player1Details, setPlayer1Details] = useState()
 
     const handleJoinRoom = async () => {
@@ -35,11 +35,11 @@ const JoinRoom = ({ navigation, route }) => {
         if (true) {
 
 
-            var d = await getDoc(await doc(database, 'rooms', roomName))
+            // var d = await getDoc(await doc(database, 'rooms', roomName))
 
 
             if (d.data()) {
-                console.log(d.data());
+                // console.log(d.data());
                 await updateDoc(doc(database, 'rooms', roomName), {
 
 
@@ -70,19 +70,71 @@ const JoinRoom = ({ navigation, route }) => {
             } else {
                 Alert.alert(getString('wrongRoomId', language))
             }
-            // console.log(snapshot.data().latestMessage.text)
+            // console.log(snapshot.data().latestmessage..text)
 
         }
     }
+
+    // const handleJoinRoom = async () => {
+    //     if (underProgress == 0) {
+    //         underProgress = 1;
+    //         socket.emit("join_room", {
+
+    //             name: roomName,
+    //             GameInfo: {
+    //                 player2Id: userData.id,
+    //             },
+
+    //             player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id },
+
+    //         }, (async (data) => {
+    //             console.log(data);
+    //             if (data.status == true && data.message == "Room full (2 players already exist)...") {
+    //                 Alert.alert(data.message);
+    //             } else if (data.status) {
+    //                 data = data.data;
+
+    //                 setMyPlayerId(2);
+    //                 setPlayer1Details({ userName: data.player1Details.userName, coins: data.player1Details.coins, profileImage: data.player1Details.profileImage })
+    //                 await getTaskListFromAPI()
+    //                 console.log(data.player1Details);
+    //                 setTimeout(() => {
+    //                     navigation.dispatch(
+    //                         StackActions.replace('Game', { data: data, roomName: roomName, player1Details: { userName: data.player1Details.userName, coins: data.player1Details.coins, profileImage: data.player1Details.profileImage, id: data.player1Details.id }, player2Details: { userName: userData.userName, profileImage: userData.profileImage, coins: userData.coins, id: userData.id } }))
+    //                 }, 2000);
+    //             } else {
+    //                 Alert.alert(data.message)
+    //             }
+
+    //         }));
+    //         underProgress = 0;
+    //     }
+
+    // }
+
+
+
+
+
 
 
     const getTaskListFromAPI = async () => {
 
 
         await axios.get(`${BASE_URL}/api/room/${roomName}`).then((apiRes) => {
-            console.log('res join tasks :: = > :: ', JSON.parse(apiRes.request._response).message[0].tasks);
-            JSON.parse(apiRes.request._response).message[0].tasks && JSON.parse(apiRes.request._response).message[0].tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message[0].tasks);
-            JSON.parse(apiRes.request._response).message[0].bigTasks && JSON.parse(apiRes.request._response).message[0].bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message[0].bigTasks[0]);
+            console.log('res join tasks :: = > :: ', JSON.parse(apiRes.request._response).message, roomName);
+
+
+
+
+            if (language == 'en') {
+
+                JSON.parse(apiRes.request._response).message.enTasks.tasks && JSON.parse(apiRes.request._response).message.enTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.enTasks.tasks);
+                JSON.parse(apiRes.request._response).message.enTasks.bigTasks && JSON.parse(apiRes.request._response).message.enTasks.bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message.enTasks.bigTasks[0]);
+            } else {
+                JSON.parse(apiRes.request._response).message.frTasks.tasks && JSON.parse(apiRes.request._response).message.frTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.frTasks.tasks);
+                JSON.parse(apiRes.request._response).message.frTasks.bigTasks && JSON.parse(apiRes.request._response).message.frTasks.bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message.frTasks.bigTasks[0]);
+            }
 
         }).catch(err => {
             console.log("Error :", err);

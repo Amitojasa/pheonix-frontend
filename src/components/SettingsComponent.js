@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const SettingsComponent = (params) => {
     const {setShowSettings} = params;
-    const {language, setLanguage, setSoundOn, soundOn} = useContext(AuthContext);
+    const {language, setLanguage, setSoundOn, soundOn, region, setRegion} = useContext(AuthContext);
 
     return (
         <View style={styles.container}>
@@ -50,6 +50,23 @@ export const SettingsComponent = (params) => {
                     </View>
                 </View>
             </View>
+            <View style={{width: "80%", alignItems: "center", justifyContent: "center"}}>
+                <Text style={styles.title2}>{getString('chooseRegion', language)}</Text>
+                <View style={{flexDirection: "row"}}>
+                    <TouchableOpacity style={[styles.commonDiv]}
+                                      onPress={() => {
+                                          setRegion("America")
+                                      }}>
+                        <Text style={region==='America' && styles.selectedBackground}>{getString('america', language)}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.commonDiv} onPress={() =>
+                        setRegion("Europe")
+                    }>
+                        <Text style={region ==='Europe'&& styles.selectedBackground}>{getString('europe', language)}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
             <TouchableOpacity style={{
                 backgroundColor: "#DB4A39",
                 borderRadius: 10,

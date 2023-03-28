@@ -75,17 +75,7 @@ function Home({ navigation }) {
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                 <View style={homeScreenStyles.userSection}>
                     <Image source={require('../../assets/logoHorizontal.png')} />
-                    <View style={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        position: "absolute",
-                        zIndex: 10000,
-                        height: 210,
-                        right: 0,
-                        width: "20%",
-                        paddingVertical: 20,
-
-                    }}>
+                    <View style={homeScreenStyles.logoutCoinsDiv}>
                         <TouchableOpacity onPress={() => {
                             logout()
                         }} style={[homeScreenStyles.centerDiv]}>
@@ -103,16 +93,7 @@ function Home({ navigation }) {
                     </View>
 
 
-                    <View style={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        position: "absolute",
-                        zIndex: 10000,
-                        height: 210,
-                        width: "20%",
-                        paddingVertical: 20,
-                        left: 0
-                    }}>
+                    <View style={homeScreenStyles.settingRedeemDiv}>
                         <TouchableOpacity onPress={() => {
                             setShowSettings(true);
                         }} style={[homeScreenStyles.centerDiv]}>

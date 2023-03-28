@@ -97,5 +97,25 @@ export const homeScreenStyles = StyleSheet.create({
     },
     iconText:{
         fontSize: 12, fontWeight: "bold", color: "#FFF", elevation: 10, textAlign:"center"
+    },
+    settingRedeemDiv:{
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "absolute",
+        zIndex: 10000,
+        height: 210,
+        width: "20%",
+        paddingVertical: 20,
+        left: 0
+    },
+    logoutCoinsDiv:{
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "absolute",
+        zIndex: 10000,
+        height: 210,
+        right: 0,
+        width: "20%",
+        paddingVertical: 20
     }
 })

@@ -30,7 +30,9 @@ export const en = {
     cancel: "Cancel",
     someErrorOccured: "Some Error Occured",
     transactionSuccessfull: "Transaction Successful",
-    redeemCoupon: "Redeem Coupon",
+    redeemCoupon: "Claim Coupons & Offers",
     redeemNow: "Redeem Now",
-    redeem:"Redeem"
+    redeem:"Redeem",
+    details:"Details",
+    done:"Done"
 }

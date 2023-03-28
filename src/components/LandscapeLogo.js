@@ -18,7 +18,7 @@ function LandscapeLogo() {
                 alignSelf: 'center',
                 width: '90%',
                 // backgroundColor: "#000",
-
+                marginBottom:"5%"
             }}
         ></Image>
 

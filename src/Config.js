@@ -513,23 +513,31 @@ export const BASE_URL = PROD;
 export const coupons = [
     {
         id: 1,
-        couponTitle: "Coupon 1",
-        coins: "1000"
+        couponCode: "XBBX",
+        coins: "3000",
+        image: require('../assets/timHortonsCoupon.png'),
+        description: "Tim hortons Coupon"
     },
     {
         id: 2,
-        couponTitle: "Coupon 2",
-        coins: "1000"
+        couponCode: "XBBX",
+        coins: "2700",
+        image: require('../assets/timHortonsCoupon.png'),
+        description: "Tim hortons Coupon"
     },
     {
         id: 3,
-        couponTitle: "Coupon 3",
-        coins: "1000"
+        couponCode: "XBBX",
+        coins: "5000",
+        image: require('../assets/burgerKingCoupon.png'),
+        description: "Tim hortons Coupon"
     },
     {
         id: 4,
-        couponTitle: "Coupon 4",
-        coins: "1000"
+        couponCode: "XBBX",
+        coins: "2000",
+        image: require('../assets/burgerKingCoupon.png'),
+        description: "Tim hortons Coupon"
     },
 ]
 

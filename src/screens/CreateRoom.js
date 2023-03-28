@@ -10,7 +10,7 @@ import {
     setDoc,
     getDoc
 } from 'firebase/firestore';
-import { database } from '../configs/firebase';
+
 import { BASE_URL, EndPosition, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -27,7 +27,7 @@ import InternetAlert from '../components/InternetAlert';
 function CreateRoom({ navigation, route, }) {
 
 
-    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask, socket } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask, socket, database } = useContext(AuthContext);
 
     const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()

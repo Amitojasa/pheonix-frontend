@@ -11,7 +11,6 @@ import {
     getDoc,
     updateDoc
 } from 'firebase/firestore';
-import { database } from '../configs/firebase';
 import { BASE_URL, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,7 +25,7 @@ import InternetAlert from '../components/InternetAlert';
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask, socket } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask, socket, database } = useContext(AuthContext);
     var underProgress = 0;
     const [player1Details, setPlayer1Details] = useState()
 

@@ -6,7 +6,7 @@ import { Animated, Easing, Text, Touchable, TouchableOpacity, View } from 'react
 import DiceOne from "../../assets/dice1.png";
 import DiceTwo from "../../assets/dice2.png";
 import DiceThree from "../../assets/dice3.png";
-import { database } from '../configs/firebase';
+
 import { AuthContext } from '../context/AuthContext';
 import { getString } from '../language/Strings';
 function DiceComponent({ showTask, isOffline = false, diceMove, setDisableDice, disableDice, setDiceMove, playMove, changePlayerId, roomName }) {
@@ -18,7 +18,7 @@ function DiceComponent({ showTask, isOffline = false, diceMove, setDisableDice, 
 
 
     const diceArray = [DiceOne, DiceTwo, DiceThree]
-    const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, language, soundOn } = useContext(AuthContext);
+    const { activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, language, soundOn, database } = useContext(AuthContext);
     var a = false
 
 

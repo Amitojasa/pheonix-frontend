@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 import Constants from 'expo-constants';
 
 // Firebase config
-const firebaseConfig = {
+export const firebaseConfigAmerica = {
     apiKey: "AIzaSyA3-IpSHeckkQEDtxavSRWNkshMNOZpRiE",
     authDomain: "phoenix-f5048.firebaseapp.com",
     projectId: "phoenix-f5048",
@@ -15,8 +15,15 @@ const firebaseConfig = {
     databaseURL: "https://phoenix-f5048.firebaseio.com"
 };
 
-// initialize firebase
-initializeApp(firebaseConfig);
 
-export const auth = getAuth();
-export const database = getFirestore();
+export const firebaseConfigEurope = {
+    apiKey: "AIzaSyCnadgygeChEpkid3_8cGAiPm6E3K1YGG0",
+    authDomain: "phoenix2-5f969.firebaseapp.com",
+    projectId: "phoenix2-5f969",
+    storageBucket: "phoenix2-5f969.appspot.com",
+    messagingSenderId: "349732182982",
+    appId: "1:349732182982:web:6b51044328a9e10fccf0c7",
+    databaseURL: "https://phoenix2-5f969.eur3.firebasedatabase.app"
+};
+
+

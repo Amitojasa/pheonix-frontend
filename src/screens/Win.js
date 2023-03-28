@@ -11,7 +11,6 @@ import {
     getDoc,
     updateDoc
 } from 'firebase/firestore';
-import { database } from '../configs/firebase';
 import { BASE_URL, StartPosition } from '../Config';
 import { AuthContext } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -29,7 +28,7 @@ function Win({ navigation, route, }) {
 
 
 
-    const { isConnected, checkConnection, language, bigTask, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
+    const { database, isConnected, checkConnection, language, bigTask, setTaskList, myPlayerId, userInfo, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex } = useContext(AuthContext);
     const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()

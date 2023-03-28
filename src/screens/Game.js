@@ -8,7 +8,6 @@ import { boards, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Co
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
-import { database } from '../configs/firebase';
 import { AuthContext } from '../context/AuthContext';
 import bgImg from '../../assets/gameBackgroundImage.png'
 import pawn1 from '../../assets/pawn1.png'
@@ -43,7 +42,7 @@ const Game = ({ navigation, route }) => {
     var mines = boards[rndInt1].mines
     var firstTime = false;
 
-    const { isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn } = useContext(AuthContext);
+    const { database, isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn } = useContext(AuthContext);
 
     function playSound(sound) {
         console.log('Playing ');

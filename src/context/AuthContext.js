@@ -10,16 +10,20 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 import io from 'socket.io-client';
+import { firebaseConfigAmerica, firebaseConfigEurope } from '../configs/firebase';
+import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
+    const [database, setDatabase] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
     const [activePlayerId, setActivePlayerId] = useState(1);
     const [myPlayerId, setMyPlayerId] = useState(1);
     const [userInfo, setUserInfo] = useState(null);
     const [language, setLanguage] = useState('en');
+    const [region, setRegion] = useState('America');
     const [soundOn, setSoundOn] = useState(true)
 
     const [playBackSteps, setPlayBackSteps] = useState(2)
@@ -63,8 +67,6 @@ export const AuthProvider = ({ children }) => {
             unsubscribe();
         }
     }, [])
-
-
 
 
     useEffect(() => {
@@ -160,6 +162,20 @@ export const AuthProvider = ({ children }) => {
 
     }
 
+
+
+    useEffect(() => {
+        if (region == 'America') {
+            initializeApp(firebaseConfigAmerica);
+            setDatabase(getFirestore())
+        }
+        else if (region == 'Europe') {
+            initializeApp(firebaseConfigEurope);
+            setDatabase(getFirestore())
+        }
+    }, [region])
+
+
     const handleGuestLogin = () => {
         const username = ('guest' + Math.floor(Math.random() * 100000)).substring(0, 10).toLowerCase();
         const userDetails = {
@@ -230,7 +246,9 @@ export const AuthProvider = ({ children }) => {
                                 }
                             })
                             AsyncStorage.getItem('language').then((res) => {
-                                setLanguage(res);
+
+                                if (res == null) setLanguage("en");
+                                else setLanguage(res)
                             })
                         } else {
                             setIsUserLoggedIn(false);
@@ -281,7 +299,9 @@ export const AuthProvider = ({ children }) => {
             isConnected,
             soundOn,
             setSoundOn,
-            socket
+            socket,
+            region, setRegion,
+            database
         }}>{children}
         </AuthContext.Provider>
 

@@ -34,5 +34,8 @@ export const en = {
     redeemNow: "Redeem Now",
     redeem:"Redeem",
     details:"Details",
-    done:"Done"
+    done:"Done",
+    chooseRegion: "Choose Region",
+    america:"America",
+    europe:"Europe"
 }

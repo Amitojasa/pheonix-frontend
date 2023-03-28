@@ -75,69 +75,43 @@ function Home({ navigation }) {
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                 <View style={homeScreenStyles.userSection}>
                     <Image source={require('../../assets/logoHorizontal.png')} />
-                    <TouchableOpacity onPress={() => {
-                        logout()
-                    }} style={{
-                        position: "absolute",
-                        right: -20,
-                        top: "30%",
-                        padding: 10,
-                        borderRadius: 10,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        // flexDirection:'row'
-                    }}>
-                        <Ionicons name="exit" size={30} color="white" />
-                        <Text style={{ fontSize: 10, fontWeight: "bold", color: "#FFF", elevation: 10 }}>Log Out</Text>
-                    </TouchableOpacity>
+                    <View style={homeScreenStyles.logoutCoinsDiv}>
+                        <TouchableOpacity onPress={() => {
+                            logout()
+                        }} style={[homeScreenStyles.centerDiv]}>
+                            <Ionicons name="exit" size={30} color="white"/>
+                            <Text style={homeScreenStyles.iconText}>Log
+                                Out</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('BuyCoins', {userDetails: userDetails})
+                        }} style={homeScreenStyles.centerDiv}>
+                            <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg}/>
+                            <Text style={homeScreenStyles.iconText}>Buy
+                                Coins</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
-                    <TouchableOpacity onPress={() => {
-                        setShowSettings(true);
-                    }} style={{
-                        position: "absolute",
-                        left: -7,
-                        top: "30%",
-                        padding: 10,
-                        borderRadius: 10,
-                    }}>
-                        <Ionicons name="settings"
-                            size={30}
-                            color="white" style={{ marginBottom: 5 }} />
-                        <Text style={{ fontWeight: "bold", color: "#FFF", elevation: 10, left: -15 }}>
-                            Settings
-                        </Text></TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('RedeemCoins', { userDetails: userDetails })
-                    }} style={{
-                        position: "absolute",
-                        left: -32,
-                        top: "45%",
-                        padding: 10,
-                        borderRadius: 10,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-                        <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
-                        <Text style={{ fontSize: 10, fontWeight: "bold", color: "#FFF", elevation: 10 }}>Redeem Coins</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('BuyCoins', { userDetails: userDetails })
-                    }} style={{
-                        position: "absolute",
-                        right: -22,
-                        top: "48%",
-                        padding: 10,
-                        borderRadius: 10,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        // flexDirection:'row'
-                    }}>
-                        <Ionicons name="cart" size={30} color="white" />
-                        <Text style={{ fontSize: 10, fontWeight: "bold", color: "#FFF", elevation: 10 }}>Buy Coins</Text>
-                    </TouchableOpacity>
+                    <View style={homeScreenStyles.settingRedeemDiv}>
+                        <TouchableOpacity onPress={() => {
+                            setShowSettings(true);
+                        }} style={[homeScreenStyles.centerDiv]}>
+                            <Ionicons name="settings"
+                                      size={30}
+                                      color="white" style={{marginBottom: 5}}/>
+                            <Text style={homeScreenStyles.iconText}>
+                                Settings
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('RedeemCoins', {userDetails: userDetails})
+                        }} style={homeScreenStyles.centerDiv}>
+                            <Ionicons name="cart" size={30} color="white"/>
+                            <Text numberOfLines={2} ellipsizeMode='tail' style={homeScreenStyles.iconText}>Redeem
+                                Coupons</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
                     <View style={homeScreenStyles.avatarDiv}>

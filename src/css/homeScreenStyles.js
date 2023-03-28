@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from "react-native";
 
 export const homeScreenStyles = StyleSheet.create({
     coinsDiv: {
@@ -13,10 +13,10 @@ export const homeScreenStyles = StyleSheet.create({
         elevation: 10
     },
     userSection: {
-        // backgroundColor: "#000",
         height: "60%",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        width:"95%"
     },
     coinsText: {
         fontSize: 25,
@@ -24,7 +24,7 @@ export const homeScreenStyles = StyleSheet.create({
         color: "#000",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
     },
     userImage: {
@@ -48,7 +48,7 @@ export const homeScreenStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         shadowColor: "rgba(0, 0, 0, 25)",
-        shadowOffset: { width: 1, height: 1 },
+        shadowOffset: {width: 1, height: 1},
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,
@@ -74,7 +74,6 @@ export const homeScreenStyles = StyleSheet.create({
         marginBottom: 30,
         width: 200,
         height: 210,
-
         backgroundColor: '#FFF',
         alignItems: "center",
         justifyContent: "center",
@@ -85,5 +84,18 @@ export const homeScreenStyles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18
 
+    },
+    centerDiv: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    settingsDiv:{
+        marginBottom:"90%"
+    },
+    logoutDiv:{
+        marginBottom:100
+    },
+    iconText:{
+        fontSize: 12, fontWeight: "bold", color: "#FFF", elevation: 10, textAlign:"center"
     }
 })

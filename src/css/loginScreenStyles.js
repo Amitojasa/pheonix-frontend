@@ -16,7 +16,7 @@ export const loginScreenStyles = StyleSheet.create({
         borderRadius: 35
     },
     loginDiv: {
-        top: "20%", backgroundColor: "#ffffff", width: "35%", left: "25%", borderRadius: 35
+        top: "20%", backgroundColor: "#ffffff", width: "35%", borderRadius: 35,
     },
     loginText: {
         fontSize: 25,
@@ -28,27 +28,25 @@ export const loginScreenStyles = StyleSheet.create({
         textShadowRadius: 1,
     },
     logoSection: {
-        height: "60%", top: "15%"
+        height: "60%",
+        alignItems:"center",
+        justifyContent:"center",
+        bottom:"10%"
     },
     authSection: {
         borderRadius: 30,
         height: "40%", width: "100%"
     },
     googleLogin: {
-        // display: "inline",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#DB4A39",
-        paddingLeft: "3%",
         borderRadius: 15,
-        // shadowColor: "rgba(0, 0, 0, 0.25)",
-        // shadowOffset: { width: 1, height: 1 },
-        // shadowOpacity: 0.4,
-        // shadowRadius: 3,
         elevation: 5,
         marginBottom: 40,
-        width: "65%"
+        width: "65%",
+        paddingHorizontal:15
     },
     facebookLogin: {
 

@@ -35,7 +35,7 @@ const JoinRoom = ({ navigation, route }) => {
         if (true) {
 
 
-            // var d = await getDoc(await doc(database, 'rooms', roomName))
+            var d = await getDoc(await doc(database, 'rooms', roomName))
 
 
             if (d.data()) {
@@ -122,7 +122,8 @@ const JoinRoom = ({ navigation, route }) => {
 
 
         await axios.get(`${BASE_URL}/api/room/${roomName}`).then((apiRes) => {
-            console.log('res join tasks :: = > :: ', JSON.parse(apiRes.request._response).message, roomName);
+            // console.log('res join tasks :: = > :: ', JSON.stringify(JSON.parse(apiRes.request._response).message));
+            console.log(apiRes);
 
 
 

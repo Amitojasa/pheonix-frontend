@@ -214,7 +214,7 @@ function CreateRoom({ navigation, route, }) {
                 if (apiRes.data.message.enTasks.bigTasks && apiRes.data.message.enTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.enTasks.bigTasks[0]);
             } else {
                 console.log('res tasks create fr :: = > :: ', apiRes.data.message.frTasks);
-                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.tasks.frTasks.length > 0) setTaskList(apiRes.data.message.frTasks.tasks);
+                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) { setTaskList(apiRes.data.message.frTasks.tasks); }
                 if (apiRes.data.message.frTasks.bigTasks && apiRes.data.message.frTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.frTasks.bigTasks[0]);
             }
             // if (apiRes.data.message.bigTask) setBigTask(apiRes.data.message.bigTasks[0]);

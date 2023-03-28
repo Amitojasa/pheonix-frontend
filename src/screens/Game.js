@@ -424,67 +424,67 @@ const Game = ({ navigation, route }) => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        //     socket.on('event-name', (data) => {
-        //         if (data) {
+    // useEffect(() => {
+    //     socket.on('event-name', (data) => {
+    //         if (data) {
 
-        //             // console.log(snapshot.metadata.hasPendingWrites);
-        //             if (data.GameInfo.player1Points != player1)
-        //                 setPlayer1(data)
+    //             // console.log(snapshot.metadata.hasPendingWrites);
+    //             if (data.GameInfo.player1Points != player1)
+    //                 setPlayer1(data)
 
-        //             if (data.GameInfo.player2Points != player2)
-        //                 setPlayer2(data.GameInfo.player2Points)
-
-
-        //             setActivePlayerId(data.activePlayerId)
-
-        //             setDiceMove(data.diceMove)
-
-        //             setTaskIndex(data.taskIndex)
-
-        //             if (data.winningUpdate == true) {
-        //                 navigation.dispatch(
-        //                     StackActions.replace
-        //                         ('Win', { winPlayer: data.winningPlayer, roomName: roomName })
-        //                 )
-        //             }
-        //         }
+    //             if (data.GameInfo.player2Points != player2)
+    //                 setPlayer2(data.GameInfo.player2Points)
 
 
-        //     });
+    //             setActivePlayerId(data.activePlayerId)
 
-        const ref = doc(database, 'rooms', roomName)
-        const unsubscribe = onSnapshot(ref, (snapshot) => {
+    //             setDiceMove(data.diceMove)
 
-            if (snapshot && !snapshot.metadata.hasPendingWrites) {
+    //             setTaskIndex(data.taskIndex)
 
-                // console.log(snapshot.metadata.hasPendingWrites);
-                if (snapshot.data().GameInfo.player1Points != player1)
-                    setPlayer1(snapshot.data().GameInfo.player1Points)
+    //             if (data.winningUpdate == true) {
+    //                 navigation.dispatch(
+    //                     StackActions.replace
+    //                         ('Win', { winPlayer: data.winningPlayer, roomName: roomName })
+    //                 )
+    //             }
+    //         }
 
-                if (snapshot.data().GameInfo.player2Points != player2)
-                    setPlayer2(snapshot.data().GameInfo.player2Points)
+
+    //     });
+
+    // const ref = doc(database, 'rooms', roomName)
+    // const unsubscribe = onSnapshot(ref, (snapshot) => {
+
+    //     if (snapshot && !snapshot.metadata.hasPendingWrites) {
+
+    //         // console.log(snapshot.metadata.hasPendingWrites);
+    //         if (snapshot.data().GameInfo.player1Points != player1)
+    //             setPlayer1(snapshot.data().GameInfo.player1Points)
+
+    //         if (snapshot.data().GameInfo.player2Points != player2)
+    //             setPlayer2(snapshot.data().GameInfo.player2Points)
 
 
-                setActivePlayerId(snapshot.data().activePlayerId)
+    //         setActivePlayerId(snapshot.data().activePlayerId)
 
-                setDiceMove(snapshot.data().diceMove)
+    //         setDiceMove(snapshot.data().diceMove)
 
-                setTaskIndex(snapshot.data().taskIndex)
+    //         setTaskIndex(snapshot.data().taskIndex)
 
-                if (snapshot.data().winningUpdate == true) {
-                    navigation.dispatch(
-                        StackActions.replace
-                            ('Win', { winPlayer: snapshot.data().winningPlayer, roomName: roomName })
-                    )
-                }
-            }
+    //         if (snapshot.data().winningUpdate == true) {
+    //             navigation.dispatch(
+    //                 StackActions.replace
+    //                     ('Win', { winPlayer: snapshot.data().winningPlayer, roomName: roomName })
+    //             )
+    //         }
+    //     }
 
-            // console.log(snapshot.data().latestMessage.text)
-        })
+    //     // console.log(snapshot.data().latestMessage.text)
+    // })
 
-        return () => unsubscribe();
-    }, []);
+    // return () => unsubscribe();
+    // }, []);
 
     // console.log(route.params.data);
 

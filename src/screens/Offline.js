@@ -54,11 +54,19 @@ const Offline = ({ navigation, route }) => {
             "taskType": "offline",
             "bigTaskNo": 1,
             "bigTaskType": "offline",
-            "lang": language
         }).then((apiRes) => {
             console.log('res tasks create :: = > :: ', apiRes.data.message);
-            if (apiRes.data.message.tasks && apiRes.data.message.tasks.length > 0) setTaskList(apiRes.data.message.tasks);
-            if (apiRes.data.message.bigTasks && apiRes.data.message.bigTasks.length > 0) setBigTask(apiRes.data.message.bigTasks[0]);
+
+            if (language == 'en') {
+                console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
+                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) setTaskList(apiRes.data.message.enTasks.tasks);
+                if (apiRes.data.message.enTasks.bigTasks && apiRes.data.message.enTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.enTasks.bigTasks[0]);
+            } else {
+                console.log('res tasks create fr :: = > :: ', apiRes.data.message.frTasks);
+                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) setTaskList(apiRes.data.message.frTasks.tasks);
+                if (apiRes.data.message.frTasks.bigTasks && apiRes.data.message.frTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.frTasks.bigTasks[0]);
+            }
+
         }).catch(err => {
             console.log("Error :", err);
         })

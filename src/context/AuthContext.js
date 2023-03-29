@@ -10,11 +10,13 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 import io from 'socket.io-client';
-import { firebaseConfigAmerica, firebaseConfigEurope } from '../configs/firebase';
-import { getFirestore } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
+
 import { enBigTaskList1, enTaskList1 } from '../language/en';
 import { frBigTaskList1, frTaskList1 } from '../language/fr';
+import { databaseAmerica, databaseEurope, firebaseConfigAmerica, firebaseConfigEurope } from '../configs/firebase';
+import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -171,17 +173,14 @@ export const AuthProvider = ({ children }) => {
 
     }
 
-
-
     useEffect(() => {
-        if (region == 'America') {
-            initializeApp(firebaseConfigAmerica);
-            setDatabase(getFirestore())
+        console.log("REGION ====", region)
+        if (region === 'America') {
+            setDatabase(databaseAmerica)
+        } else if (region === 'Europe') {
+            setDatabase(databaseEurope)
         }
-        else if (region == 'Europe') {
-            initializeApp(firebaseConfigEurope);
-            setDatabase(getFirestore())
-        }
+
     }, [region])
 
 

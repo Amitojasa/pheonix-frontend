@@ -26,4 +26,10 @@ export const firebaseConfigEurope = {
     databaseURL: "https://phoenix2-5f969.eur3.firebasedatabase.app"
 };
 
+initializeApp(firebaseConfigAmerica);
+export const databaseAmerica = getFirestore();
+
+let fe = initializeApp(firebaseConfigEurope,"firebaseEurope");
+export const databaseEurope = getFirestore(fe);
+
 

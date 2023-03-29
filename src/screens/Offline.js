@@ -4,7 +4,7 @@ import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { BASE_URL, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
+import { BASE_URL, Cols, EndPosition, totalTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { AuthContext } from '../context/AuthContext';
@@ -41,7 +41,7 @@ const Offline = ({ navigation, route }) => {
 
     var firstTime = false;
 
-    const { taskList, userData, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask, language, isConnected, checkConnection } = useContext(AuthContext);
+    const { taskList, userData, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, setTaskList, setBigTask, bigTask, language, isConnected, checkConnection, totalTasks, setTotalTasks } = useContext(AuthContext);
 
     const getTaskListFromBackend = async (rn) => {
 
@@ -59,11 +59,11 @@ const Offline = ({ navigation, route }) => {
 
             if (language == 'en') {
                 console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
-                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) setTaskList(apiRes.data.message.enTasks.tasks);
+                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) { setTaskList(apiRes.data.message.enTasks.tasks); setTotalTasks(apiRes.data.message.enTasks.tasks.length) }
                 if (apiRes.data.message.enTasks.bigTasks && apiRes.data.message.enTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.enTasks.bigTasks[0]);
             } else {
                 console.log('res tasks create fr :: = > :: ', apiRes.data.message.frTasks);
-                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) setTaskList(apiRes.data.message.frTasks.tasks);
+                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) { setTaskList(apiRes.data.message.frTasks.tasks); setTotalTasks(apiRes.data.message.frTasks.tasks.length) }
                 if (apiRes.data.message.frTasks.bigTasks && apiRes.data.message.frTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.frTasks.bigTasks[0]);
             }
 
@@ -311,7 +311,7 @@ const Offline = ({ navigation, route }) => {
         setActivePlayerId((activePlayerId) % 2 + 1);
 
 
-        setTaskIndex((taskIndex + 1) % noOfTasks)
+        setTaskIndex((taskIndex + 1) % totalTasks)
 
     }
 

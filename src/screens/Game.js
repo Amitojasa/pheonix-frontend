@@ -4,7 +4,7 @@ import BoardGame from '../components/BoardGame';
 import BottomComponent from '../components/BottomComponent';
 import ScreenOverlayComponent from '../components/ScreenOverlayComponent';
 import TaskShowComponent from '../components/TaskShowComponent';
-import { boards, Cols, EndPosition, noOfTasks, Rows, StartPosition } from '../Config';
+import { boards, Cols, EndPosition, totalTasks, Rows, StartPosition } from '../Config';
 import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
@@ -42,7 +42,7 @@ const Game = ({ navigation, route }) => {
     var mines = boards[rndInt1].mines
     var firstTime = false;
 
-    const { database, isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn } = useContext(AuthContext);
+    const { database, isConnected, checkConnection, taskList, activePlayerId, setActivePlayerId, myPlayerId, setMyPlayerId, taskIndex, setTaskIndex, language, soundOn, totalTasks } = useContext(AuthContext);
 
     function playSound(sound) {
         console.log('Playing ');
@@ -355,7 +355,7 @@ const Game = ({ navigation, route }) => {
 
         if (update == true) {
 
-            d.taskIndex = (taskIndex + 1) % noOfTasks
+            d.taskIndex = (taskIndex + 1) % totalTasks
         }
 
         console.log("cccc", myPlayerId, activePlayerId);
@@ -370,7 +370,7 @@ const Game = ({ navigation, route }) => {
                 setActivePlayerId((activePlayerId) % 2 + 1);
             }
             if (update == true) {
-                setTaskIndex((taskIndex + 1) % noOfTasks)
+                setTaskIndex((taskIndex + 1) % totalTasks)
             }
 
         })

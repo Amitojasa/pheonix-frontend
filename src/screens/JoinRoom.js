@@ -25,7 +25,7 @@ import InternetAlert from '../components/InternetAlert';
 
 const JoinRoom = ({ navigation, route }) => {
     const [roomName, setRoomName] = useState('')
-    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask, socket, database } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, myPlayerId, setTaskList, taskList, setMyPlayerId, userData, setBigTask, bigTask, socket, database, setTotalTasks, totalTasks } = useContext(AuthContext);
     var underProgress = 0;
     const [player1Details, setPlayer1Details] = useState()
 
@@ -37,7 +37,12 @@ const JoinRoom = ({ navigation, route }) => {
             var d = await getDoc(await doc(database, 'rooms', roomName))
 
 
+
             if (d.data()) {
+                if (await d.data().GameInfo.player2Id != -1) {
+                    Alert.alert("Room full..");
+                    return;
+                }
                 // console.log(d.data());
                 await updateDoc(doc(database, 'rooms', roomName), {
 
@@ -129,10 +134,11 @@ const JoinRoom = ({ navigation, route }) => {
 
             if (language == 'en') {
 
-                JSON.parse(apiRes.request._response).message.enTasks.tasks && JSON.parse(apiRes.request._response).message.enTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.enTasks.tasks);
+                JSON.parse(apiRes.request._response).message.enTasks.tasks && JSON.parse(apiRes.request._response).message.enTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.enTasks.tasks) && setTotalTasks(SON.parse(apiRes.request._response).message.enTasks.tasks.length);
                 JSON.parse(apiRes.request._response).message.enTasks.bigTasks && JSON.parse(apiRes.request._response).message.enTasks.bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message.enTasks.bigTasks[0]);
             } else {
-                JSON.parse(apiRes.request._response).message.frTasks.tasks && JSON.parse(apiRes.request._response).message.frTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.frTasks.tasks);
+                JSON.parse(apiRes.request._response).message.frTasks.tasks && JSON.parse(apiRes.request._response).message.frTasks.tasks.length > 0 && setTaskList(JSON.parse(apiRes.request._response).message.frTasks.tasks) && setTotalTasks(SON.parse(apiRes.request._response).message.frTasks.tasks.length);
+
                 JSON.parse(apiRes.request._response).message.frTasks.bigTasks && JSON.parse(apiRes.request._response).message.frTasks.bigTasks.length > 0 && setBigTask(JSON.parse(apiRes.request._response).message.frTasks.bigTasks[0]);
             }
 

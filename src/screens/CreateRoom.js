@@ -27,7 +27,7 @@ import InternetAlert from '../components/InternetAlert';
 function CreateRoom({ navigation, route, }) {
 
 
-    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask, socket, database } = useContext(AuthContext);
+    const { isConnected, checkConnection, language, setTaskList, myPlayerId, userData, setMyPlayerId, activePlayerId, playBackSteps, setPlayBackSteps, taskIndex, bigTask, setBigTask, socket, database, setTotalTasks, totalTasks } = useContext(AuthContext);
 
     const [player2Details, setPlayer2Details] = useState()
     const [roomName, setRoomName] = useState()
@@ -210,11 +210,11 @@ function CreateRoom({ navigation, route, }) {
 
             if (language == 'en') {
                 console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
-                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) setTaskList(apiRes.data.message.enTasks.tasks);
+                if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) { setTaskList(apiRes.data.message.enTasks.tasks); setTotalTasks(apiRes.data.message.enTasks.tasks.length) }
                 if (apiRes.data.message.enTasks.bigTasks && apiRes.data.message.enTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.enTasks.bigTasks[0]);
             } else {
                 console.log('res tasks create fr :: = > :: ', apiRes.data.message.frTasks);
-                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) { setTaskList(apiRes.data.message.frTasks.tasks); }
+                if (apiRes.data.message.frTasks.tasks && apiRes.data.message.frTasks.tasks.length > 0) { setTaskList(apiRes.data.message.frTasks.tasks); setTotalTasks(apiRes.data.message.frTasks.tasks.length) }
                 if (apiRes.data.message.frTasks.bigTasks && apiRes.data.message.frTasks.bigTasks.length > 0) setBigTask(apiRes.data.message.frTasks.bigTasks[0]);
             }
             // if (apiRes.data.message.bigTask) setBigTask(apiRes.data.message.bigTasks[0]);

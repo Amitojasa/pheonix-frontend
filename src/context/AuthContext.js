@@ -13,6 +13,8 @@ import io from 'socket.io-client';
 import { firebaseConfigAmerica, firebaseConfigEurope } from '../configs/firebase';
 import { getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
+import { enBigTaskList1, enTaskList1 } from '../language/en';
+import { frBigTaskList1, frTaskList1 } from '../language/fr';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -29,8 +31,9 @@ export const AuthProvider = ({ children }) => {
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(0)
 
-    const [taskList, setTaskList] = useState(taskList1)
-    const [bigTask, setBigTask] = useState(bigTaskList1[Math.floor(Math.random() * (10))])
+    const [totalTasks, setTotalTasks] = useState(enTaskList1.length)
+    const [taskList, setTaskList] = useState(language == 'en' ? enTaskList1 : frTaskList1)
+    const [bigTask, setBigTask] = useState(language == 'en' ? enBigTaskList1[0] : frBigTaskList1[0])
 
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [userExist, setUserExist] = useState(false);
@@ -67,6 +70,12 @@ export const AuthProvider = ({ children }) => {
             unsubscribe();
         }
     }, [])
+
+
+    useEffect(() => {
+        setTaskList(language == 'en' ? enTaskList1 : frTaskList1)
+        setBigTask(language == 'en' ? enBigTaskList1[0] : frBigTaskList1[0])
+    }, [language])
 
 
     useEffect(() => {
@@ -301,7 +310,8 @@ export const AuthProvider = ({ children }) => {
             setSoundOn,
             socket,
             region, setRegion,
-            database
+            database,
+            totalTasks, setTotalTasks
         }}>{children}
         </AuthContext.Provider>
 

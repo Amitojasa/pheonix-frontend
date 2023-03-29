@@ -10,6 +10,7 @@ import LandscapeLogo from '../components/LandscapeLogo'
 import {homeScreenStyles} from '../css/homeScreenStyles'
 import axios from 'axios'
 import {BASE_URL, coupons} from '../Config'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const RedeemCoins = ({navigation, route}) => {
@@ -56,8 +57,12 @@ const RedeemCoins = ({navigation, route}) => {
 
     const redeemNow = async () => {
         setProcessing(true);
+        let userInfo = null;
+        await AsyncStorage.getItem('userInfo').then((res) => {
+            userInfo = JSON.parse(res);
+        })
         const coinsData = {
-            "userId": userDetails.id,
+            "userId": userDetails ? userDetails.id : userInfo.id,
             "userCoins": coins,
             "operation": "sub"
         }
@@ -265,21 +270,21 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
     },
-    couponText:{
+    couponText: {
         fontSize: 25,
         letterSpacing: 2,
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
         textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
-        marginBottom:20
+        marginBottom: 20
     },
     couponImg: {
         width: 80,
         height: 80,
     },
-    centerContainer:{
-        alignItems:"center",
-        justifyContent:"center"
+    centerContainer: {
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

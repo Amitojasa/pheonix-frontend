@@ -1,25 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
-import { avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1, socketURL } from '../Config';
+import React, {createContext, useEffect, useState} from 'react'
+import {avatarImage, BASE_URL, FB_APP_ID, taskList1, bigTaskList1, socketURL} from '../Config';
 import NetInfo from "@react-native-community/netinfo";
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import Constants from 'expo-constants';
 import * as Google from 'expo-auth-session/providers/google';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import 'react-native-get-random-values'
-import { nanoid } from 'nanoid'
+import {nanoid} from 'nanoid'
 import io from 'socket.io-client';
 
-import { enBigTaskList1, enTaskList1 } from '../language/en';
-import { frBigTaskList1, frTaskList1 } from '../language/fr';
-import { databaseAmerica, databaseEurope, firebaseConfigAmerica, firebaseConfigEurope } from '../configs/firebase';
-import { getFirestore } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
+import {enBigTaskList1, enTaskList1} from '../language/en';
+import {frBigTaskList1, frTaskList1} from '../language/fr';
+import {databaseAmerica, databaseEurope, firebaseConfigAmerica, firebaseConfigEurope} from '../configs/firebase';
+import {getFirestore} from 'firebase/firestore';
+import {initializeApp} from 'firebase/app';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
     const [database, setDatabase] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [splashLoading, setSplashLoading] = useState(true)
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     const [language, setLanguage] = useState('en');
     const [region, setRegion] = useState('America');
     const [soundOn, setSoundOn] = useState(true)
-
+    const [isGuestUser, setIsGuestUser] = useState(false);
     const [playBackSteps, setPlayBackSteps] = useState(2)
     const [taskIndex, setTaskIndex] = useState(0)
 
@@ -75,8 +75,8 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        setTaskList(language == 'en' ? enTaskList1 : frTaskList1)
-        setBigTask(language == 'en' ? enBigTaskList1[0] : frBigTaskList1[0])
+        setTaskList(language === 'en' ? enTaskList1 : frTaskList1)
+        setBigTask(language === 'en' ? enBigTaskList1[0] : frBigTaskList1[0])
     }, [language])
 
 
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }) => {
 
     const setGoogleUserLoginData = async (response) => {
         let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+            headers: {Authorization: `Bearer ${response.authentication.accessToken}`}
         })
 
         userInfoResponse.json().then(async data => {
@@ -169,18 +169,18 @@ export const AuthProvider = ({ children }) => {
 
 
             setUserDetails(userDetails, data).then();
+            await AsyncStorage.setItem('isGuestUser', "false");
+            setIsGuestUser(false);
         })
 
     }
 
     useEffect(() => {
-        console.log("REGION ====", region)
         if (region === 'America') {
             setDatabase(databaseAmerica)
         } else if (region === 'Europe') {
             setDatabase(databaseEurope)
         }
-
     }, [region])
 
 
@@ -201,6 +201,9 @@ export const AuthProvider = ({ children }) => {
             id: userDetails.id
         }
         setUserDetails(userDetails, data).then();
+        AsyncStorage.setItem('isGuestUser', "true").then(() => {
+            setIsGuestUser(true);
+        });
     }
 
     const logout = async () => {
@@ -254,9 +257,15 @@ export const AuthProvider = ({ children }) => {
                                 }
                             })
                             AsyncStorage.getItem('language').then((res) => {
-
                                 if (res == null) setLanguage("en");
                                 else setLanguage(res)
+                            })
+                            AsyncStorage.getItem('isGuestUser').then((res) => {
+                                if (res && res === "true") {
+                                    setIsGuestUser(true);
+                                } else {
+                                    setIsGuestUser(false);
+                                }
                             })
                         } else {
                             setIsUserLoggedIn(false);
@@ -310,7 +319,7 @@ export const AuthProvider = ({ children }) => {
             socket,
             region, setRegion,
             database,
-            totalTasks, setTotalTasks
+            totalTasks, setTotalTasks, isGuestUser
         }}>{children}
         </AuthContext.Provider>
 

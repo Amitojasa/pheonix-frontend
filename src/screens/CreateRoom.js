@@ -207,7 +207,7 @@ function CreateRoom({ navigation, route, }) {
             "bigTaskType": "offline"
             // "isSmallTask": true,
         }).then((apiRes) => {
-
+            console.log(apiRes.data.message.enTasks.tasks.length);
             if (language == 'en') {
                 console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
                 if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) { setTaskList(apiRes.data.message.enTasks.tasks); setTotalTasks(apiRes.data.message.enTasks.tasks.length) }

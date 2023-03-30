@@ -16,7 +16,7 @@ export const loginScreenStyles = StyleSheet.create({
         borderRadius: 35
     },
     loginDiv: {
-        top: "20%", backgroundColor: "#ffffff", width: "35%", borderRadius: 35,
+        top: "20%", backgroundColor: "#ffffff", maxWidth: "80%", borderRadius: 35,
     },
     loginText: {
         fontSize: 25,
@@ -29,9 +29,9 @@ export const loginScreenStyles = StyleSheet.create({
     },
     logoSection: {
         height: "60%",
-        alignItems:"center",
-        justifyContent:"center",
-        bottom:"10%"
+        alignItems: "center",
+        justifyContent: "center",
+        bottom: "10%"
     },
     authSection: {
         borderRadius: 30,
@@ -45,8 +45,9 @@ export const loginScreenStyles = StyleSheet.create({
         borderRadius: 15,
         elevation: 5,
         marginBottom: 40,
-        width: "65%",
-        paddingHorizontal:15
+
+        maxWidth: "80%",
+        paddingHorizontal: 15
     },
     facebookLogin: {
 

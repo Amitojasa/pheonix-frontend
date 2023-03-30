@@ -37,7 +37,8 @@ export const fr = {
     done: "Fait",
     chooseRegion: "Choisissez la région",
     america: "Amérique",
-    europe: "L'Europe"
+    europe: "L'Europe",
+    redeemCoupons: "échanger des coupons"
 }
 
 

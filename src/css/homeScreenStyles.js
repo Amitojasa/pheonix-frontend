@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export const homeScreenStyles = StyleSheet.create({
     coinsDiv: {
@@ -16,7 +16,7 @@ export const homeScreenStyles = StyleSheet.create({
         height: "60%",
         alignItems: "center",
         justifyContent: "center",
-        width:"95%"
+        width: "95%"
     },
     coinsText: {
         fontSize: 25,
@@ -24,7 +24,7 @@ export const homeScreenStyles = StyleSheet.create({
         color: "#000",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: {width: -1, height: 1},
+        textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 1,
     },
     userImage: {
@@ -48,7 +48,7 @@ export const homeScreenStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         shadowColor: "rgba(0, 0, 0, 25)",
-        shadowOffset: {width: 1, height: 1},
+        shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,
@@ -89,30 +89,30 @@ export const homeScreenStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    settingsDiv:{
-        marginBottom:"90%"
+    settingsDiv: {
+        marginBottom: "90%"
     },
-    logoutDiv:{
-        marginBottom:100
+    logoutDiv: {
+        marginBottom: 100
     },
-    iconText:{
-        fontSize: 12, fontWeight: "bold", color: "#FFF", elevation: 10, textAlign:"center"
+    iconText: {
+        fontSize: 12, fontWeight: "bold", color: "#FFF", elevation: 10, textAlign: "center"
     },
-    settingRedeemDiv:{
+    settingRedeemDiv: {
         alignItems: "center",
         justifyContent: "space-between",
         position: "absolute",
-        zIndex: 10000,
+        zIndex: 50,
         height: 210,
         width: "20%",
         paddingVertical: 20,
         left: 0
     },
-    logoutCoinsDiv:{
+    logoutCoinsDiv: {
         alignItems: "center",
         justifyContent: "space-between",
         position: "absolute",
-        zIndex: 10000,
+        zIndex: 50,
         height: 210,
         right: 0,
         width: "20%",

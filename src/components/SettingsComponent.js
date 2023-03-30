@@ -1,28 +1,28 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, { useContext, useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icons from '@expo/vector-icons/FontAwesome';
-import {Ionicons} from '@expo/vector-icons';
-import {AuthContext} from "../context/AuthContext";
-import {getString} from "../language/Strings";
+import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from "../context/AuthContext";
+import { getString } from "../language/Strings";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export const SettingsComponent = (params) => {
-    const {setShowSettings} = params;
-    const {language, setLanguage, setSoundOn, soundOn, region, setRegion} = useContext(AuthContext);
+    const { setShowSettings } = params;
+    const { language, setLanguage, setSoundOn, soundOn, region, setRegion } = useContext(AuthContext);
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{getString('appSettings', language)}</Text>
-            <View style={{flexDirection: "row", width: "100%", marginBottom: 20}}>
+            <View style={{ flexDirection: "row", width: "100%", marginBottom: 20 }}>
                 <View style={styles.commonDiv}>
                     <Text style={styles.title2}>{getString('chooseLanguage', language)}</Text>
-                    <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <TouchableOpacity style={[styles.commonDiv]}
-                                          onPress={async () => {
-                                              setLanguage("en")
-                                              await AsyncStorage.setItem("language", "en")
-                                          }}>
+                            onPress={async () => {
+                                setLanguage("en")
+                                await AsyncStorage.setItem("language", "en")
+                            }}>
                             <Text style={language === 'en' && styles.selectedBackground}>English</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.commonDiv} onPress={async () => {
@@ -33,13 +33,13 @@ export const SettingsComponent = (params) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{width: "50%", alignItems: "center", justifyContent: "center"}}>
+                <View style={{ width: "50%", alignItems: "center", justifyContent: "center" }}>
                     <Text style={styles.title2}>{getString('chooseSound', language)}</Text>
-                    <View style={{flexDirection: "row"}}>
+                    <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity style={[styles.commonDiv]}
-                                          onPress={() => {
-                                              setSoundOn(true)
-                                          }}>
+                            onPress={() => {
+                                setSoundOn(true)
+                            }}>
                             <Text style={soundOn && styles.selectedBackground}>{getString('on', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.commonDiv} onPress={() => {
@@ -50,19 +50,19 @@ export const SettingsComponent = (params) => {
                     </View>
                 </View>
             </View>
-            <View style={{width: "80%", alignItems: "center", justifyContent: "center"}}>
+            <View style={{ width: "80%", alignItems: "center", justifyContent: "center" }}>
                 <Text style={styles.title2}>{getString('chooseRegion', language)}</Text>
-                <View style={{flexDirection: "row"}}>
+                <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity style={[styles.commonDiv]}
-                                      onPress={() => {
-                                          setRegion("America")
-                                      }}>
-                        <Text style={region==='America' && styles.selectedBackground}>{getString('america', language)}</Text>
+                        onPress={() => {
+                            setRegion("America")
+                        }}>
+                        <Text style={region === 'America' && styles.selectedBackground}>{getString('america', language)}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.commonDiv} onPress={() =>
                         setRegion("Europe")
                     }>
-                        <Text style={region ==='Europe'&& styles.selectedBackground}>{getString('europe', language)}</Text>
+                        <Text style={region === 'Europe' && styles.selectedBackground}>{getString('europe', language)}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -75,9 +75,9 @@ export const SettingsComponent = (params) => {
                 flexDirection: "row",
                 padding: 10,
                 justifyContent: "center",
-                marginTop: 10
+                marginTop: 30
             }} onPress={() => setShowSettings(false)}><Text
-                style={{color: "#FFFFFF", fontSize: 16}}>{getString('save', language)}</Text></TouchableOpacity>
+                style={{ color: "#FFFFFF", fontSize: 16 }}>{getString('save', language)}</Text></TouchableOpacity>
         </View>
     )
 }

@@ -504,7 +504,7 @@ const Game = ({ navigation, route }) => {
                     e.preventDefault();
 
                     // Prompt the user before leaving the screen
-                    Alert.alert(
+                    language == 'en' ? Alert.alert(
                         'Are you sure?',
                         'You will loose this match if you leave.',
                         [
@@ -522,7 +522,26 @@ const Game = ({ navigation, route }) => {
 
                             },
                         ]
-                    );
+                    ) :
+                        Alert.alert(
+                            'Es-tu sûr?',
+                            'Vous perdrez ce match si vous partez.',
+                            [
+                                { text: "Ne pars pas", style: 'cancel', onPress: () => { } },
+                                {
+                                    text: 'Partir',
+                                    style: 'destructive',
+                                    // If the user confirmed, then we dispatch the action we blocked earlier
+                                    // This will continue the action that had triggered the removal of the screen
+                                    onPress: () =>
+                                        navigation.dispatch(
+                                            StackActions.replace
+                                                ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName })
+                                        )
+
+                                },
+                            ]
+                        );
                 }
             }),
         [navigation, hasUnsavedChanges]

@@ -44,7 +44,8 @@ export const fr = {
     noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder.",
     lessCoinsForCouponTitle: "Vous avez des pièces insuffisantes",
     lessCoinsForCouponDesc: "Vous avez moins de pièces que les pièces requises pour échanger ce coupon, achetez plus de pièces",
-
+    logOut:"Se déconnecter",
+    settings:"paramètres"
 }
 
 

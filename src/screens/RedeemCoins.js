@@ -26,7 +26,6 @@ const RedeemCoins = ({navigation, route}) => {
     const [processing, setProcessing] = useState(false);
     const [msg, setMsg] = useState("")
     const [couponRedeemed, setCouponRedeemed] = useState(false);
-    const [error, setError] = useState(false);
     const [couponId, setCouponId] = useState("");
     const [isCouponAvailable, setCouponAvailable] = useState(true);
 
@@ -73,12 +72,10 @@ const RedeemCoins = ({navigation, route}) => {
             userDetails = res.data.message[0];
         })
         if (userDetails.coins < coins) {
-            console.log("", true);
-            setError(true);
-            setMsg(getString("insufficientCoins", language))
             setProcessing(false)
-            setShowPopUp(false)
             Alert.alert(getString("lessCoinsForCouponTitle", language), getString("lessCoinsForCouponDesc", language),)
+            setShowPopUp(false)
+
         } else {
             await axios.get(`${BASE_URL}/api/updateCouponUsers/${couponId}`).then((res) => {
                 if (res.data.message === "Coupon updated successfully.") {
@@ -222,7 +219,7 @@ const RedeemCoins = ({navigation, route}) => {
                             textAlign: "center"
                         }}>{getString('guestCouponMsg', language)}
                         </Text>}
-                    {msg && !error &&
+                    {msg &&
                         <Text style={{
                             padding: 10,
                             backgroundColor: "#FFF",

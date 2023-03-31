@@ -44,7 +44,8 @@ export const en = {
     noteDown: "Please save this coupon code, you will not be able to access it again.",
     lessCoinsForCouponTitle:"You have Insufficient Coins",
     lessCoinsForCouponDesc: "You have less coins than the required coins to redeem this coupon, buy more coins",
-
+    logOut:"Log Out",
+    settings:"Settings"
 }
 
 

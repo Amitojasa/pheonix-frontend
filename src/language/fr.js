@@ -40,7 +40,8 @@ export const fr = {
     europe: "L'Europe",
     redeemCoupons: "échanger des coupons",
     guestCouponMsg: "Connectez-vous avec Google pour échanger des coupons",
-    insufficientCoins:"Pièces insuffisantes",
+    insufficientCoins: "Pièces insuffisantes",
+    noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder."
 }
 
 

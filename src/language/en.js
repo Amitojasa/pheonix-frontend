@@ -39,8 +39,9 @@ export const en = {
     america: "America",
     europe: "Europe",
     redeemCoupons: "Redeem Coupons",
-    insufficientCoins:"Insufficient Coins",
-    guestCouponMsg:"Login with Google to redeem coupons"
+    insufficientCoins: "Insufficient Coins",
+    guestCouponMsg: "Login with Google to redeem coupons",
+    noteDown: "Please save this coupon code, you will not be able to access it again."
 }
 
 

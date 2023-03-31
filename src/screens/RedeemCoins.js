@@ -1,19 +1,19 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {LinearGradient} from 'expo-linear-gradient'
+import React, {useContext, useEffect, useState} from 'react'
+import {ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import InternetAlert from '../components/InternetAlert'
-import { AuthContext } from '../context/AuthContext'
-import { commonStyles } from '../css/commonStyles'
-import { getString } from '../language/Strings'
+import {AuthContext} from '../context/AuthContext'
+import {commonStyles} from '../css/commonStyles'
+import {getString} from '../language/Strings'
 import LandscapeLogo from '../components/LandscapeLogo'
-import { homeScreenStyles } from '../css/homeScreenStyles'
+import {homeScreenStyles} from '../css/homeScreenStyles'
 import axios from 'axios'
-import { BASE_URL, coupons } from '../Config'
+import {BASE_URL, coupons} from '../Config'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const RedeemCoins = ({ navigation, route }) => {
-    const { userDetails } = route.params;
+const RedeemCoins = ({navigation, route}) => {
     const {
         language, isConnected, checkConnection, isGuestUser
     } = useContext(AuthContext);
@@ -26,13 +26,13 @@ const RedeemCoins = ({ navigation, route }) => {
     const [processing, setProcessing] = useState(false);
     const [msg, setMsg] = useState("")
     const [couponRedeemed, setCouponRedeemed] = useState(false);
-    const [error, setError] = useState(false);
-
-    const ref = React.useRef(null);
+    const [couponId, setCouponId] = useState("");
+    const [isCouponAvailable, setCouponAvailable] = useState(true);
 
     useEffect(() => {
         getCoupons().then();
     }, []);
+
 
     const getCoupons = async () => {
         await axios.get(`${BASE_URL}/api/coupons`).then((res) => {
@@ -54,53 +54,62 @@ const RedeemCoins = ({ navigation, route }) => {
         })
     }
 
-    const onPressTouch = () => {
-        // ref.current?.scrollTo({
-        //     y: 0,
-        //     animated: true,
-        // });
-    }
-
     const purchase = (coupon) => {
-        console.log(userDetails);
         setCoupon(coupon.code);
         setDescription(coupon.description);
         setShowPopUp(true);
+        setCouponId(coupon["_id"]);
         setCoins(coupon.price);
     }
 
 
     const redeemNow = async () => {
         setProcessing(true);
+        const userInfo = await AsyncStorage.getItem('userInfo');
+        const userId = JSON.parse(userInfo);
+        let userDetails = null
+        await axios.get(`${BASE_URL}/api/OAuthUsers/${userId.id}`).then((res) => {
+            userDetails = res.data.message[0];
+        })
         if (userDetails.coins < coins) {
-            setError(true);
-            setMsg(getString("insufficientCoins", language))
             setProcessing(false)
+            Alert.alert(getString("lessCoinsForCouponTitle", language), getString("lessCoinsForCouponDesc", language),)
             setShowPopUp(false)
-        } else {
-            const coinsData = {
-                "userId": userDetails.id,
-                "userCoins": coins,
-                "operation": "sub"
-            }
-            await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then(() => {
-                setMsg(getString("transactionSuccessfull", language))
-                setProcessing(false)
-                setCouponRedeemed(true)
-                setTimeout(() => {
-                    setMsg("");
-                }, 5000)
-            }
-            ).catch(err => {
-                setMsg(getString("someErrorOccured", language))
-                setProcessing(false)
-                setShowPopUp(false)
-                setTimeout(() => {
-                    setMsg("");
-                }, 5000)
 
-                console.log(err);
-            })
+        } else {
+            await axios.get(`${BASE_URL}/api/updateCouponUsers/${couponId}`).then((res) => {
+                if (res.data.message === "Coupon updated successfully.") {
+                    setCouponAvailable(true);
+                    const coinsData = {
+                        "userId": userDetails.id,
+                        "userCoins": coins,
+                        "operation": "sub"
+                    }
+                    axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData).then(() => {
+                            setMsg(getString("transactionSuccessfull", language))
+                            setProcessing(false)
+                            setCouponRedeemed(true)
+                            setTimeout(() => {
+                                setMsg("");
+                            }, 5000)
+                        }
+                    ).catch(err => {
+                        setMsg(getString("someErrorOccured", language))
+                        setProcessing(false)
+                        setShowPopUp(false)
+                        setTimeout(() => {
+                            setMsg("");
+                        }, 5000)
+
+                        console.log(err);
+                    })
+                } else {
+                    setCouponAvailable(false);
+                }
+
+
+            });
+
         }
     }
 
@@ -127,11 +136,13 @@ const RedeemCoins = ({ navigation, route }) => {
                 padding: 20,
                 borderRadius: 15
             }}>
-                {processing && <ActivityIndicator />}
+                {processing && <ActivityIndicator/>}
+
+                {!isCouponAvailable && <Text>Selected Coupon is not available</Text>}
                 {couponRedeemed ?
                     <View style={styles.centerContainer}>
                         <Text style={styles.couponText}>Code: {coupon}</Text>
-                        <Text>{getString('noteDown', language)}</Text>
+                        <Text style={{textAlign: "center"}}>{getString('noteDown', language)}</Text>
                         <TouchableOpacity style={{
                             backgroundColor: "#0073C5",
                             padding: 10,
@@ -144,18 +155,18 @@ const RedeemCoins = ({ navigation, route }) => {
                             setCouponRedeemed(false);
                             setShowPopUp(false);
                         }} disabled={processing}>
-                            <Text style={{ color: "#fff" }}>{getString('done', language)}</Text>
+                            <Text style={{color: "#fff"}}>{getString('done', language)}</Text>
                         </TouchableOpacity>
                     </View> :
                     <>
                         <View
-                            style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                            <Text style={{ fontSize: 20, fontWeight: "bold", marginVertical: 20, textAlign: "center" }}>
+                            style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                            <Text style={{fontSize: 20, fontWeight: "bold", marginVertical: 20, textAlign: "center"}}>
                                 {description}</Text>
                         </View>
 
 
-                        <View style={{ flexDirection: "row" }}>
+                        <View style={{flexDirection: "row"}}>
                             <TouchableOpacity style={{
                                 backgroundColor: "#000",
                                 padding: 10,
@@ -176,7 +187,7 @@ const RedeemCoins = ({ navigation, route }) => {
                                 color: "#FFF",
                                 borderRadius: 10
                             }} onPress={() => redeemNow()} disabled={processing}>
-                                <Text style={{ color: "#fff" }}>{getString('redeem', language)}</Text>
+                                <Text style={{color: "#fff"}}>{getString('redeem', language)}</Text>
                             </TouchableOpacity>}
                         </View>
                     </>
@@ -187,14 +198,14 @@ const RedeemCoins = ({ navigation, route }) => {
 
     return (
 
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{flex: 1}}>
             {showPopUp && redeemNowPopUp()}
-            <ScrollView ref={ref}>
-                <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
+            <ScrollView>
+                <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected}/>
                 <LinearGradient colors={['#0073C5', '#9069FF']}
-                    start={{ x: 1, y: 0 }}
-                    end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
-                    <LandscapeLogo />
+                                start={{x: 1, y: 0}}
+                                end={{x: 0, y: 1}} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
+                    <LandscapeLogo/>
                     <View>
                         <Text style={styles.text}>{getString('redeemCoupon', language)}</Text>
                     </View>
@@ -204,23 +215,16 @@ const RedeemCoins = ({ navigation, route }) => {
                             backgroundColor: "#FFF",
                             borderRadius: 10,
                             marginTop: 20,
-                            width: "90%"
+                            width: "90%",
+                            textAlign: "center"
                         }}>{getString('guestCouponMsg', language)}
                         </Text>}
-                    {msg && !error &&
+                    {msg &&
                         <Text style={{
                             padding: 10,
                             backgroundColor: "#FFF",
                             borderRadius: 10,
                             marginTop: 10
-                        }}>{msg}</Text>}
-                    {error &&
-                        <Text style={{
-                            padding: 10,
-                            backgroundColor: "#FFF",
-                            borderRadius: 10,
-                            marginTop: 10,
-                            color: "red"
                         }}>{msg}</Text>}
                     <View style={styles.groupOfGroups}>
                         {availableCoupons.map((item, index) =>
@@ -228,11 +232,11 @@ const RedeemCoins = ({ navigation, route }) => {
                                 <View style={{
                                     flexDirection: "row", justifyContent: "center", alignItems: "center",
                                 }}>
-                                    <Image source={{ uri: item.logoImg }} style={styles.couponImg} />
+                                    <Image source={{uri: item.logoImg}} style={styles.couponImg}/>
 
                                 </View>
-                                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                    <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
+                                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                                    <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg}/>
                                     <Text style={[homeScreenStyles.coinsText, {
                                         marginTop: 2,
                                         textAlign: "center"
@@ -240,7 +244,6 @@ const RedeemCoins = ({ navigation, route }) => {
                                 </View>
                                 <TouchableOpacity onPress={() => {
                                     purchase(item);
-                                    onPressTouch();
                                 }} style={styles.detailsBtn}>
                                     <Text style={styles.buyNowText}>{
                                         getString('details', language)}
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
         textAlign: "center"
     },
@@ -308,7 +311,7 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 1,
         marginBottom: 20
     },

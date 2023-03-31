@@ -6,6 +6,7 @@ import DiceComponent from './DiceComponent';
 import GamePlayerComponent from './GamePlayerComponent';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StackActions } from "@react-navigation/native";
+import DiceComponentOffline from './DiceComponentOffine';
 
 const BottomComponent = ({
     navigation,
@@ -36,11 +37,16 @@ const BottomComponent = ({
     return (
         <View style={styles.container}>
             <View>{gameEnded ? <></> :
-                <DiceComponent showTask={showTask} isOffline={isOffline} roomName={roomName}
+                isOffline ? <DiceComponentOffline showTask={showTask} isOffline={isOffline} roomName={roomName}
                     changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove}
                     player1={player1} playMove={playMove} activePlayerId={activePlayerId}
                     setActivePlayerId={setActivePlayerId} disableDice={disableDice}
-                    setDisableDice={setDisableDice} />}</View>
+                    setDisableDice={setDisableDice} /> :
+                    <DiceComponent showTask={showTask} isOffline={isOffline} roomName={roomName}
+                        changePlayerId={changePlayerId} diceMove={diceMove} setDiceMove={setDiceMove}
+                        player1={player1} playMove={playMove} activePlayerId={activePlayerId}
+                        setActivePlayerId={setActivePlayerId} disableDice={disableDice}
+                        setDisableDice={setDisableDice} />}</View>
             <View style={styles.gameplayersDiv}>
                 <GamePlayerComponent isOffline={isOffline} playerId={1} playerPawn={player1Pawn}
                     playerDetails={player1Details} />

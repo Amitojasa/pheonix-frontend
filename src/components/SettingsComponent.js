@@ -55,14 +55,16 @@ export const SettingsComponent = (params) => {
                 <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity style={[styles.commonDiv]}
                         onPress={() => {
+                            AsyncStorage.setItem('region', 'America').then();
                             setRegion("America")
                         }}>
-                        <Text style={region === 'America' && styles.selectedBackground}>{getString('america', language)}</Text>
+                        <Text style={region == 'America' && styles.selectedBackground}>{getString('america', language)}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.commonDiv} onPress={() =>
+                    <TouchableOpacity style={styles.commonDiv} onPress={() => {
+                        AsyncStorage.setItem('region', 'Europe').then();
                         setRegion("Europe")
-                    }>
-                        <Text style={region === 'Europe' && styles.selectedBackground}>{getString('europe', language)}</Text>
+                    }}>
+                        <Text style={region == 'Europe' && styles.selectedBackground}>{getString('europe', language)}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -42,7 +42,11 @@ export const en = {
     insufficientCoins: "Insufficient Coins",
     guestCouponMsg: "Login with Google to redeem coupons",
     noteDown: "Please save this coupon code, you will not be able to access it again.",
-    noteWrongId: "Note: You should be in the same region that of the host user. Please change your region from the settings."
+    noteWrongId: "Note: You should be in the same region that of the host user. Please change your region from the settings.",
+    lessCoinsForCouponTitle: "You have Insufficient Coins",
+    lessCoinsForCouponDesc: "You have less coins than the required coins to redeem this coupon, buy more coins",
+    logOut: "Log Out",
+    settings: "Settings"
 }
 
 

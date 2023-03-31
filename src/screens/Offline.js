@@ -307,7 +307,7 @@ const Offline = ({ navigation, route }) => {
 
     const changePlayerId = (update = false, backUpdate = false) => {
 
-        setDisableDice(false);
+        // setDisableDice(false);
         setActivePlayerId((activePlayerId) % 2 + 1);
 
 

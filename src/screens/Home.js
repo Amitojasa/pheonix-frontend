@@ -42,7 +42,6 @@ function Home({ navigation }) {
     }, [isFocused]);
 
     useEffect(() => {
-        console.log("home lang", language);
         getUserData().then();
     }, []);
 
@@ -80,15 +79,13 @@ function Home({ navigation }) {
                             logout()
                         }} style={[homeScreenStyles.centerDiv]}>
                             <Ionicons name="exit" size={30} color="white" />
-                            <Text style={homeScreenStyles.iconText}>Log
-                                Out</Text>
+                            <Text style={homeScreenStyles.iconText}>{getString('logOut', language)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('BuyCoins', { userDetails: userDetails })
                         }} style={homeScreenStyles.centerDiv}>
                             <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
-                            <Text style={homeScreenStyles.iconText}>Buy
-                                Coins</Text>
+                            <Text style={homeScreenStyles.iconText}>{getString('buyCoins', language)}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -101,15 +98,15 @@ function Home({ navigation }) {
                                 size={30}
                                 color="white" style={{ marginBottom: 5 }} />
                             <Text style={homeScreenStyles.iconText}>
-                                Settings
+                                {getString('settings', language)}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('RedeemCoins', { userDetails: userDetails })
                         }} style={homeScreenStyles.centerDiv}>
                             <Ionicons name="cart" size={30} color="white" />
-                            <Text numberOfLines={2} ellipsizeMode='tail' style={homeScreenStyles.iconText}>Redeem
-                                Coupons</Text>
+                            <Text numberOfLines={2} ellipsizeMode='tail'
+                                style={homeScreenStyles.iconText}>{getString('redeemCoupons', language)}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -136,7 +133,7 @@ function Home({ navigation }) {
                     </View>
                     <View style={homeScreenStyles.coinsDiv}>
                         <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
-                        <Text style={homeScreenStyles.coinsText}>{userDetails ? userDetails.coins > 99999999999999 ? "99999999999999+" : userDetails.coins : "1000"}</Text>
+                        <Text style={homeScreenStyles.coinsText}>{userDetails ? userDetails.coins : "2500"}</Text>
                     </View>
                 </View>
                 <View style={loginScreenStyles.authSection}>

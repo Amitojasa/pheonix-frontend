@@ -142,7 +142,7 @@ function CreateRoom({ navigation, route, }) {
 
 
     useEffect(() => {
-        console.log("yess", roomName);
+        // console.log("yess", roomName);
         if (roomName) {
             // console.log("inside");
             const ref = doc(database, 'rooms', roomName)

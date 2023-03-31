@@ -176,10 +176,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (region === 'America') {
+        if (region == 'America') {
             setDatabase(databaseAmerica)
-        } else if (region === 'Europe') {
+
+        } else if (region == 'Europe') {
+
             setDatabase(databaseEurope)
+
         }
     }, [region])
 
@@ -213,9 +216,6 @@ export const AuthProvider = ({ children }) => {
         setUserData(null);
         await AsyncStorage.clear();
         setIsLoading(false);
-        // })
-
-        //logout
     }
 
 
@@ -224,7 +224,7 @@ export const AuthProvider = ({ children }) => {
         setSplashLoading(true);
         setTimeout(() => {
             setSplashLoading(false);
-        }, 8000);
+        }, 5000);
 
         // AsyncStorage.clear();
 
@@ -265,6 +265,12 @@ export const AuthProvider = ({ children }) => {
                                     setIsGuestUser(true);
                                 } else {
                                     setIsGuestUser(false);
+                                }
+                            })
+                            AsyncStorage.getItem('region').then((res) => {
+                                console.log(res);
+                                if (res) {
+                                    setRegion(res);
                                 }
                             })
                         } else {

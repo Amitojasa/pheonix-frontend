@@ -41,9 +41,11 @@ export const fr = {
     redeemCoupons: "échanger des coupons",
     guestCouponMsg: "Connectez-vous avec Google pour échanger des coupons",
     insufficientCoins: "Pièces insuffisantes",
-    noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder."
-}
+    noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder.",
+    lessCoinsForCouponTitle: "Vous avez des pièces insuffisantes",
+    lessCoinsForCouponDesc: "Vous avez moins de pièces que les pièces requises pour échanger ce coupon, achetez plus de pièces",
 
+}
 
 
 export const frTaskList1 = [

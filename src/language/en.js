@@ -41,7 +41,8 @@ export const en = {
     redeemCoupons: "Redeem Coupons",
     insufficientCoins: "Insufficient Coins",
     guestCouponMsg: "Login with Google to redeem coupons",
-    noteDown: "Please save this coupon code, you will not be able to access it again."
+    noteDown: "Please save this coupon code, you will not be able to access it again.",
+    noteWrongId: "Note: You should be in the same region that of the host user. Please change your region from the settings."
 }
 
 
@@ -610,45 +611,8 @@ export const enTaskList1 = [
         "updatedAt": "2023-03-16T17:34:55.206Z",
         "__v": 0
     },
-    {
-        "_id": "642367c14ea509d6477f786b",
-        "taskName": "paras test",
-        "taskDesc": "test",
-        "taskType": "both",
-        "taskTiming": 100,
-        "taskSize": "small",
-        "taskAddUserId": "muG1QntaN45hfZmd",
-        "lang": "en",
-        "createdAt": "2023-03-28T22:18:41.263Z",
-        "updatedAt": "2023-03-28T22:18:41.263Z",
-        "__v": 0
-    },
-    {
-        "_id": "64236e49a4a61cffde6bd795",
-        "taskName": "amitoj taks",
-        "taskDesc": "task desc",
-        "taskType": "both",
-        "taskTiming": 100,
-        "taskSize": "small",
-        "taskAddUserId": "Qt45UsMSTMvUQJPG",
-        "lang": "en",
-        "createdAt": "2023-03-28T22:46:33.053Z",
-        "updatedAt": "2023-03-28T22:46:33.053Z",
-        "__v": 0
-    },
-    {
-        "_id": "642395a52da50cc5198e8319",
-        "taskName": "abc",
-        "taskDesc": "acba",
-        "taskType": "both",
-        "taskTiming": 100,
-        "taskSize": "small",
-        "taskAddUserId": "muG1QntaN45hfZmd",
-        "lang": "en",
-        "createdAt": "2023-03-29T01:34:29.214Z",
-        "updatedAt": "2023-03-29T01:34:29.214Z",
-        "__v": 0
-    }
+
+
 ]
 
 

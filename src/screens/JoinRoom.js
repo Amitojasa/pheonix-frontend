@@ -72,7 +72,7 @@ const JoinRoom = ({ navigation, route }) => {
 
 
             } else {
-                Alert.alert(getString('wrongRoomId', language))
+                Alert.alert(getString('wrongRoomId', language), getString("noteWrongId", language))
             }
             // console.log(snapshot.data().latestmessage..text)
 
@@ -174,7 +174,7 @@ const JoinRoom = ({ navigation, route }) => {
                 <View style={{ marginTop: 20 }}>
 
                     <View style={styles.roomIdText}><Text style={styles.roomIdTextVal}>{getString('roomId', language)}</Text></View>
-                    <View style={styles.roomIdValContainer}><TextInput style={styles.roomIdTextEditVal} placeholder={getString('enterRoomId', language)} value={roomName} onChangeText={setRoomName}></TextInput></View>
+                    <View style={styles.roomIdValContainer}><TextInput maxLength={6} style={styles.roomIdTextEditVal} placeholder={getString('enterRoomId', language)} value={roomName} onChangeText={setRoomName}></TextInput></View>
                     <TouchableOpacity onPress={() => handleJoinRoom()} style={styles.roomIdValContainer}><Text style={styles.roomIdVal}>{getString('joinRoom', language)}</Text></TouchableOpacity>
                     {/* <Button onPress={handleButtonPress} title="create"></Button> */}
                 </View>

@@ -11,6 +11,7 @@ import { getString } from "../language/Strings";
 import { AuthContext } from "../context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InternetAlert from "../components/InternetAlert";
+import LandscapeLogo from "../components/LandscapeLogo"
 
 
 
@@ -70,6 +71,7 @@ export const Avatar = ({ navigation }) => {
                 end={{ x: 0, y: 1 }} style={[commonStyles.centerContainer, commonStyles.fullWidth]}>
                 <View style={avatarScreenStyles.avatarThumbnailDiv}>
                     <Image source={require('../../assets/logoHorizontal.png')} />
+
                     <View style={avatarScreenStyles.avatarDiv}>
                         <View style={avatarScreenStyles.avatarBtn}>
                             <Text style={avatarScreenStyles.avatarText}>{getString('chooseAvatar', language)}</Text>
@@ -93,7 +95,7 @@ export const Avatar = ({ navigation }) => {
                                 <View style={[avatarScreenStyles.avatarOptionsDiv]} key={index1}>
                                     {items.map((subItems, index2) =>
                                         <TouchableOpacity
-                                            style={[isSelected === subItems.id && avatarScreenStyles.imageBorder,
+                                            style={[isSelected === subItems.id ? avatarScreenStyles.imageBorder : avatarScreenStyles.imageBorder0,
                                             avatarScreenStyles.marginBtm]}
                                             key={index2} onPress={() => {
                                                 setSelectedAvatar(subItems.avatar);

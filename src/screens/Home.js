@@ -79,14 +79,14 @@ function Home({ navigation }) {
                         <TouchableOpacity onPress={() => {
                             logout()
                         }} style={[homeScreenStyles.centerDiv]}>
-                            <Ionicons name="exit" size={30} color="white"/>
+                            <Ionicons name="exit" size={30} color="white" />
                             <Text style={homeScreenStyles.iconText}>Log
                                 Out</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('BuyCoins', {userDetails: userDetails})
+                            navigation.navigate('BuyCoins', { userDetails: userDetails })
                         }} style={homeScreenStyles.centerDiv}>
-                            <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg}/>
+                            <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
                             <Text style={homeScreenStyles.iconText}>Buy
                                 Coins</Text>
                         </TouchableOpacity>
@@ -98,16 +98,16 @@ function Home({ navigation }) {
                             setShowSettings(true);
                         }} style={[homeScreenStyles.centerDiv]}>
                             <Ionicons name="settings"
-                                      size={30}
-                                      color="white" style={{marginBottom: 5}}/>
+                                size={30}
+                                color="white" style={{ marginBottom: 5 }} />
                             <Text style={homeScreenStyles.iconText}>
                                 Settings
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('RedeemCoins', {userDetails: userDetails})
+                            navigation.navigate('RedeemCoins', { userDetails: userDetails })
                         }} style={homeScreenStyles.centerDiv}>
-                            <Ionicons name="cart" size={30} color="white"/>
+                            <Ionicons name="cart" size={30} color="white" />
                             <Text numberOfLines={2} ellipsizeMode='tail' style={homeScreenStyles.iconText}>Redeem
                                 Coupons</Text>
                         </TouchableOpacity>
@@ -136,7 +136,7 @@ function Home({ navigation }) {
                     </View>
                     <View style={homeScreenStyles.coinsDiv}>
                         <Image source={require('../../assets/coin.png')} style={homeScreenStyles.coinImg} />
-                        <Text style={homeScreenStyles.coinsText}>{userDetails ? userDetails.coins : "2500"}</Text>
+                        <Text style={homeScreenStyles.coinsText}>{userDetails ? userDetails.coins > 99999999999999 ? "99999999999999+" : userDetails.coins : "1000"}</Text>
                     </View>
                 </View>
                 <View style={loginScreenStyles.authSection}>

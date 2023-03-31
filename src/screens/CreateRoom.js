@@ -207,7 +207,7 @@ function CreateRoom({ navigation, route, }) {
             "bigTaskType": "offline"
             // "isSmallTask": true,
         }).then((apiRes) => {
-            console.log(apiRes.data.message.enTasks.tasks.length);
+            console.log(apiRes.data.message);
             if (language == 'en') {
                 console.log('res tasks create en :: = > :: ', apiRes.data.message.enTasks);
                 if (apiRes.data.message.enTasks.tasks && apiRes.data.message.enTasks.tasks.length > 0) { setTaskList(apiRes.data.message.enTasks.tasks); setTotalTasks(apiRes.data.message.enTasks.tasks.length) }
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-evenly"
     },
-    roomIdText: { flexDirection: "row", justifyContent: "center", slefAlign: "center", marginLeft: "auto", marginRight: "auto", alignItems: 'center', backgroundColor: "#FFF", paddingVertical: 10, borderRadius: 25, width: "30%", height: 50, maxHeight: 50, marginVertical: 20, elevation: 10 },
+    roomIdText: { flexDirection: "row", justifyContent: "center", slefAlign: "center", marginLeft: "auto", marginRight: "auto", alignItems: 'center', backgroundColor: "#FFF", paddingVertical: 10, borderRadius: 25, maxWidth: "50%", paddingHorizontal: 10, height: 50, maxHeight: 50, marginVertical: 20, elevation: 10 },
 
     roomIdValContainer: { flexDirection: "row", justifyContent: "center", slefAlign: "center", marginLeft: "auto", marginRight: "auto", alignItems: 'center', backgroundColor: "#FFF", paddingVertical: 10, borderRadius: 15, elevation: 20, width: "70%", height: 50, maxHeight: 50, marginVertical: 20 },
 

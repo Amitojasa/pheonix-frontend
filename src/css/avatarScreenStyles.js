@@ -1,17 +1,19 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export const avatarScreenStyles = StyleSheet.create({
     avatarDiv: {
-        top: "20%", backgroundColor: "#ffffff", width: "100%", left: "8%", borderRadius: 35,
+        top: "20%", backgroundColor: "#fff", width: "100%", alignSelf: "center", borderRadius: 25
+
     },
     avatarThumbnailDiv: {
-        height: "60%", top: "15%",
+        height: "60%", top: "10%",
     },
     avatarBtn: {
         backgroundColor: '#fff',
         padding: 30,
         borderRadius: 25,
         width: "100%",
+        alignSelf: "center",
     },
     avatarText: {
         fontSize: 25,
@@ -19,7 +21,7 @@ export const avatarScreenStyles = StyleSheet.create({
         color: "#DB4A39",
         fontWeight: "bold",
         textShadowColor: "rgba(0, 0, 0, 0.25)",
-        textShadowOffset: {width: -1, height: 1},
+        textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 1,
     },
     avatarOptionsDiv: {
@@ -27,14 +29,20 @@ export const avatarScreenStyles = StyleSheet.create({
         padding: 5
     },
     imageDiv: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         borderRadius: 10,
+
+    },
+    imageBorder0: {
+        borderColor: "#FFF",
+        borderWidth: 5,
+        borderRadius: 15
     },
     imageBorder: {
         borderColor: "#DB4A39",
         borderWidth: 5,
-        borderRadius:15
+        borderRadius: 15
     },
     marginBtm: {
         marginBottom: 20
@@ -47,7 +55,7 @@ export const avatarScreenStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         shadowColor: "rgba(0, 0, 0, 25)",
-        shadowOffset: {width: 1, height: 1},
+        shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5,

@@ -41,7 +41,8 @@ export const fr = {
     redeemCoupons: "échanger des coupons",
     guestCouponMsg: "Connectez-vous avec Google pour échanger des coupons",
     insufficientCoins: "Pièces insuffisantes",
-    noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder."
+    noteDown: "Veuillez enregistrer ce code promo, vous ne pourrez plus y accéder.",
+    noteWrongId: "Remarque : Vous devez vous trouver dans la même région que celle de l'utilisateur hôte. Veuillez modifier votre région dans les paramètres."
 }
 
 

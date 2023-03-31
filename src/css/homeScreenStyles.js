@@ -2,7 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const homeScreenStyles = StyleSheet.create({
     coinsDiv: {
-        backgroundColor: "#ffffff", width: "35%", borderRadius: 25,
+        backgroundColor: "#ffffff",
+        maxWidth: "80%",
+        borderRadius: 25,
         paddingBottom: 10,
         paddingRight: 15,
         paddingTop: 10,

@@ -197,7 +197,7 @@ function CreateRoom({ navigation, route, }) {
 
     const getTaskListFromBackend = async (rn) => {
         await axios.post(`${BASE_URL}/api/room/create`, {
-            "taskNo": 40,
+            "taskNo": 25,
             "bigTaskNo": 1,
             // "lang": language,
             // "hostUserId": (JSON.parse(userInfo).id),

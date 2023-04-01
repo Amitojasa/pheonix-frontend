@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import {
     collection,
     addDoc,
@@ -11,20 +11,20 @@ import {
     getDoc,
     updateDoc
 } from 'firebase/firestore';
-import {BASE_URL, StartPosition} from '../Config';
-import {AuthContext} from '../context/AuthContext';
-import {LinearGradient} from 'expo-linear-gradient';
+import { BASE_URL, StartPosition } from '../Config';
+import { AuthContext } from '../context/AuthContext';
+import { LinearGradient } from 'expo-linear-gradient';
 import LandscapeLogo from '../components/LandscapeLogo';
 import CreateJoinPlayerMatching from '../components/CreateJoinPlayerMatching';
 import axios from 'axios';
 import WinPlayerMatching from '../components/WinPlayerMatching';
-import {getString} from '../language/Strings';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { getString } from '../language/Strings';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import InternetAlert from '../components/InternetAlert';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-function Win({navigation, route,}) {
+function Win({ navigation, route, }) {
 
 
     const {
@@ -42,7 +42,7 @@ function Win({navigation, route,}) {
         setPlayBackSteps,
         taskIndex,
     } = useContext(AuthContext);
-    const {winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D} = route.params;
+    const { winPlayer, player1Id, player2Id, roomName, isOffline = false, pl1D, pl2D, gameLeft = false } = route.params;
     // const winPlayer = 1;
     // const [roomName, setRoomName] = useState()
     var f = 1;
@@ -54,11 +54,12 @@ function Win({navigation, route,}) {
     const updateWinning = async () => {
         // console.log(roomName);
 
+
         const docRef = await doc(database, "rooms", roomName);
         const d = await (await getDoc(docRef)).data();
         setplayer1Details(d.player1Details)
         setplayer2Details(d.player2Details)
-        if (d.winningUpdate == false) {
+        if (gameLeft && d.winningUpdate == false) {
             await updateDoc(doc(database, 'rooms', roomName), {
 
                 winningUpdate: true,
@@ -90,7 +91,40 @@ function Win({navigation, route,}) {
 
 
             })
-        }
+        } else
+            if (gameLeft == false && d.winningUpdate == false && myPlayerId == 1) {
+                await updateDoc(doc(database, 'rooms', roomName), {
+
+                    winningUpdate: true,
+                    winningPlayer: winPlayer
+
+                }).then(async (data) => {
+                    //call api
+                    const d = await (await getDoc(docRef)).data();
+                    const coinsData1 = {
+                        "userId": winPlayer == 1 ? d.GameInfo.player1Id : d.GameInfo.player2Id,
+                        "userCoins": 50,
+                        "operation": "add"
+                    }
+                    console.log("con data:", coinsData1);
+                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData1).then().catch(err => {
+                        console.log(err);
+                    })
+
+                    // const d = await (await getDoc(docRef)).data();
+                    const coinsData2 = {
+                        "userId": !(winPlayer == 1) ? d.GameInfo.player1Id : d.GameInfo.player2Id,
+                        "userCoins": 50,
+                        "operation": "sub"
+                    }
+                    console.log("con data:", coinsData2);
+                    await axios.post(`${BASE_URL}/api/changeUserCoins`, coinsData2).then().catch(err => {
+                        console.log(err);
+                    })
+
+
+                })
+            }
 
     }
 
@@ -114,13 +148,13 @@ function Win({navigation, route,}) {
 
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected}/>
+        <SafeAreaView style={{ flex: 1 }}>
+            <InternetAlert checkConnection={checkConnection} language={language} isConnected={isConnected} />
 
-            <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{x: 1, y: 0}}
-                            end={{x: 0.2, y: 0.9}} style={styles.linearGradient}>
+            <LinearGradient colors={['#FFFF', '#DB4A39']} locations={[0.5, 0.9]} start={{ x: 1, y: 0 }}
+                end={{ x: 0.2, y: 0.9 }} style={styles.linearGradient}>
 
-                <View style={{height: !isOffline ? "60%" : "55%"}}>
+                <View style={{ height: !isOffline ? "60%" : "55%" }}>
                     <LinearGradient colors={['#0073C5', '#9069FF']} style={[styles.linearGradient, {
                         borderBottomLeftRadius: 50,
                         borderBottomRightRadius: 50,
@@ -130,22 +164,22 @@ function Win({navigation, route,}) {
                         <LandscapeLogo></LandscapeLogo>
 
 
-                        <View style={[styles.gameplayersDiv, isOffline && {marginBottom: "20%"}]}>
+                        <View style={[styles.gameplayersDiv, isOffline && { marginBottom: "20%" }]}>
                             <WinPlayerMatching language={language} playerId={1} winningPlayer={winPlayer}
-                                               playerDetails={player1Details} isOffline={isOffline}/>
-                            <Text style={[{fontWeight: 'bold', color: "#FFF"}, isOffline && {
+                                playerDetails={player1Details} isOffline={isOffline} />
+                            <Text style={[{ fontWeight: 'bold', color: "#FFF" }, isOffline && {
                                 justifyContent: "center",
                                 marginTop: "15%"
                             }]}>VS</Text>
                             <WinPlayerMatching language={language} playerId={2} winningPlayer={winPlayer}
-                                               playerDetails={player2Details} isOffline={isOffline}/>
+                                playerDetails={player2Details} isOffline={isOffline} />
                         </View>
 
                     </LinearGradient>
                 </View>
 
 
-                <View style={{alignItems: "center", justifyContent: "center"}}>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                     <View style={{
                         backgroundColor: "#FFF",
                         borderRadius: 15,
@@ -160,7 +194,7 @@ function Win({navigation, route,}) {
                             fontSize: 18,
                             textAlign: "center"
                         }}>{getString('performThisTask', language)}</Text>
-                        <Text style={{fontSize: 16, marginTop: "5%", textAlign: "justify"}}>{bigTask.taskDesc}</Text>
+                        <Text style={{ fontSize: 16, marginTop: "5%", textAlign: "justify" }}>{bigTask.taskDesc}</Text>
                     </View>
                     <View style={{
 
@@ -181,12 +215,12 @@ function Win({navigation, route,}) {
                             marginHorizontal: "5%",
                             width: "50%"
                         },]}>
-                            <Text style={{color: "#DB4A39", fontWeight: "bold", fontSize: 15}}>
+                            <Text style={{ color: "#DB4A39", fontWeight: "bold", fontSize: 15 }}>
                                 {getString('goToHome', language)}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate("RedeemCoins", {userDetails: userDetails})
+                            navigation.navigate("RedeemCoins", { userDetails: userDetails })
                         }} style={[{
                             padding: 9,
                             backgroundColor: "transparent",
@@ -199,7 +233,7 @@ function Win({navigation, route,}) {
                             marginHorizontal: "5%",
                             width: "50%"
                         },]}>
-                            <Text style={{color: "#fff", fontWeight: "bold", fontSize: 15, textAlign: "center"}}>
+                            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 15, textAlign: "center" }}>
                                 {getString("redeemCoupons", language)}
                             </Text>
                         </TouchableOpacity>

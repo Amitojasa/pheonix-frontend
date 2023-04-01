@@ -40,7 +40,7 @@ const JoinRoom = ({ navigation, route }) => {
 
             if (d.data()) {
                 if (await d.data().GameInfo.player2Id != -1) {
-                    Alert.alert("Room full..");
+                    Alert.alert(language == 'en' ? "Room full.." : "Salle pleine...");
                     return;
                 }
                 // console.log(d.data());

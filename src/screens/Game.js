@@ -517,7 +517,7 @@ const Game = ({ navigation, route }) => {
                                 onPress: () =>
                                     navigation.dispatch(
                                         StackActions.replace
-                                            ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName })
+                                            ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName, gameLeft: true })
                                     )
 
                             },
@@ -536,7 +536,7 @@ const Game = ({ navigation, route }) => {
                                     onPress: () =>
                                         navigation.dispatch(
                                             StackActions.replace
-                                                ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName })
+                                                ('Win', { winPlayer: (myPlayerId % 2) + 1, roomName: roomName, gameLeft: true })
                                         )
 
                                 },

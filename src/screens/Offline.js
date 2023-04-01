@@ -46,7 +46,7 @@ const Offline = ({ navigation, route }) => {
     const getTaskListFromBackend = async (rn) => {
 
         await axios.post(`${BASE_URL}/api/room/create`, {
-            "taskNo": 40,
+            "taskNo": 25,
             // "hostUserId": (JSON.parse(userInfo).id),
             // TODO: check host id 
             "hostUserId": userData.id,
